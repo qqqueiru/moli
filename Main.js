@@ -57,7 +57,9 @@ window.addEventListener("keydown", (event) => {
             input.activate();
         }
     } else {
-        inputs.set(event.key, new Input());
+        const newInput = new Input();
+        inputs.set(event.key, newInput);
+        newInput.activate();
     }
 
     if (inputs.has("AnyKey")) {
@@ -66,6 +68,7 @@ window.addEventListener("keydown", (event) => {
         }
     } else {
         inputs.set("AnyKey", Input.anyKey);
+        Input.anyKey.activate();
     }
 });
 

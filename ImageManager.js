@@ -24,6 +24,8 @@ class ImageManager {
     static loadImages() {
         ImageManager.loadImage("moli", "./img/moli.png");
 
+        ImageManager.loadImage("test_level", "./aux/test level_plano.svg");
+
         // ImageManager.loadImage("moli_idle_right", "./img/moli_idle_right.png");
         // ImageManager.loadImage("moli_idle_left", "./img/moli_idle_left.png");
         // ImageManager.loadImage("moli_walking_right", "./img/moli_walking_right.png");
