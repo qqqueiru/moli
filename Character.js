@@ -7,6 +7,7 @@ class Character {
     //      |
     //      |
     //      |2  // vSegment
+    #health = 1;
     #hSegment = new Segment({x: -60, y: -50}, {x: 60, y: -50});  // Relativo a #pos
     #vSegment = new Segment({x: 0, y: -110}, {x: 0, y: 60});  // Relativo a #pos
     #leftRayCastSegment = new Segment({x: -40, y: 20}, {x: -40, y: 60});  // Relativo a #pos (Creo que lo más sencillo es hacer la plataforma más grande...)
@@ -23,14 +24,17 @@ class Character {
     #availablePlatformIds = [];
     #lastPlatformTouchedId = null;
     #canJump = false;
-    #finishedJumping = false;
+    #finishedJumping = false;  // Se puede usar para saber si se ha de dibujar el salto
     #iterationsToBeJumped = 0;
     #maxIterationsJumped = 20;
     #crouched = false;
+    #shootingHeight = 0;
     #lookingUp = false;
     #faceDirection = "right";  // right, left or up
     #previousFaceDirection = "right";
     #coyoteIterations = 0;
+    #currentWeapon = new Weapon();
+    #currentGrenade = new Grenade();
     // #maxYFromLastFloorIntersection
     // Solamente se permite el salto si hay interseccion del segmento vertical y vy > 0
     constructor() {
@@ -50,6 +54,14 @@ class Character {
         if (canJump) {
             this.#finishedJumping = canJump;
         }
+    }
+
+    setWeapon(weapon) {
+        this.#currentWeapon = weapon;
+    }
+
+    setGrenade(grenade) {
+        this.#currentGrenade = grenade;
     }
 
     setLookingUp(lookUp) {
@@ -113,9 +125,11 @@ class Character {
         if (crouched) {
             this.#hSegment = new Segment({x: -60, y: 0}, {x: 60, y: 0});  // Relativo a #pos
             this.#vSegment = new Segment({x: 0, y: -60}, {x: 0, y: 60});  // Relativo a #pos
+            this.#shootingHeight = 0;
         } else {
             this.#hSegment = new Segment({x: -60, y: -50}, {x: 60, y: -50});  // Relativo a #pos
             this.#vSegment = new Segment({x: 0, y: -110}, {x: 0, y: 60});  // Relativo a #pos
+            this.#shootingHeight = -50;
         }
     }
 
@@ -123,8 +137,20 @@ class Character {
         this.#coyoteIterations = coyoteIterations;
     }
 
+    getShootingHeight() {
+        return this.#shootingHeight;
+    }
+
     getCoyoteIterations() {
         return this.#coyoteIterations;
+    }
+
+    getFaceDirection() {
+        return this.#faceDirection;
+    }
+
+    getPos() {
+        return this.#pos;
     }
 
     getHSegmentAbs() {
@@ -232,6 +258,14 @@ class Character {
 
     setLastPlatformTouchedId(lastPlatformTouchedId) {
         this.#lastPlatformTouchedId = lastPlatformTouchedId;
+    }
+
+    shoot() {
+        return this.#currentWeapon.shoot();
+    }
+
+    throwGrenade() {
+        this.#currentGrenade.throw();
     }
 
     draw(ctx, cameraPos) {

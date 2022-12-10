@@ -7,6 +7,7 @@ class SubLevel {
     #upBuffer = [];
     #cameraPos;
     #lastIntersection;  // TODO depurando...
+    #projectiles = [];  // Lista de proyectiles presentes en el subnivel...
     constructor() {
         this.#platforms = new Map();  // Characters can walk over these segments
         this.#topSegments = [];  // Characters can't go above these segments
@@ -23,6 +24,7 @@ class SubLevel {
         ++i;
 
         this.#player.setPlatforms(this.#platforms);
+        this.#player.setWeapon(new Pistol(this.#player));
         this.#player.updateAvailablePlatforms();
     }
     #reviseCharacterPosWithPlatforms(character) {
@@ -94,6 +96,15 @@ class SubLevel {
         if (inputs.get("d")?.isPressed()) {
             this.#player.moveRight();
         }
+        if (inputs.get("j")?.consumeIfActivated()) {
+            const projectile = this.#player.shoot();
+            if (projectile) {
+                this.#projectiles.push(projectile);
+            }
+        }
+        if (inputs.get("l")?.consumeIfActivated()) {
+            this.#player.throwGrenade();
+        }
         if (inputs.get("k")?.consumeIfActivated()) {
             this.#upBuffer.push(Date.now());
         }
@@ -113,6 +124,16 @@ class SubLevel {
             } else {
                 this.#player.setCrouched(false);
             }
+        }
+
+        const nProjectiles = this.#projectiles.length;
+        for (let i = nProjectiles - 1; i >= 0; --i) {
+            const projectile = this.#projectiles[i];
+            projectile.update();
+            if (projectile.isBeyondLimits()) {
+                this.#projectiles.splice(i, 1);
+            }
+            projectile.checkHit();  // TODO, comprobar si golpeó a alguien. No necesariamente el proyectil desaparece al tocar a alguien...
         }
         this.#player.update();
     }
@@ -143,6 +164,11 @@ class SubLevel {
             ctx.rect(this.#lastIntersection.x-5, this.#lastIntersection.y-5, 10, 10);
             ctx.fillStyle = "green";
             ctx.fill();
+        }
+
+        // Los proyectiles se dibujan por encima de todo
+        for (const projectile of this.#projectiles) {
+            projectile.draw(ctx);
         }
     }
 }
