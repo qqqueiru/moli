@@ -99,7 +99,7 @@ class SubLevel {
         if (inputs.get("j")?.consumeIfActivated()) {
             const projectile = this.#player.shoot();
             if (projectile) {
-                this.#projectiles.push(projectile);
+                this.#projectiles = this.#projectiles.concat(projectile);
             }
         }
         if (inputs.get("l")?.consumeIfActivated()) {

@@ -4,6 +4,10 @@ class Pistol extends Weapon {
     constructor(character) {
         super(character);
     }
+    /**
+     * 
+     * @returns Podría retornar una lista de proyectiles o un solo proyectil
+     */
     shoot() {
         if (!this.checkIfCanShootSinceLastShooting()) { return null; }
         // Pistol ammo is infinite
