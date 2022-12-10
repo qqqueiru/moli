@@ -23,10 +23,13 @@ class Character {
     #availablePlatformIds = [];
     #lastPlatformTouchedId = null;
     #canJump = false;
+    #finishedJumping = false;
     #iterationsToBeJumped = 0;
     #maxIterationsJumped = 20;
     #crouched = false;
     #lookingUp = false;
+    #faceDirection = "right";  // right, left or up
+    #previousFaceDirection = "right";
     #coyoteIterations = 0;
     // #maxYFromLastFloorIntersection
     // Solamente se permite el salto si hay interseccion del segmento vertical y vy > 0
@@ -44,9 +47,19 @@ class Character {
 
     setCanJump(canJump) {
         this.#canJump = canJump;
+        if (canJump) {
+            this.#finishedJumping = canJump;
+        }
     }
 
     setLookingUp(lookUp) {
+        if (this.#finishedJumping && !this.#lookingUp && lookUp && !this.#crouched) {
+            this.#previousFaceDirection = this.#faceDirection;
+            this.#faceDirection = "up";
+        }
+        if (this.#lookingUp && !lookUp) {
+            this.#faceDirection = this.#previousFaceDirection;
+        }
         this.#lookingUp = lookUp;
     }
 
@@ -55,11 +68,19 @@ class Character {
     }
 
     moveRight() {
-        this.#vx = this.#crouched ? 4 : 10;
+        this.#vx = this.#crouched ? 5 : 10;
+        this.#vx += this.#iterationsToBeJumped > 0 ? 2 : 0;
+        if (this.#finishedJumping && !this.#lookingUp) {
+            this.#faceDirection = "right";
+        }
     }
 
     moveLeft() {
-        this.#vx = this.#crouched ? -4 : -10;
+        this.#vx = this.#crouched ? -5 : -10;
+        this.#vx += this.#iterationsToBeJumped > 0 ? -2 : 0;
+        if (this.#finishedJumping && !this.#lookingUp) {
+            this.#faceDirection = "left";
+        }
     }
 
     jump(vy) {
@@ -75,6 +96,7 @@ class Character {
             this.#iterationsToBeJumped = this.#maxIterationsJumped;
             this.#coyoteIterations = 0;
             startedJump = true;
+            this.#finishedJumping = false;
         }
         return startedJump;
     }
@@ -150,6 +172,23 @@ class Character {
             this.#iterationsToBeJumped--;
         }
 
+        if (this.#crouched && (this.#faceDirection === "up" || this.#lookingUp)) {
+            if (this.#vx != 0) {
+                this.#faceDirection = this.#vx > 0 ? "right" : "left";
+                this.#previousFaceDirection = this.#faceDirection;
+            } else {
+                this.#faceDirection = this.#previousFaceDirection;
+            }
+        }
+        if (this.#lookingUp && !this.#crouched && this.#faceDirection !== "up") {
+            if (this.#vx != 0) {
+                this.#previousFaceDirection = this.#vx > 0 ? "right" : "left";
+            } else {
+                this.#previousFaceDirection = this.#faceDirection;
+            }
+            this.#faceDirection = "up";
+        }
+
         this.#previousVy = this.#vy;
         this.#vy += this.#ay;
         if (this.#previousVy > this.#maxVy) { this.#previousVy = this.#maxVy; }
@@ -216,5 +255,27 @@ class Character {
         ctx.lineWidth = 5;
         ctx.stroke();
 
+
+        // Indicaciones de la dirección en la que mira el personaje
+        ctx.beginPath();
+        let delta = new Point(0, 0);
+        if (this.#faceDirection === "right") {
+            delta.x = 100;
+        }
+        if (this.#faceDirection === "left") {
+            delta.x = -100;
+        }
+        if (this.#faceDirection === "up") {
+            delta.y = -100;
+        }
+        ctx.rect(this.#pos.addConst(delta).x, this.#pos.addConst(delta).y, 20, 20);
+        ctx.fillStyle = "orange";
+        ctx.fill();
+
+        // Depurando finishedJumping...
+        ctx.beginPath();
+        ctx.rect(0, 0, 1920, 100);
+        ctx.fillStyle = this.#finishedJumping ? "green" : "red";
+        ctx.fill();
     }
 }
