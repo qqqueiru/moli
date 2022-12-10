@@ -8,11 +8,17 @@ const TR = {
         gl: "MOLI",
         la: "MOLI",
     },
+    WorkInProgress: {
+        en: "WORK IN PROGRESS",
+        es: "OBRA EN DESARROLLO",
+        gl: "OBRA EN DESENVOLVEMENTO",
+        la: "WORK IN PROGRESS",
+    },
     PressAnyKey: {
         en: "PRESS ANY KEY",
         es: "PRESIONE CUALQUIER TECLA",
         gl: "PREMA CALQUERA TECLA",
-        la: "PREMET ILLE CLAVEM"
+        la: "PREMET ILLE CLAVEM",
     },
     START: {
         en: "START",
