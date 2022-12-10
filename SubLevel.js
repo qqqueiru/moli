@@ -4,6 +4,7 @@ class SubLevel {
     #leftSegments;
     #rightSegments;
     #player;
+    #upBuffer = [];
     #cameraPos;
     #lastIntersection;  // TODO depurando...
     constructor() {
@@ -29,6 +30,9 @@ class SubLevel {
         let lastPlatformTouchedId = null;
         const characterSegment = character.getVSegmentAbs();
         const availablePlatformIds = character.getAvailablePlatformIds();
+        if (character.getCoyoteIterations() <= 0) {  // AKA Coyote Time
+            character.setCanJump(false);  // Si no está tocando el suelo, no puede saltar
+        }
         for (const availablePlatformId of availablePlatformIds) {
             const platform = this.#platforms.get(availablePlatformId);
             const bottomSegment = platform.getSegment();
@@ -62,27 +66,55 @@ class SubLevel {
             const delta = intersection.substractConst(characterSegment.p2);
             character.moveRel(delta);
             character.setLastPlatformTouchedId(lastPlatformTouchedId);
-            this.#player.setVy(0);
+            character.setVy(0);
+            character.setCoyoteIterations(15);
+            // if (character === this.#player && inputs.get("k")?.consumeIfActivated()) {
+            //     character.setCanJump(true);
+            // }
+        }
+        if (character.getCoyoteIterations() > 0) {
+            character.setCanJump(true);
         }
     }
 
     update() {
-        this.#player.setVx(0);
-        // this.#player.setVy(0);
-        if (inputs.get("ArrowLeft")?.isPressed()) {
-            this.#player.setVx(-10);
+        this.#reviseCharacterPosWithPlatforms(this.#player);
+        if (this.#upBuffer.length > 0 && Date.now() - this.#upBuffer[0] > 250) {
+            this.#upBuffer.shift();
         }
-        if (inputs.get("ArrowRight")?.isPressed()) {
-            this.#player.setVx(10);
+        if (inputs.get("w")?.isPressed()) {
+            this.#player.setLookingUp(true);
+        } else {
+            this.#player.setLookingUp(false);
         }
-        if (inputs.get("ArrowUp")?.isPressed()) {
-            this.#player.setVy(-15);
+        this.#player.dontMove();
+        if (inputs.get("a")?.isPressed()) {
+            this.#player.moveLeft();
         }
-        if (inputs.get("ArrowDown")?.isPressed()) {
-            this.#player.setVy(10);
+        if (inputs.get("d")?.isPressed()) {
+            this.#player.moveRight();
+        }
+        if (inputs.get("k")?.consumeIfActivated()) {
+            this.#upBuffer.push(Date.now());
+        }
+        if (this.#upBuffer.length > 0) {
+            const startedJump = this.#player.startJump();
+            if (startedJump) {
+                this.#upBuffer.shift();
+            }
+        }
+        if (inputs.get("k")?.isPressed()) {
+            // this.#player.jump();
+            this.#player.setCrouched(false);
+        } else {
+            // this.#player.stopJumping();
+            if (inputs.get("s")?.isPressed()) {
+                this.#player.setCrouched(true);
+            } else {
+                this.#player.setCrouched(false);
+            }
         }
         this.#player.update();
-        this.#reviseCharacterPosWithPlatforms(this.#player);
     }
 
     draw(ctx) {
@@ -112,6 +144,5 @@ class SubLevel {
             ctx.fillStyle = "green";
             ctx.fill();
         }
-
     }
 }
