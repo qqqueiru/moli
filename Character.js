@@ -261,11 +261,23 @@ class Character {
     }
 
     shoot() {
+        this.updateFaceDirection();
         return this.#currentWeapon.shoot();
     }
 
     throwGrenade() {
-        this.#currentGrenade.throw();
+        this.updateFaceDirection();
+        return this.#currentGrenade.throw();
+    }
+
+    updateFaceDirection() {
+        if (this.#finishedJumping) { return; }
+        if (this.#vx > 0) {
+            this.#faceDirection = "right";
+        }
+        if (this.#vx < 0) {
+            this.#faceDirection = "left";
+        }
     }
 
     draw(ctx, cameraPos) {
