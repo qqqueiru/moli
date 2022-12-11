@@ -34,7 +34,7 @@ class Character {
     #previousFaceDirection = "right";
     #coyoteIterations = 0;
     #currentWeapon = new Weapon();
-    #currentGrenade = new Grenade();
+    #currentGrenadeThrower = new BasicGrenadeThrower();
     // #maxYFromLastFloorIntersection
     // Solamente se permite el salto si hay interseccion del segmento vertical y vy > 0
     constructor() {
@@ -60,8 +60,8 @@ class Character {
         this.#currentWeapon = weapon;
     }
 
-    setGrenade(grenade) {
-        this.#currentGrenade = grenade;
+    setGrenadeThrower(grenadeThrower) {
+        this.#currentGrenadeThrower = grenadeThrower;
     }
 
     setLookingUp(lookUp) {
@@ -267,7 +267,7 @@ class Character {
 
     throwGrenade() {
         this.updateFaceDirection();
-        return this.#currentGrenade.throw();
+        return this.#currentGrenadeThrower.throw();
     }
 
     updateFaceDirection() {

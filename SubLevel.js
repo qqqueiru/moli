@@ -8,6 +8,7 @@ class SubLevel {
     #cameraPos;
     #lastIntersection;  // TODO depurando...
     #projectiles = [];  // Lista de proyectiles presentes en el subnivel...
+    #grenades = [];  // Lista de granadas presentes en el subnivel...
     constructor() {
         this.#platforms = new Map();  // Characters can walk over these segments
         this.#topSegments = [];  // Characters can't go above these segments
@@ -25,6 +26,7 @@ class SubLevel {
 
         this.#player.setPlatforms(this.#platforms);
         this.#player.setWeapon(new Pistol(this.#player));
+        this.#player.setGrenadeThrower(new BasicGrenadeThrower(this.#player));
         this.#player.updateAvailablePlatforms();
     }
     #reviseCharacterPosWithPlatforms(character) {
@@ -103,7 +105,10 @@ class SubLevel {
             }
         }
         if (inputs.get("l")?.consumeIfActivated()) {
-            this.#player.throwGrenade();
+            const grenade = this.#player.throwGrenade();
+            if (grenade) {
+                this.#grenades = this.#grenades.concat(grenade);
+            }
         }
         if (inputs.get("k")?.consumeIfActivated()) {
             this.#upBuffer.push(Date.now());
@@ -135,6 +140,17 @@ class SubLevel {
             }
             projectile.checkHit();  // TODO, comprobar si golpeó a alguien. No necesariamente el proyectil desaparece al tocar a alguien...
         }
+
+        const nGrenades = this.#grenades.length;
+        for (let i = nGrenades - 1; i >= 0; --i) {
+            const grenade = this.#grenades[i];
+            grenade.update();
+            if (grenade.isBeyondLimits()) {
+                this.#grenades.splice(i, 1);
+            }
+            grenade.checkHit();  // TODO, comprobar si golpeó a alguien. No necesariamente el proyectil desaparece al tocar a alguien...
+        }
+
         this.#player.update();
     }
 
@@ -166,9 +182,12 @@ class SubLevel {
             ctx.fill();
         }
 
-        // Los proyectiles se dibujan por encima de todo
+        // Los proyectiles y granadas se dibujan por encima de todo
         for (const projectile of this.#projectiles) {
             projectile.draw(ctx);
+        }
+        for (const grenade of this.#grenades) {
+            grenade.draw(ctx);
         }
     }
 }

@@ -6,7 +6,7 @@ class Pistol extends Weapon {
     }
     /**
      * 
-     * @returns Podría retornar una lista de proyectiles o un solo proyectil
+     * @returns Podría retornar una lista (no vacía) de proyectiles, un solo proyectil o null
      */
     shoot() {
         if (!this.checkIfCanShootSinceLastShooting()) { return null; }
