@@ -271,7 +271,7 @@ class Character {
     }
 
     updateFaceDirection() {
-        if (this.#finishedJumping) { return; }
+        if (this.#finishedJumping || this.#faceDirection === "up") { return; }
         if (this.#vx > 0) {
             this.#faceDirection = "right";
         }
