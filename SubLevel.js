@@ -19,9 +19,9 @@ class SubLevel {
 
         // Debugging...
         let i = 0;
-        this.#platforms.set(i, new Platform(i, new Segment({x: 200, y: 900}, {x: 1700, y: 700})));
+        this.#platforms.set(i, new Platform(i, new Segment({x: 200, y: 450}, {x: 800, y: 700})));
         ++i;
-        this.#platforms.set(i, new Platform(i, new Segment({x: 200, y: 500}, {x: 1700, y: 600})));
+        this.#platforms.set(i, new Platform(i, new Segment({x: 800, y: 700}, {x: 1700, y: 600})));
         ++i;
 
         this.#player.setPlatforms(this.#platforms);

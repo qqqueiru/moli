@@ -232,9 +232,21 @@ class Character {
         }
 
         const botTip = this.#pos.addConst(this.#vSegment.p2);
-        if (this.#platforms.get(this.#lastPlatformTouchedId)?.mayFallOutside(botTip)) {
+        if (this.#platforms.get(this.#lastPlatformTouchedId)?.mayFallOutside(botTip) && this.#finishedJumping) {
             // Falling from platform without jumping (just going beyond its lateral limits)
-            this.updateAvailablePlatforms();
+            const yLimit = this.#platforms.get(this.#lastPlatformTouchedId).getYFromLimit(botTip);
+            const margin = 50;  // Chapucilla
+            this.updateAvailablePlatforms(yLimit - margin);
+            const platformIdxToIgnore = this.#availablePlatformIds.indexOf(this.#lastPlatformTouchedId);
+            this.#availablePlatformIds.splice(platformIdxToIgnore, 1);
+            this.#lastPlatformTouchedId = null;
+        }
+
+        // Attaching to current platform if not jumping
+        const withinPlatformBounds = this.#platforms.get(this.#lastPlatformTouchedId)?.isWithinXBounds(this.#pos.x);
+        if (this.#finishedJumping && withinPlatformBounds) {
+            const segmentY = this.#platforms.get(this.#lastPlatformTouchedId)?.getYFromX(this.#pos.x);
+            this.#pos.y = segmentY - this.#vSegment.p2.y + 1;  // +1 para que el personaje pueda intersecar con la plataforma
         }
     }
 
@@ -242,9 +254,12 @@ class Character {
         this.#platforms = platforms;
     }
 
-    updateAvailablePlatforms() {
+    updateAvailablePlatforms(yLimit = null) {
         this.#availablePlatformIds = [];
         const botTip = this.#pos.addConst(this.#vSegment.p2);
+        if (yLimit !== null && botTip.y > yLimit) {
+            botTip.y = yLimit;
+        }
         for (const [id, platform] of this.#platforms) {
             if (platform.isPointAbovePlatform(botTip)) {
                 this.#availablePlatformIds.push(id);
@@ -318,10 +333,10 @@ class Character {
         ctx.fillStyle = "orange";
         ctx.fill();
 
-        // Depurando finishedJumping...
+        // Depurando canJump...
         ctx.beginPath();
         ctx.rect(0, 0, 1920, 100);
-        ctx.fillStyle = this.#finishedJumping ? "green" : "red";
+        ctx.fillStyle = this.#canJump ? "green" : "red";
         ctx.fill();
     }
 }

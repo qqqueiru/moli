@@ -47,4 +47,42 @@ class Platform {
         const outRight = p.x > this.#segment.getMaxX();
         return outLeft || outRight;
     }
+
+    getYFromLimit(p) {
+        let yLimit = null;
+        if (p.x <= this.#segment.p1.x && this.#segment.p1.x <= this.#segment.p2.x) {
+            yLimit = this.#segment.p1.y;
+        }
+        if (p.x >= this.#segment.p2.x && this.#segment.p1.x <= this.#segment.p2.x) {
+            yLimit = this.#segment.p2.y;
+        }
+        if (p.x >= this.#segment.p1.x && this.#segment.p1.x >= this.#segment.p2.x) {
+            yLimit = this.#segment.p1.y;
+        }
+        if (p.x <= this.#segment.p2.x && this.#segment.p1.x >= this.#segment.p2.x) {
+            yLimit = this.#segment.p2.y;
+        }
+        return yLimit;
+    }
+
+    isWithinXBounds(x) {
+        let withinBounds = false;
+        if (x >= this.#segment.p1.x && this.#segment.p1.x <= this.#segment.p2.x) {
+            withinBounds = true;
+        }
+        if (x <= this.#segment.p2.x && this.#segment.p1.x <= this.#segment.p2.x) {
+            withinBounds = true;
+        }
+        if (x <= this.#segment.p1.x && this.#segment.p1.x >= this.#segment.p2.x) {
+            withinBounds = true;
+        }
+        if (x >= this.#segment.p2.x && this.#segment.p1.x >= this.#segment.p2.x) {
+            withinBounds = true;
+        }
+        return withinBounds;
+    }
+
+    getYFromX(x) {
+        return this.#segment.getY(x);
+    }
 }

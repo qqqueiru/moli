@@ -20,6 +20,10 @@ class Point {
         return new Point(this.x - p.x, this.y - p.y);
     }
 
+    distanceFromPoint(p) {
+        return Math.sqrt((this.x - p.x) * (this.x - p.x) + (this.y - p.y) * (this.y - p.y))
+    }
+
     /**
      * Returns following values:
      * 0 --> p1, p2 and p3 are collinear
@@ -115,11 +119,15 @@ class Segment {
     }
     isPointAbove(p) {
         if (this.p2.x == this.p1.x) { return false; }
+        const yOfSegment = this.getY(p.x);
+        return p.y <= yOfSegment;
+    }
+
+    getY(x) {
         // y = a * x + b
         const a = (this.p2.y - this.p1.y) / (this.p2.x - this.p1.x);
         const b = this.p1.y - a * this.p1.x;
-        const yOfSegment = a * p.x + b;
-        return p.y <= yOfSegment;
+        return a * x + b;
     }
 
     getMinX() { return Math.min(this.p1.x, this.p2.x); }
