@@ -33,6 +33,7 @@ class SubLevel {
         let intersection = null;
         let lastPlatformTouchedId = null;
         const characterSegment = character.getVSegmentAbs();
+        const characterFloorRayCast = character.getFloorRayCast();
         const availablePlatformIds = character.getAvailablePlatformIds();
         if (character.getCoyoteIterations() <= 0) {  // AKA Coyote Time
             character.setCanJump(false);  // Si no está tocando el suelo, no puede saltar
@@ -40,7 +41,7 @@ class SubLevel {
         for (const availablePlatformId of availablePlatformIds) {
             const platform = this.#platforms.get(availablePlatformId);
             const bottomSegment = platform.getSegment();
-            if (!Segment.doIntersect(characterSegment, bottomSegment)) {
+            if (!Segment.doIntersect(characterFloorRayCast, bottomSegment)) {
                 continue;
             }
             intersection = Segment.pointIntersection(characterSegment, bottomSegment);

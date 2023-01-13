@@ -8,10 +8,18 @@ class Character {
     //      |
     //      |2  // vSegment
     #health = 1;
-    #hSegment = new Segment({x: -60, y: -50}, {x: 60, y: -50});  // Relativo a #pos
-    #vSegment = new Segment({x: 0, y: -110}, {x: 0, y: 60});  // Relativo a #pos
+
+    #hSegmentCrouched = new Segment({x: -60, y: 0}, {x: 60, y: 0});  // Relativo a #pos
+    #hSegmentStraight = new Segment({x: -60, y: -50}, {x: 60, y: -50});  // Relativo a #pos
+    #hSegment = this.#hSegmentStraight  // Relativo a #pos
+
+    #vSegmentStraight = new Segment({x: 0, y: -110}, {x: 0, y: 60});  // Relativo a #pos
+    #vSegmentCrouched = new Segment({x: 0, y: -60}, {x: 0, y: 60});  // Relativo a #pos
+    #vSegment = this.#vSegmentStraight;  // Relativo a #pos
+
     #leftRayCastSegment = new Segment({x: -40, y: 20}, {x: -40, y: 60});  // Relativo a #pos (Creo que lo más sencillo es hacer la plataforma más grande...)
     #rightRayCastSegment = new Segment({x: 40, y: 20}, {x: 40, y: 60});  // Relativo a #pos
+
     #previousPos = new Point(0, 0);
     #previousVy = 0;    
     #pos = new Point(500, 500);
@@ -123,12 +131,12 @@ class Character {
     setCrouched(crouched) {
         this.#crouched = crouched;
         if (crouched) {
-            this.#hSegment = new Segment({x: -60, y: 0}, {x: 60, y: 0});  // Relativo a #pos
-            this.#vSegment = new Segment({x: 0, y: -60}, {x: 0, y: 60});  // Relativo a #pos
+            this.#hSegment = this.#hSegmentCrouched;
+            this.#vSegment = this.#vSegmentCrouched;
             this.#shootingHeight = 0;
         } else {
-            this.#hSegment = new Segment({x: -60, y: -50}, {x: 60, y: -50});  // Relativo a #pos
-            this.#vSegment = new Segment({x: 0, y: -110}, {x: 0, y: 60});  // Relativo a #pos
+            this.#hSegment = this.#hSegmentStraight;
+            this.#vSegment = this.#vSegmentStraight;
             this.#shootingHeight = -50;
         }
     }
@@ -158,6 +166,15 @@ class Character {
     }
     getVSegmentAbs() {
         return new Segment(this.#pos.addConst(this.#vSegment.p1), this.#pos.addConst(this.#vSegment.p2));
+    }
+    getFloorRayCast() {
+        const vSegmentAbs = new Segment(this.#pos.addConst(this.#vSegment.p1), this.#pos.addConst(this.#vSegment.p2));
+        if (vSegmentAbs.p1.y > vSegmentAbs.p2.y) {
+            vSegmentAbs.p2.y = vSegmentAbs.p1.y - 50;
+        } else {
+            vSegmentAbs.p1.y = vSegmentAbs.p2.y - 50;
+        }
+        return vSegmentAbs;
     }
     getLeftRayCastSegmentAbs() {
         return new Segment(this.#pos.addConst(this.#leftRayCastSegment.p1), this.#pos.addConst(this.#leftRayCastSegment.p2));
