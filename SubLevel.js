@@ -29,7 +29,7 @@ class SubLevel {
         this.#player.setGrenadeThrower(new BasicGrenadeThrower(this.#player));
         this.#player.updateAvailablePlatforms();
     }
-    #reviseCharacterPosWithPlatforms(character) {
+    #reviseCharacterPosWithBottomPlatforms(character) {
         let intersection = null;
         let lastPlatformTouchedId = null;
         const characterSegment = character.getVSegmentAbs();
@@ -80,6 +80,9 @@ class SubLevel {
         if (character.getCoyoteIterations() > 0) {
             character.setCanJump(true);
         }
+    }
+    #reviseCharacterPosWithPlatforms(character) {
+        this.#reviseCharacterPosWithBottomPlatforms(character);
     }
 
     update() {
