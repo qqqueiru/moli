@@ -9,6 +9,7 @@ class Grenade {
     #startingPoint = new Point(0, 0);  // Punto desde el que el personaje tiró la granada
     #maxDistance = 1920;  // Depende del startingPoint y de la cámara
     #beyondLimits = false;
+    #platforms = [];
 
     constructor(damage, speed, direction, startingPoint, maxDistance) {
         this.#damage = damage;
@@ -17,10 +18,14 @@ class Grenade {
         } else {
             this.#vx = speed;
         }
-        this.#previousPos = new Point(startingPoint.x, startingPoint.y);
+        this.#previousPos = startingPoint.clone();
         this.#pos = new Point(startingPoint.x, startingPoint.y);
         this.#startingPoint = new Point(startingPoint.x, startingPoint.y);
         this.#maxDistance = maxDistance;
+    }
+
+    setPlatforms(platforms) {
+        this.#platforms = platforms;
     }
 
     update() {
@@ -29,12 +34,43 @@ class Grenade {
             this.#vy = this.#maxVy;
         }
         const velocityVector = new Point(this.#vx, this.#vy);
-        this.#previousPos = this.#pos;
+        this.#previousPos = this.#pos.clone();
         this.#pos.add(velocityVector);
         
         const distanceFromStartingPoint = this.#pos.distanceFromPoint(this.#startingPoint);
         if (distanceFromStartingPoint >= this.#maxDistance) {
             this.#beyondLimits = true;
+        }
+
+        this.#updateFloorBounce();
+    }
+
+    #updateFloorBounce() {
+        // Revisar rebote con el suelo.
+        const lerpSegment = new Segment(this.#pos, this.#previousPos);
+        const restitutionCoefficientX = 0.5;
+        const restitutionCoefficientY = 0.9;
+
+        for (const [id, platform] of this.#platforms) {
+            const falling = !platform.isPointAbovePlatform(this.#pos);
+            if (!falling) { continue; }
+
+            const platformSegment = platform.getSegment();
+            if (Segment.doIntersect(platformSegment, lerpSegment)) {
+                const pIntersection = Segment.pointIntersection(platformSegment, lerpSegment);
+                const newPoint = new Point(this.#pos.x, 2 * pIntersection.y - this.#pos.y);
+                const platformPointOnTheSameVertical = new Point(this.#pos.x, platform.getYFromX(this.#pos.x));
+                if (newPoint.y < platformPointOnTheSameVertical.y) {
+                    this.#pos = newPoint;
+                } else {
+                    this.#pos = platformPointOnTheSameVertical;
+                    this.#pos.y -= 1;  // Un pixel de regalo para evitar bugs
+                }
+                this.#vx *= restitutionCoefficientX
+                this.#vy *= restitutionCoefficientY;
+                this.#vy = -Math.abs(this.#vy);  // La granada siempre rebota hacia arriba
+                // alert(`boing posY:${this.#pos.y} platformY:${platformPointOnTheSameVertical.y}`);
+            }
         }
     }
 
@@ -51,14 +87,15 @@ class Grenade {
     draw(ctx) {
         // Depuración
         ctx.beginPath();
-        ctx.rect(this.#pos.x, this.#pos.y, 30, 30);
+        const grenadeSize = 10
+        ctx.rect(this.#pos.x - grenadeSize / 2, this.#pos.y - grenadeSize / 2, grenadeSize, grenadeSize);
         ctx.fillStyle = "black";
         ctx.fill();
     }
 }
 
 class BasicGrenadeThrower {
-    #grenadesLeft = 10;
+    #grenadesLeft = 10000;  // TODO dejar en 10
     #character;
     #rate = 100;
     #lastThrowingTime = 0;

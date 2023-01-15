@@ -239,7 +239,7 @@ class Character {
         if (this.#vy > this.#maxVy) { this.#vy = this.#maxVy; }
         if (this.#vy < -this.#maxVy) { this.#vy = -this.#maxVy; }
 
-        this.#previousPos = this.#pos;
+        this.#previousPos = this.#pos.clone();
         this.#pos.x += this.#vx;
         this.#pos.y += this.#vy;
 

@@ -12,7 +12,7 @@ class Projectile {
         this.#damage = damage;
         this.#speed = speed;
         this.#direction = direction;  // Projectiles will travel in a straight line
-        this.#previousPos = new Point(startingPoint.x, startingPoint.y);
+        this.#previousPos = startingPoint.clone();
         this.#pos = new Point(startingPoint.x, startingPoint.y);
         this.#distanceTraveled = 0;
         this.#maxDistance = maxDistance;

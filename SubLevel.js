@@ -49,21 +49,22 @@ class SubLevel {
             if (intersection === null) {continue;}
             break;
         }
-        if (intersection === null) {
-            // Hay que ver si interseca la interpolación
-            const lerpSegment = character.getBotTipLerpSegment();  // Quizás la interpolación sea más segura haciéndola entre centros directamente
-            for (const availablePlatformId of availablePlatformIds) {
-                const platform = this.#platforms.get(availablePlatformId);
-                const bottomSegment = platform.getSegment();
-                if (!Segment.doIntersect(lerpSegment, bottomSegment)) {
-                    continue;
-                }
-                intersection = Segment.pointIntersection(lerpSegment, bottomSegment);
-                lastPlatformTouchedId = availablePlatformId;
-                alert("OJO interseccion de interpolacion con bottip!");
-                break;
-            }
-        }
+        // Este bloque se comenta ya que no funciona, pero no sería necesario ya que los máximos en velocidad no permiten estas situaciones
+        // if (intersection === null) {
+        //     // Hay que ver si interseca la interpolación
+        //     const lerpSegment = character.getBotTipLerpSegment();  // Quizás la interpolación sea más segura haciéndola entre centros directamente
+        //     for (const availablePlatformId of availablePlatformIds) {
+        //         const platform = this.#platforms.get(availablePlatformId);
+        //         const bottomSegment = platform.getSegment();
+        //         if (!Segment.doIntersect(lerpSegment, bottomSegment)) {
+        //             continue;
+        //         }
+        //         intersection = Segment.pointIntersection(lerpSegment, bottomSegment) - 1;
+        //         lastPlatformTouchedId = availablePlatformId;
+        //         alert("OJO interseccion de interpolacion con bottip!");
+        //         break;
+        //     }
+        // }
         if (intersection !== null) {
             this.#lastIntersection = intersection;
             if (!character.isMovingDown()) { return; }
@@ -111,6 +112,7 @@ class SubLevel {
         if (inputs.get("l")?.consumeIfActivated()) {
             const grenade = this.#player.throwGrenade();
             if (grenade) {
+                grenade.setPlatforms(this.#platforms);
                 this.#grenades = this.#grenades.concat(grenade);
             }
         }
