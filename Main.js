@@ -12,7 +12,7 @@ ctx.imageSmoothingEnabled = false;
 
 const inputs = new Map();
 
-GameScreen.imgScale = 4;  // Las imágenes se han diseñado de modo que 1 px de imagen corresponde a 1 px de una pantalla 480x270 px
+GameScreen.imgScale = 1;
 GameScreen.inputs = inputs;
 GameScreen.ctx = ctx;
 GameScreen.currentScreen = new LoadingScreen();

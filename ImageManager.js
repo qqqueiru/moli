@@ -24,7 +24,13 @@ class ImageManager {
     static loadImages() {
         ImageManager.loadImage("moli", "./img/moli.png");
 
-        ImageManager.loadImage("test_level", "./aux/test level_plano.svg");
+        ImageManager.loadImage("player_right", "./img/player/player_right.png");
+        ImageManager.loadImage("player_left", "./img/player/player_left.png");
+        ImageManager.loadImage("player_up", "./img/player/player_up.png");
+        ImageManager.loadImage("player_crouch_right", "./img/player/player_crouch_right.png");
+        ImageManager.loadImage("player_crouch_left", "./img/player/player_crouch_left.png");
+
+        ImageManager.loadImage("background_test_00", "./img/background/background_test_00.png");
 
         // ImageManager.loadImage("moli_idle_right", "./img/moli_idle_right.png");
         // ImageManager.loadImage("moli_idle_left", "./img/moli_idle_left.png");

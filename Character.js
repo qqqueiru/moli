@@ -43,6 +43,13 @@ class Character {
     #coyoteIterations = 0;
     #currentWeapon = new Weapon();
     #currentGrenadeThrower = new BasicGrenadeThrower();
+    #sprites = {
+        right: new AnimatedSprite("player_right", 1, 1, 1, -1, ctx),
+        left: new AnimatedSprite("player_left", 1, 1, 1, -1, ctx),
+        crouch_right: new AnimatedSprite("player_crouch_right", 1, 1, 1, -1, ctx),
+        crouch_left: new AnimatedSprite("player_crouch_left", 1, 1, 1, -1, ctx),
+        up: new AnimatedSprite("player_up", 1, 1, 1, -1, ctx),
+    };
     // #maxYFromLastFloorIntersection
     // Solamente se permite el salto si hay interseccion del segmento vertical y vy > 0
     constructor() {
@@ -143,6 +150,14 @@ class Character {
 
     setCoyoteIterations(coyoteIterations) {
         this.#coyoteIterations = coyoteIterations;
+    }
+
+    #getCurrentSprite() {
+        if (this.#crouched) {
+            return "crouch_" + this.#faceDirection;
+        } else {
+            return this.#faceDirection;
+        }
     }
 
     getShootingHeight() {
@@ -355,5 +370,10 @@ class Character {
         ctx.rect(0, 0, 1920, 100);
         ctx.fillStyle = this.#canJump ? "green" : "red";
         ctx.fill();
+
+        const currentSprite = this.#sprites[this.#getCurrentSprite()];
+        currentSprite.setStepsPerFrame(1);  // No creo que las animaciones se vayan a acelerar
+        currentSprite.resume();
+        currentSprite.draw(this.#pos.x, this.#pos.y);
     }
 }
