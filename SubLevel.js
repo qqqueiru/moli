@@ -9,6 +9,7 @@ class SubLevel {
     #lastIntersection;  // TODO depurando...
     #projectiles = [];  // Lista de proyectiles presentes en el subnivel...
     #grenades = [];  // Lista de granadas presentes en el subnivel...
+    #backgroundImg = ImageManager.getImage("background_test_00");
     constructor() {
         this.#platforms = new Map();  // Characters can walk over these segments
         this.#topSegments = [];  // Characters can't go above these segments
@@ -163,9 +164,7 @@ class SubLevel {
     draw(ctx) {
         ctx.beginPath();
         ctx.clearRect(0, 0, GameScreen.width, GameScreen.height);
-        ctx.rect(0, 0, GameScreen.width, GameScreen.height);
-        ctx.fillStyle = "grey";
-        ctx.fill();
+        ctx.drawImage(this.#backgroundImg, 0, 0, GameScreen.width, GameScreen.height);
 
         this.#player.draw(ctx, this.#cameraPos);
 
