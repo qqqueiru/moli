@@ -9,12 +9,13 @@ class Character {
     //      |2  // vSegment
     #health = 1;
 
-    #hSegmentCrouched = new Segment({x: -60, y: 0}, {x: 60, y: 0});  // Relativo a #pos
-    #hSegmentStraight = new Segment({x: -60, y: -50}, {x: 60, y: -50});  // Relativo a #pos
+    // Las dimensiones de los sprites deberían coincidir con las de los segmentos
+    #hSegmentCrouched = new Segment({x: -65, y: 0}, {x: 65, y: 0});  // Relativo a #pos
+    #hSegmentStraight = new Segment({x: -65, y: -50}, {x: 65, y: -50});  // Relativo a #pos
     #hSegment = this.#hSegmentStraight  // Relativo a #pos
 
-    #vSegmentStraight = new Segment({x: 0, y: -110}, {x: 0, y: 60});  // Relativo a #pos
-    #vSegmentCrouched = new Segment({x: 0, y: -60}, {x: 0, y: 60});  // Relativo a #pos
+    #vSegmentStraight = new Segment({x: 0, y: -125}, {x: 0, y: 75});  // Relativo a #pos
+    #vSegmentCrouched = new Segment({x: 0, y: -50}, {x: 0, y: 50});  // Relativo a #pos
     #vSegment = this.#vSegmentStraight;  // Relativo a #pos
 
     #leftRayCastSegment = new Segment({x: -40, y: 20}, {x: -40, y: 60});  // Relativo a #pos (Creo que lo más sencillo es hacer la plataforma más grande...)
@@ -374,6 +375,6 @@ class Character {
         const currentSprite = this.#sprites[this.#getCurrentSprite()];
         currentSprite.setStepsPerFrame(1);  // No creo que las animaciones se vayan a acelerar
         currentSprite.resume();
-        currentSprite.draw(this.#pos.x, this.#pos.y);
+        currentSprite.draw(this.#pos.x, this.#pos.y + (this.#vSegment.p1.y + this.#vSegment.p2.y) / 2);
     }
 }
