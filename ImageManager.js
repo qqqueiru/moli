@@ -30,6 +30,13 @@ class ImageManager {
         ImageManager.loadImage("player_crouch_right", "./img/player/player_crouch_right.png");
         ImageManager.loadImage("player_crouch_left", "./img/player/player_crouch_left.png");
 
+        // Test NPC
+        ImageManager.loadImage("npc_right", "./img/npcs/test/npc_right.png");
+        ImageManager.loadImage("npc_left", "./img/npcs/test/npc_left.png");
+        ImageManager.loadImage("npc_up", "./img/npcs/test/npc_up.png");
+        ImageManager.loadImage("npc_crouch_right", "./img/npcs/test/npc_crouch_right.png");
+        ImageManager.loadImage("npc_crouch_left", "./img/ncps/test/npc_crouch_left.png");
+
         ImageManager.loadImage("background_test_00", "./img/background/background_test_00.png");
 
         // ImageManager.loadImage("moli_idle_right", "./img/moli_idle_right.png");

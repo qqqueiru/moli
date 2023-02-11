@@ -4,6 +4,7 @@ class SubLevel {
     #leftSegments;
     #rightSegments;
     #player;
+    #npcs;
     #upBuffer = [];
     #cameraPos;
     #lastIntersection;  // TODO depurando...
@@ -15,7 +16,9 @@ class SubLevel {
         this.#topSegments = [];  // Characters can't go above these segments
         this.#leftSegments = [];  // blablabla
         this.#rightSegments = [];
-        this.#player = new Character();  // TODO planteamiento
+        this.#player = new Player();  // TODO planteamiento
+        this.#npcs = [];
+        this.#npcs.push(new NPC(new Point(500, 400)));  // Test
         this.#cameraPos = new Point(0, 0);
 
         // Debugging...
@@ -29,6 +32,13 @@ class SubLevel {
         this.#player.setWeapon(new Pistol(this.#player));
         this.#player.setGrenadeThrower(new BasicGrenadeThrower(this.#player));
         this.#player.updateAvailablePlatforms();
+
+        for (const npc of this.#npcs) {
+            npc.setPlatforms(this.#platforms);
+            npc.setWeapon(new Pistol(npc));
+            npc.setGrenadeThrower(new BasicGrenadeThrower(npc));
+            npc.updateAvailablePlatforms();
+        }
     }
     #reviseCharacterPosWithBottomPlatforms(character) {
         let intersection = null;
@@ -89,6 +99,9 @@ class SubLevel {
 
     update() {
         this.#reviseCharacterPosWithPlatforms(this.#player);
+        for (const npc of this.#npcs) {
+            this.#reviseCharacterPosWithPlatforms(npc);
+        }
         if (this.#upBuffer.length > 0 && Date.now() - this.#upBuffer[0] > 250) {
             this.#upBuffer.shift();
         }
@@ -159,6 +172,9 @@ class SubLevel {
         }
 
         this.#player.update();
+        for (const npc of this.#npcs) {
+            npc.update();
+        }
     }
 
     draw(ctx) {
@@ -167,6 +183,10 @@ class SubLevel {
         ctx.drawImage(this.#backgroundImg, 0, 0, GameScreen.width, GameScreen.height);
 
         this.#player.draw(ctx, this.#cameraPos);
+
+        for (const npc of this.#npcs) {
+            npc.draw(ctx);
+        }
 
         // Dibujado de los segmentos del suelo
         ctx.beginPath();
