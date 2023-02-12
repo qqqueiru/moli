@@ -148,9 +148,21 @@ class SubLevel {
     }
 
     updateNpcAi() {
-        if (Date.now() % 2000 < 20) {
-            // testing
-            for (const npc of this.#npcs) {
+        // testing
+        for (const npc of this.#npcs) {
+            npc.setLookingUp(false);
+            npc.dontMove();
+            npc.setCrouched(false);
+            npc.setFaceDirection(this.#player.getPos().x > npc.getPos().x ? "right" : "left");
+            if (this.#player.getPos().x - npc.getPos().x > 300) {
+                npc.moveRight();
+            }
+
+            if (this.#player.getPos().x - npc.getPos().x < -300) {
+                npc.moveLeft();
+            }
+
+            if (Date.now() % 2000 < 20) {
                 const projectile = npc.shoot();
                 if (projectile) {
                     this.#enemyProjectiles = this.#enemyProjectiles.concat(projectile);

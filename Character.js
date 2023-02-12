@@ -166,6 +166,10 @@ class Character {
         return this.#faceDirection;
     }
 
+    setFaceDirection(direction) {
+        this.#faceDirection = direction;
+    }
+
     getPos() {
         return this.#pos;
     }
