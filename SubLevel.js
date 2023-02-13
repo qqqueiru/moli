@@ -178,8 +178,12 @@ class SubLevel {
             projectile.update();
             if (projectile.isBeyondLimits()) {
                 this.#playerProjectiles.splice(i, 1);
+                continue;
             }
-            projectile.checkHit();  // TODO, comprobar si golpeó a alguien. No necesariamente el proyectil desaparece al tocar a alguien...
+            if (projectile.checkHit(this.#npcs)) {  // NOTE: Quizás el proyectil pueda impactar a más de un personaje a la vez. Por el momento si impacta en uno, desaparece.
+                this.#playerProjectiles.splice(i, 1);
+                continue;
+            }
         }
 
         const nEnemyProjectiles = this.#enemyProjectiles.length;
@@ -188,8 +192,12 @@ class SubLevel {
             projectile.update();
             if (projectile.isBeyondLimits()) {
                 this.#enemyProjectiles.splice(i, 1);
+                continue;
             }
-            projectile.checkHit();  // TODO, comprobar si golpeó a alguien. No necesariamente el proyectil desaparece al tocar a alguien...
+            if (projectile.checkHit([this.#player])) {
+                this.#enemyProjectiles.splice(i, 1);
+                continue;
+            }
         }
     }
 

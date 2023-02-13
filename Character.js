@@ -325,6 +325,21 @@ class Character {
         }
     }
 
+    /**
+     * Returns true if projectile hits the character.
+     * The projectile is a segment whose points are its current and previous position.
+     * That segment will be checked for collision with the character's ellipse
+     * @param {Segment} projectileSegment 
+     */
+    getsHit(projectileSegment) {
+        // TODO continuar aquí
+        return false;
+    }
+
+    inflictDamage(damage) {
+        this.#health -= damage;
+    }
+
     draw(ctx, cameraPos) {
         // Por ahora me da igual cameraPos
         // Debugging...

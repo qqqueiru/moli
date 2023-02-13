@@ -51,10 +51,20 @@ class Projectile {
         ctx.fill();
     }
 
-    checkHit() {
-        // TODO
+    /**
+     * Returns true if the projectile hits a character from the input array of characters
+     * @param {[Character]} characters
+     * @returns 
+     */
+    checkHit(characters) {
         const segmentToCheck = new Segment(this.#pos, this.#previousPos);
-        // return entidad que golpeó a la cual haga daño y que sea enemiga...
+        for (const character of characters) {
+            if (character.getsHit(segmentToCheck)) {
+                character.inflictDamage(this.#damage);
+                return true;  // NOTE: en caso de tener un proyectil que daña a más de un personaje a la vez, habría que plantearlo de otro modo
+            }
+        }
+        return false;
     }
 }
 
