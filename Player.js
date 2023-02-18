@@ -11,5 +11,8 @@ class Player extends Character {
             crouch_left: new AnimatedSprite("player_crouch_left", 1, 1, 1, -1, ctx),
             up: new AnimatedSprite("player_up", 1, 1, 1, -1, ctx),
         };
+
+        this._hitEllipseCrouched = new Ellipse(this._pos, 15, 40);
+        this._hitEllipseStraight = new Ellipse(this._pos, 15, 80, 0, -20);
     }
 }

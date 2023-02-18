@@ -10,20 +10,20 @@ class Character {
     #health = 1;
 
     // Las dimensiones de los sprites deberían coincidir con las de los segmentos
-    #hSegmentCrouched = new Segment({x: -65, y: 0}, {x: 65, y: 0});  // Relativo a #pos
-    #hSegmentStraight = new Segment({x: -65, y: -50}, {x: 65, y: -50});  // Relativo a #pos
-    #hSegment = this.#hSegmentStraight  // Relativo a #pos
+    #hSegmentCrouched = new Segment({x: -65, y: 0}, {x: 65, y: 0});  // Relativo a _pos
+    #hSegmentStraight = new Segment({x: -65, y: -50}, {x: 65, y: -50});  // Relativo a _pos
+    #hSegment = this.#hSegmentStraight  // Relativo a _pos
 
-    #vSegmentStraight = new Segment({x: 0, y: -125}, {x: 0, y: 75});  // Relativo a #pos
-    #vSegmentCrouched = new Segment({x: 0, y: -50}, {x: 0, y: 50});  // Relativo a #pos
-    #vSegment = this.#vSegmentStraight;  // Relativo a #pos
+    #vSegmentStraight = new Segment({x: 0, y: -125}, {x: 0, y: 75});  // Relativo a _pos
+    #vSegmentCrouched = new Segment({x: 0, y: -50}, {x: 0, y: 50});  // Relativo a _pos
+    #vSegment = this.#vSegmentStraight;  // Relativo a _pos
 
-    #leftRayCastSegment = new Segment({x: -40, y: 20}, {x: -40, y: 60});  // Relativo a #pos (Creo que lo más sencillo es hacer la plataforma más grande...)
-    #rightRayCastSegment = new Segment({x: 40, y: 20}, {x: 40, y: 60});  // Relativo a #pos
+    #leftRayCastSegment = new Segment({x: -40, y: 20}, {x: -40, y: 60});  // Relativo a _pos (Creo que lo más sencillo es hacer la plataforma más grande...)
+    #rightRayCastSegment = new Segment({x: 40, y: 20}, {x: 40, y: 60});  // Relativo a _pos
 
     #previousPos = new Point(0, 0);
     #previousVy = 0;    
-    #pos = new Point(500, 500);
+    _pos = new Point(500, 500);
     #vx = 0;  // TODO establecer un máximo
     #vy = 0;
     #jumpVy = -200;
@@ -45,7 +45,8 @@ class Character {
     #currentWeapon = new Weapon();
     #currentGrenadeThrower = new BasicGrenadeThrower();
 
-    #hitEllipse = new Ellipse(this.#pos, 200, 400);
+    _hitEllipseCrouched = new Ellipse(this._pos, 50, 50);
+    _hitEllipseStraight = new Ellipse(this._pos, 50, 100);
     // #maxYFromLastFloorIntersection
     // Solamente se permite el salto si hay interseccion del segmento vertical y vy > 0
     constructor() {
@@ -173,17 +174,17 @@ class Character {
     }
 
     getPos() {
-        return this.#pos;
+        return this._pos;
     }
 
     getHSegmentAbs() {
-        return new Segment(this.#pos.addConst(this.#hSegment.p1), this.#pos.addConst(this.#hSegment.p2));
+        return new Segment(this._pos.addConst(this.#hSegment.p1), this._pos.addConst(this.#hSegment.p2));
     }
     getVSegmentAbs() {
-        return new Segment(this.#pos.addConst(this.#vSegment.p1), this.#pos.addConst(this.#vSegment.p2));
+        return new Segment(this._pos.addConst(this.#vSegment.p1), this._pos.addConst(this.#vSegment.p2));
     }
     getFloorRayCast() {
-        const vSegmentAbs = new Segment(this.#pos.addConst(this.#vSegment.p1), this.#pos.addConst(this.#vSegment.p2));
+        const vSegmentAbs = new Segment(this._pos.addConst(this.#vSegment.p1), this._pos.addConst(this.#vSegment.p2));
         if (vSegmentAbs.p1.y > vSegmentAbs.p2.y) {
             vSegmentAbs.p2.y = vSegmentAbs.p1.y - 50;
         } else {
@@ -192,10 +193,10 @@ class Character {
         return vSegmentAbs;
     }
     getLeftRayCastSegmentAbs() {
-        return new Segment(this.#pos.addConst(this.#leftRayCastSegment.p1), this.#pos.addConst(this.#leftRayCastSegment.p2));
+        return new Segment(this._pos.addConst(this.#leftRayCastSegment.p1), this._pos.addConst(this.#leftRayCastSegment.p2));
     }
     getRightRayCastSegmentAbs() {
-        return new Segment(this.#pos.addConst(this.#rightRayCastSegment.p1), this.#pos.addConst(this.#rightRayCastSegment.p2));
+        return new Segment(this._pos.addConst(this.#rightRayCastSegment.p1), this._pos.addConst(this.#rightRayCastSegment.p2));
     }
 
     isMovingUp() { return this.#vy < 0; }
@@ -204,20 +205,20 @@ class Character {
     isMovingRight() { return this.#vx > 0; }
 
     moveRel(delta) {
-        this.#pos.add(delta);
+        this._pos.add(delta);
     }
 
     getBotTipLerpSegment() {
-        return new Segment(this.#pos.addConst(this.#vSegment.p2), this.#previousPos.addConst(this.#vSegment.p2));
+        return new Segment(this._pos.addConst(this.#vSegment.p2), this.#previousPos.addConst(this.#vSegment.p2));
     }
     getTopTipLerpSegment() {
-        return new Segment(this.#pos.addConst(this.#vSegment.p1), this.#previousPos.addConst(this.#vSegment.p1));
+        return new Segment(this._pos.addConst(this.#vSegment.p1), this.#previousPos.addConst(this.#vSegment.p1));
     }
     getLeftTipLerpSegment() {
-        return new Segment(this.#pos.addConst(this.#hSegment.p1), this.#previousPos.addConst(this.#hSegment.p1));
+        return new Segment(this._pos.addConst(this.#hSegment.p1), this.#previousPos.addConst(this.#hSegment.p1));
     }
     getRightTipLerpSegment() {
-        return new Segment(this.#pos.addConst(this.#hSegment.p2), this.#previousPos.addConst(this.#hSegment.p2));
+        return new Segment(this._pos.addConst(this.#hSegment.p2), this.#previousPos.addConst(this.#hSegment.p2));
     }
 
     update() {
@@ -254,16 +255,16 @@ class Character {
         if (this.#vy > this.#maxVy) { this.#vy = this.#maxVy; }
         if (this.#vy < -this.#maxVy) { this.#vy = -this.#maxVy; }
 
-        this.#previousPos = this.#pos.clone();
-        this.#pos.x += this.#vx;
-        this.#pos.y += this.#vy;
+        this.#previousPos = this._pos.clone();
+        this._pos.x += this.#vx;
+        this._pos.y += this.#vy;
 
         if (this.#vy >= 0 && this.#previousVy < 0) {
             // Starting to fall after jumping
             this.updateAvailablePlatforms();
         }
 
-        const botTip = this.#pos.addConst(this.#vSegment.p2);
+        const botTip = this._pos.addConst(this.#vSegment.p2);
         if (this.#platforms.get(this.#lastPlatformTouchedId)?.mayFallOutside(botTip) && this.#finishedJumping) {
             // Falling from platform without jumping (just going beyond its lateral limits)
             const yLimit = this.#platforms.get(this.#lastPlatformTouchedId).getYFromLimit(botTip);
@@ -275,10 +276,10 @@ class Character {
         }
 
         // Attaching to current platform if not jumping
-        const withinPlatformBounds = this.#platforms.get(this.#lastPlatformTouchedId)?.isWithinXBounds(this.#pos.x);
+        const withinPlatformBounds = this.#platforms.get(this.#lastPlatformTouchedId)?.isWithinXBounds(this._pos.x);
         if (this.#finishedJumping && withinPlatformBounds) {
-            const segmentY = this.#platforms.get(this.#lastPlatformTouchedId)?.getYFromX(this.#pos.x);
-            this.#pos.y = segmentY - this.#vSegment.p2.y + 1;  // +1 para que el personaje pueda intersecar con la plataforma
+            const segmentY = this.#platforms.get(this.#lastPlatformTouchedId)?.getYFromX(this._pos.x);
+            this._pos.y = segmentY - this.#vSegment.p2.y + 1;  // +1 para que el personaje pueda intersecar con la plataforma
         }
     }
 
@@ -288,7 +289,7 @@ class Character {
 
     updateAvailablePlatforms(yLimit = null) {
         this.#availablePlatformIds = [];
-        const botTip = this.#pos.addConst(this.#vSegment.p2);
+        const botTip = this._pos.addConst(this.#vSegment.p2);
         if (yLimit !== null && botTip.y > yLimit) {
             botTip.y = yLimit;
         }
@@ -334,9 +335,10 @@ class Character {
      * @param {Segment} projectileSegment 
      */
     getsHit(projectileSegment) {
+        const hitEllipse = this.#crouched ? this._hitEllipseCrouched : this._hitEllipseStraight;
         const hitPoints = projectileSegment.getDiscretePoints();
         for (const hitPoint of hitPoints) {
-            if (this.#hitEllipse.isPointInside(hitPoint)) {
+            if (hitEllipse.isPointInside(hitPoint)) {
                 return true;
             }
         }
@@ -381,7 +383,7 @@ class Character {
         if (this.#faceDirection === "up") {
             delta.y = -100;
         }
-        ctx.rect(this.#pos.addConst(delta).x, this.#pos.addConst(delta).y, 20, 20);
+        ctx.rect(this._pos.addConst(delta).x, this._pos.addConst(delta).y, 20, 20);
         ctx.fillStyle = "orange";
         ctx.fill();
 
@@ -394,6 +396,9 @@ class Character {
         const currentSprite = this._sprites[this.#getCurrentSprite()];
         currentSprite.setStepsPerFrame(1);  // No creo que las animaciones se vayan a acelerar
         currentSprite.resume();
-        currentSprite.draw(this.#pos.x, this.#pos.y + (this.#vSegment.p1.y + this.#vSegment.p2.y) / 2);
+        currentSprite.draw(this._pos.x, this._pos.y + (this.#vSegment.p1.y + this.#vSegment.p2.y) / 2);
+
+        const hitEllipse = this.#crouched ? this._hitEllipseCrouched : this._hitEllipseStraight;
+        hitEllipse.draw(ctx);
     }
 }
