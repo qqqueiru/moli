@@ -51,14 +51,17 @@ window.addEventListener("keydown", (event) => {
     if (event.key == "F5") {
         return;
     }
-    if (inputs.has(event.key)) {
-        const input = inputs.get(event.key);
+
+    const key = event.key.toLowerCase();
+
+    if (inputs.has(key)) {
+        const input = inputs.get(key);
         if (input.isResetted()) {
             input.activate();
         }
     } else {
         const newInput = new Input();
-        inputs.set(event.key, newInput);
+        inputs.set(key, newInput);
         newInput.activate();
     }
 
@@ -73,7 +76,8 @@ window.addEventListener("keydown", (event) => {
 });
 
 window.addEventListener("keyup", (event) => {
-    inputs.get(event.key)?.reset();
+    const key = event.key.toLowerCase();
+    inputs.get(key)?.reset();
     inputs.get("AnyKey")?.reset();
 });
 
