@@ -89,4 +89,28 @@ class Segment {
     getMaxX() { return Math.max(this.p1.x, this.p2.x); }
     getMinY() { return Math.min(this.p1.y, this.p2.y); }
     getMaxY() { return Math.max(this.p1.y, this.p2.y); }
+
+    getDiscretePoints() {
+        const deltaX = this.p2.x - this.p1.x;
+        const deltaY = this.p2.y - this.p1.y;
+        const d = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        // Number of divisions of the segment
+        const minDist = 1;  // Minimum distance between discrete points
+        const n = Math.ceil(d / minDist);
+
+        const discretePoints = [];
+        // discretePoints.reserve(n);
+        discretePoints.push(this.p1);
+        for (let i = 1; i < n; ++i) {
+            const previousX = discretePoints[i - 1].x;
+            const previousY = discretePoints[i - 1].y;
+            const newX = previousX + deltaX / n;
+            const newY = previousY + deltaY / n;
+            discretePoints.push(new Point(newX, newY));
+        }
+        discretePoints.push(this.p2);  // Same as end point for numeric stability
+
+        return discretePoints;
+    }
 }
