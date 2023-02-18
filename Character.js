@@ -44,6 +44,8 @@ class Character {
     #coyoteIterations = 0;
     #currentWeapon = new Weapon();
     #currentGrenadeThrower = new BasicGrenadeThrower();
+
+    #hitEllipse = new Ellipse(this.#pos, 200, 400);
     // #maxYFromLastFloorIntersection
     // Solamente se permite el salto si hay interseccion del segmento vertical y vy > 0
     constructor() {
@@ -332,7 +334,12 @@ class Character {
      * @param {Segment} projectileSegment 
      */
     getsHit(projectileSegment) {
-        // TODO continuar aquí
+        const hitPoints = projectileSegment.getDiscretePoints();
+        for (const hitPoint of hitPoints) {
+            if (this.#hitEllipse.isPointInside(hitPoint)) {
+                return true;
+            }
+        }
         return false;
     }
 
