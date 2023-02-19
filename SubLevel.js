@@ -244,11 +244,11 @@ class SubLevel {
             GameScreen.height
         );
 
-        this.#player.draw(ctx, this.#cameraPos);
-
         for (const npc of this.#npcs) {
             npc.draw(ctx, this.#cameraPos);
         }
+
+        this.#player.draw(ctx, this.#cameraPos);
 
         // Dibujado de los segmentos del suelo
         ctx.beginPath();
