@@ -30,6 +30,7 @@ class Character {
     #maxVy = 10;
     #ay = 1;
     #platforms = [];
+    #walls = [];
     #availablePlatformIds = [];
     #lastPlatformTouchedId = null;
     #canJump = false;
@@ -220,6 +221,12 @@ class Character {
     getRightTipLerpSegment() {
         return new Segment(this._pos.addConst(this.#hSegment.p2), this.#previousPos.addConst(this.#hSegment.p2));
     }
+    getLeftTip() {
+        return this._pos.addConst(this.#hSegment.p1);
+    }
+    getRightTip() {
+        return this._pos.addConst(this.#hSegment.p2);
+    }
 
     update() {
         if (this.#coyoteIterations > 0) {
@@ -285,6 +292,10 @@ class Character {
 
     setPlatforms(platforms) {
         this.#platforms = platforms;
+    }
+
+    setWalls(walls) {
+        this.#walls = walls;
     }
 
     updateAvailablePlatforms(yLimit = null) {

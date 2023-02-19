@@ -1,5 +1,6 @@
 class SubLevel {
     #platforms;
+    #walls;
     #topSegments;
     #leftSegments;
     #rightSegments;
@@ -14,6 +15,7 @@ class SubLevel {
     #backgroundImg = ImageManager.getImage("background_test_00");
     constructor() {
         this.#platforms = new Map();  // Characters can walk over these segments
+        this.#walls = new Map();  // Characters cannot trespass walls
         this.#topSegments = [];  // Characters can't go above these segments
         this.#leftSegments = [];  // blablabla
         this.#rightSegments = [];
@@ -29,7 +31,14 @@ class SubLevel {
         this.#platforms.set(i, new Platform(i, new Segment({x: 800, y: 700}, {x: 1700, y: 600})));
         ++i;
 
+        i = 0;
+        this.#walls.set(i, new Wall(i, new Segment({x: 200, y: 450}, {x: 200, y: 300})));
+        ++i;
+        this.#walls.set(i, new Wall(i, new Segment({x: 1700, y: 600}, {x: 1700, y: 300})));
+        ++i;
+
         this.#player.setPlatforms(this.#platforms);
+        this.#player.setWalls(this.#walls);
         this.#player.setWeapon(new Pistol(this.#player));
         this.#player.setGrenadeThrower(new BasicGrenadeThrower(this.#player));
         this.#player.updateAvailablePlatforms();
@@ -41,6 +50,28 @@ class SubLevel {
             npc.updateAvailablePlatforms();
         }
     }
+
+    #reviseCharacterPosWithWalls(character) {
+        const characterSegment = character.getHSegmentAbs();
+        for (const [id, wall] of this.#walls) {
+            const wallSegment = wall.getSegment();
+            if (!Segment.doIntersect(wallSegment, characterSegment)) {
+                continue;
+            }
+            const intersection = Segment.pointIntersection(characterSegment, wallSegment);
+            const characterPos = character.getPos();
+
+            if (intersection.x > characterPos.x) {
+                // Player must not pass to the right, so it must be moved to the left accordingly
+                const rightTip = character.getRightTip();
+                character.moveRel(intersection.substractConst(rightTip));
+            } else {
+                const leftTip = character.getLeftTip();
+                character.moveRel(intersection.substractConst(leftTip));
+            }
+        }
+    }
+
     #reviseCharacterPosWithBottomPlatforms(character) {
         let intersection = null;
         let lastPlatformTouchedId = null;
@@ -121,6 +152,7 @@ class SubLevel {
             const grenade = this.#player.throwGrenade();
             if (grenade) {
                 grenade.setPlatforms(this.#platforms);
+                // grenade.setWalls(this.#walls);  // TODO grenade wall bounce?
                 this.#playerGrenades.push(grenade);
             }
         }
@@ -169,6 +201,7 @@ class SubLevel {
                 const grenade = npc.throwGrenade();
                 if (grenade) {
                     grenade.setPlatforms(this.#platforms);
+                    // grenade.setWalls(this.#walls);  // TODO grenade wall bounce?
                     this.#enemyGrenades.push(grenade);
                 }
             }
@@ -239,8 +272,10 @@ class SubLevel {
 
     update() {
         this.#reviseCharacterPosWithPlatforms(this.#player);
+        this.#reviseCharacterPosWithWalls(this.#player);
         for (const npc of this.#npcs) {
             this.#reviseCharacterPosWithPlatforms(npc);
+            this.#reviseCharacterPosWithWalls(npc);
         }
         if (this.#upBuffer.length > 0 && Date.now() - this.#upBuffer[0] > 250) {
             this.#upBuffer.shift();
@@ -282,6 +317,17 @@ class SubLevel {
             ctx.lineTo(segment.p2.x + GameScreen.width / 2 - this.#cameraPos.x, segment.p2.y + GameScreen.height / 2 - this.#cameraPos.y);
         }
         ctx.strokeStyle = "red";
+        ctx.lineWidth = 5;
+        ctx.stroke();
+
+        // Debug wall segments
+        ctx.beginPath();
+        for (const [id, wall] of this.#walls) {
+            const segment = wall.getSegment();
+            ctx.moveTo(segment.p1.x + GameScreen.width / 2 - this.#cameraPos.x, segment.p1.y + GameScreen.height / 2 - this.#cameraPos.y);
+            ctx.lineTo(segment.p2.x + GameScreen.width / 2 - this.#cameraPos.x, segment.p2.y + GameScreen.height / 2 - this.#cameraPos.y);
+        }
+        ctx.strokeStyle = "orange";
         ctx.lineWidth = 5;
         ctx.stroke();
 
