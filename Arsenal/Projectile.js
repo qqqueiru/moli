@@ -5,7 +5,7 @@ class Projectile {
     #previousPos = new Point(0, 0);
     #pos = new Point(0, 0);
     #distanceTraveled = 0;
-    #maxDistance = 1920;  // Puede depender de la dirección de disparo (idealmente no debería sobresalir de la pantalla)
+    #maxDistance = GameScreen.drawDistance;  // Puede depender de la dirección de disparo (idealmente no debería sobresalir de la pantalla)
     #beyondLimits = false;
 
     constructor(damage, speed, direction, startingPoint, maxDistance) {
@@ -16,9 +16,6 @@ class Projectile {
         this.#pos = new Point(startingPoint.x, startingPoint.y);
         this.#distanceTraveled = 0;
         this.#maxDistance = maxDistance;
-
-        // Saturación de distancia máxima (no puede exceder los límites de la pantalla)  // TODO cuando se tenga la cámara
-
     }
 
     update() {

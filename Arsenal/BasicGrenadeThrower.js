@@ -15,7 +15,7 @@ class BasicGrenadeThrower {
             20,  // speed
             this.#character.getFaceDirection(),  // direction
             this.#character.getPos().addConst(new Point(0, this.#character.getShootingHeight())),  // startingPosition
-            1920  // maxDistance
+            GameScreen.drawDistance  // maxDistance
         );
     }
 

@@ -7,7 +7,7 @@ class Grenade {
     #previousPos = new Point(0, 0);
     #pos = new Point(0, 0);
     #startingPoint = new Point(0, 0);  // Punto desde el que el personaje tiró la granada
-    #maxDistance = 1920;  // Depende del startingPoint y de la cámara
+    #maxDistance = GameScreen.drawDistance;  // Depende del startingPoint y de la cámara
     #beyondLimits = false;
     #platforms = [];
 
