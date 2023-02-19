@@ -90,14 +90,20 @@ class Segment {
     getMinY() { return Math.min(this.p1.y, this.p2.y); }
     getMaxY() { return Math.max(this.p1.y, this.p2.y); }
 
-    getDiscretePoints() {
+    /**
+     * 
+     * @param {number} n Number of divisions of the segment
+     * @returns 
+     */
+    getDiscretePoints(n = -1) {
         const deltaX = this.p2.x - this.p1.x;
         const deltaY = this.p2.y - this.p1.y;
-        const d = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-        // Number of divisions of the segment
-        const minDist = 1;  // Minimum distance between discrete points
-        const n = Math.ceil(d / minDist);
+        if (n <= 0) {
+            const d = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            const minDist = 1;  // Minimum distance between discrete points
+            n = d / minDist;
+        }
+        n = Math.ceil(n);
 
         const discretePoints = [];
         // discretePoints.reserve(n);
