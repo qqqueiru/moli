@@ -52,6 +52,11 @@ window.addEventListener("keydown", (event) => {
     if (event.key == "F5") {
         return;
     }
+    if (event.key == "Tab") {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+    }
 
     const key = event.key.toLowerCase();
 
