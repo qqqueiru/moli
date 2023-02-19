@@ -44,6 +44,9 @@ class Projectile {
     }
 
     draw(ctx, cameraPos) {
+        if (this.#pos.distanceFromPoint(cameraPos) > GameScreen.drawDistance) {
+            return;
+        }
         // Depuración
         ctx.beginPath();
         ctx.rect(this.#pos.x + GameScreen.width / 2 - cameraPos.x, this.#pos.y + GameScreen.height / 2 - cameraPos.y, 20, 10);

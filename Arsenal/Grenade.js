@@ -85,6 +85,9 @@ class Grenade {
     }
 
     draw(ctx, cameraPos) {
+        if (this.#pos.distanceFromPoint(cameraPos) > GameScreen.drawDistance) {
+            return;
+        }
         // Depuración
         ctx.beginPath();
         const grenadeSize = 10;

@@ -18,6 +18,7 @@ GameScreen.ctx = ctx;
 GameScreen.currentScreen = new LoadingScreen();
 GameScreen.width = canvas.width;
 GameScreen.height = canvas.height;
+GameScreen.drawDistance = Math.sqrt(GameScreen.width * GameScreen.width + GameScreen.height * GameScreen.height);
 
 
 // TODO Rehabilitar en producción

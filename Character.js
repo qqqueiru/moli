@@ -350,6 +350,9 @@ class Character {
     }
 
     draw(ctx, cameraPos) {
+        if (this._pos.distanceFromPoint(cameraPos) > GameScreen.drawDistance) {
+            return;
+        }
         // Debugging...
         ctx.beginPath();
         const vSegmentAbs = this.getVSegmentAbs();

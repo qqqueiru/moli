@@ -250,7 +250,7 @@ class SubLevel {
 
         this.#player.draw(ctx, this.#cameraPos);
 
-        // Dibujado de los segmentos del suelo
+        // Debug floor segments
         ctx.beginPath();
         for (const [id, platform] of this.#platforms) {
             const segment = platform.getSegment();
