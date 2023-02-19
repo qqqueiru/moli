@@ -10,6 +10,7 @@ class Grenade {
     #maxDistance = GameScreen.drawDistance;  // Depende del startingPoint y de la cámara
     #beyondLimits = false;
     #platforms = [];
+    #walls = [];
 
     constructor(damage, speed, direction, startingPoint, maxDistance) {
         this.#damage = damage;
@@ -28,6 +29,10 @@ class Grenade {
         this.#platforms = platforms;
     }
 
+    setWalls(walls) {
+        this.#walls = walls;
+    }
+
     update() {
         this.#vy += this.#ay;
         if (this.#vy > this.#maxVy) {
@@ -43,6 +48,7 @@ class Grenade {
         }
 
         this.#updateFloorBounce();
+        this.#updateWallBounce();
     }
 
     #updateFloorBounce() {
@@ -69,7 +75,21 @@ class Grenade {
                 this.#vx *= restitutionCoefficientX
                 this.#vy *= restitutionCoefficientY;
                 this.#vy = -Math.abs(this.#vy);  // La granada siempre rebota hacia arriba
-                // alert(`boing posY:${this.#pos.y} platformY:${platformPointOnTheSameVertical.y}`);
+            }
+        }
+    }
+
+    #updateWallBounce() {
+        const lerpSegment = new Segment(this.#pos, this.#previousPos);
+        for (const [id, wall] of this.#walls) {
+            if (!wall.bouncesGrenades()) {
+                continue;
+            }
+            const wallSegment = wall.getSegment();
+            if (Segment.doIntersect(wallSegment, lerpSegment)) {
+                const pIntersection = Segment.pointIntersection(wallSegment, lerpSegment);
+                this.#pos.x -= 2 * (this.#pos.x - pIntersection.x) + Math.sign(this.#vx);
+                this.#vx *= -1;
             }
         }
     }

@@ -32,9 +32,9 @@ class SubLevel {
         ++i;
 
         i = 0;
-        this.#walls.set(i, new Wall(i, new Segment({x: 200, y: 450}, {x: 200, y: 300})));
+        this.#walls.set(i, new Wall(i, new Segment({x: 200, y: 450}, {x: 200, y: 300}), false));
         ++i;
-        this.#walls.set(i, new Wall(i, new Segment({x: 1700, y: 600}, {x: 1700, y: 300})));
+        this.#walls.set(i, new Wall(i, new Segment({x: 1700, y: 600}, {x: 1700, y: 300}), true));
         ++i;
 
         this.#player.setPlatforms(this.#platforms);
@@ -152,7 +152,7 @@ class SubLevel {
             const grenade = this.#player.throwGrenade();
             if (grenade) {
                 grenade.setPlatforms(this.#platforms);
-                // grenade.setWalls(this.#walls);  // TODO grenade wall bounce?
+                grenade.setWalls(this.#walls);
                 this.#playerGrenades.push(grenade);
             }
         }
@@ -201,7 +201,7 @@ class SubLevel {
                 const grenade = npc.throwGrenade();
                 if (grenade) {
                     grenade.setPlatforms(this.#platforms);
-                    // grenade.setWalls(this.#walls);  // TODO grenade wall bounce?
+                    grenade.setWalls(this.#walls);
                     this.#enemyGrenades.push(grenade);
                 }
             }

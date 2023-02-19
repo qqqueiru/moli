@@ -3,12 +3,13 @@ class Wall {
     #segment;
     #vx;
     #vy;
-    #bouncesGrenades = false;  // TODO continuar aqui
-    constructor(id, segment) {
+    #bouncesGrenades;
+    constructor(id, segment, bouncesGrenades = false) {
         this.#id = id;
         this.#segment = segment;
         this.#vx = 0;
         this.#vy = 0;
+        this.#bouncesGrenades = bouncesGrenades;
     }
     setVx(newVx) {
         this.#vx = newVx;
@@ -28,6 +29,9 @@ class Wall {
     }
     getSegment() {
         return this.#segment;
+    }
+    bouncesGrenades() {
+        return this.#bouncesGrenades;
     }
     draw(ctx) {
         // Dibujado del segmento del suelo
