@@ -7,7 +7,6 @@ class SubLevel {
     #npcs;
     #upBuffer = [];
     #cameraPos;
-    #lastIntersection;  // TODO depurando...
     #playerProjectiles = [];  // Lista de proyectiles presentes en el subnivel...
     #enemyProjectiles = [];
     #grenades = [];  // Lista de granadas presentes en el subnivel...
@@ -78,7 +77,6 @@ class SubLevel {
         //     }
         // }
         if (intersection !== null) {
-            this.#lastIntersection = intersection;
             if (!character.isMovingDown()) { return; }
 
             const delta = intersection.substractConst(characterSegment.p2);
