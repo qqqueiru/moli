@@ -84,11 +84,13 @@ class Grenade {
         return this.#beyondLimits;
     }
 
-    draw(ctx) {
+    draw(ctx, cameraPos) {
         // Depuración
         ctx.beginPath();
-        const grenadeSize = 10
-        ctx.rect(this.#pos.x - grenadeSize / 2, this.#pos.y - grenadeSize / 2, grenadeSize, grenadeSize);
+        const grenadeSize = 10;
+        const drawX = this.#pos.x - grenadeSize / 2 + GameScreen.width / 2 - cameraPos.x;
+        const drawY = this.#pos.y - grenadeSize / 2 + GameScreen.height / 2 - cameraPos.y;
+        ctx.rect(drawX, drawY, grenadeSize, grenadeSize);
         ctx.fillStyle = "black";
         ctx.fill();
     }

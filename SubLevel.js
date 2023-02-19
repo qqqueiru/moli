@@ -20,7 +20,7 @@ class SubLevel {
         this.#player = new Player();  // TODO planteamiento
         this.#npcs = [];
         this.#npcs.push(new NPC(new Point(500, 400)));  // Test
-        this.#cameraPos = new Point(0, 0);
+        this.#cameraPos = this.#player.getPos();  // Testing camera pos
 
         // Debugging...
         let i = 0;
@@ -236,42 +236,40 @@ class SubLevel {
     draw(ctx) {
         ctx.beginPath();
         ctx.clearRect(0, 0, GameScreen.width, GameScreen.height);
-        ctx.drawImage(this.#backgroundImg, 0, 0, GameScreen.width, GameScreen.height);
+        ctx.drawImage(
+            this.#backgroundImg,
+            GameScreen.width / 2 - this.#cameraPos.x,
+            GameScreen.height / 2 - this.#cameraPos.y,
+            GameScreen.width,
+            GameScreen.height
+        );
 
         this.#player.draw(ctx, this.#cameraPos);
 
         for (const npc of this.#npcs) {
-            npc.draw(ctx);
+            npc.draw(ctx, this.#cameraPos);
         }
 
         // Dibujado de los segmentos del suelo
         ctx.beginPath();
         for (const [id, platform] of this.#platforms) {
             const segment = platform.getSegment();
-            ctx.moveTo(segment.p1.x, segment.p1.y);
-            ctx.lineTo(segment.p2.x, segment.p2.y);
+            ctx.moveTo(segment.p1.x + GameScreen.width / 2 - this.#cameraPos.x, segment.p1.y + GameScreen.height / 2 - this.#cameraPos.y);
+            ctx.lineTo(segment.p2.x + GameScreen.width / 2 - this.#cameraPos.x, segment.p2.y + GameScreen.height / 2 - this.#cameraPos.y);
         }
         ctx.strokeStyle = "red";
         ctx.lineWidth = 5;
         ctx.stroke();
 
-        // Dibujando el último punto de intersección
-        if (this.#lastIntersection) {
-            ctx.beginPath();
-            ctx.rect(this.#lastIntersection.x-5, this.#lastIntersection.y-5, 10, 10);
-            ctx.fillStyle = "green";
-            ctx.fill();
-        }
-
         // Los proyectiles y granadas se dibujan por encima de todo
         for (const projectile of this.#enemyProjectiles) {
-            projectile.draw(ctx);
+            projectile.draw(ctx, this.#cameraPos);
         }
         for (const projectile of this.#playerProjectiles) {
-            projectile.draw(ctx);
+            projectile.draw(ctx, this.#cameraPos);
         }
         for (const grenade of this.#grenades) {
-            grenade.draw(ctx);
+            grenade.draw(ctx, this.#cameraPos);
         }
     }
 }

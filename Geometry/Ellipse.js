@@ -27,9 +27,9 @@ class Ellipse {
             (cy - pointToCheck.y) * (cy - pointToCheck.y) / (this.b * this.b);
         return distance <= 1;
     }
-    draw(ctx) {
-        const cx = this.centerPoint.x + this.offX;
-        const cy = this.centerPoint.y + this.offY;
+    draw(ctx, cameraPos) {
+        const cx = this.centerPoint.x + this.offX + GameScreen.width / 2 - cameraPos.x;
+        const cy = this.centerPoint.y + this.offY + GameScreen.height / 2 - cameraPos.y;
         ctx.beginPath();
         ctx.ellipse(
             Math.floor(cx),

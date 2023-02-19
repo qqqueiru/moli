@@ -37,7 +37,10 @@ class AnimatedSprite {
         this.#paused = false;
     }
 
-    draw(xCenter, yCenter) {
+    draw(xCenter, yCenter, cameraPos) {
+        xCenter += GameScreen.width / 2 - cameraPos.x;
+        yCenter += GameScreen.height / 2 - cameraPos.y;
+
         const totalFrames = this.#rows * this.#cols;
         const totalSteps = totalFrames * this.#stepsPerFrame;
         const currentFrame = Math.floor(this.#currentStep / totalSteps * totalFrames);

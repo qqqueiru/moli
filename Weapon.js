@@ -43,10 +43,10 @@ class Projectile {
         return this.#beyondLimits;
     }
 
-    draw(ctx) {
+    draw(ctx, cameraPos) {
         // Depuración
         ctx.beginPath();
-        ctx.rect(this.#pos.x, this.#pos.y, 20, 10);
+        ctx.rect(this.#pos.x + GameScreen.width / 2 - cameraPos.x, this.#pos.y + GameScreen.height / 2 - cameraPos.y, 20, 10);
         ctx.fillStyle = "black";
         ctx.fill();
     }

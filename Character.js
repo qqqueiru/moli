@@ -350,15 +350,14 @@ class Character {
     }
 
     draw(ctx, cameraPos) {
-        // Por ahora me da igual cameraPos
         // Debugging...
         ctx.beginPath();
         const vSegmentAbs = this.getVSegmentAbs();
-        ctx.moveTo(vSegmentAbs.p1.x, vSegmentAbs.p1.y);
-        ctx.lineTo(vSegmentAbs.p2.x, vSegmentAbs.p2.y);
+        ctx.moveTo(vSegmentAbs.p1.x + GameScreen.width / 2 - cameraPos.x, vSegmentAbs.p1.y + GameScreen.height / 2 - cameraPos.y);
+        ctx.lineTo(vSegmentAbs.p2.x + GameScreen.width / 2 - cameraPos.x, vSegmentAbs.p2.y + GameScreen.height / 2 - cameraPos.y);
         const hSegmentAbs = this.getHSegmentAbs();
-        ctx.moveTo(hSegmentAbs.p1.x, hSegmentAbs.p1.y);
-        ctx.lineTo(hSegmentAbs.p2.x, hSegmentAbs.p2.y);
+        ctx.moveTo(hSegmentAbs.p1.x + GameScreen.width / 2 - cameraPos.x, hSegmentAbs.p1.y + GameScreen.height / 2 - cameraPos.y);
+        ctx.lineTo(hSegmentAbs.p2.x + GameScreen.width / 2 - cameraPos.x, hSegmentAbs.p2.y + GameScreen.height / 2 - cameraPos.y);
         // const leftRayCastSegmentAbs = this.getLeftRayCastSegmentAbs();
         // ctx.moveTo(leftRayCastSegmentAbs.p1.x, leftRayCastSegmentAbs.p1.y);
         // ctx.lineTo(leftRayCastSegmentAbs.p2.x, leftRayCastSegmentAbs.p2.y);
@@ -370,35 +369,12 @@ class Character {
         ctx.lineWidth = 5;
         ctx.stroke();
 
-
-        // Indicaciones de la dirección en la que mira el personaje
-        ctx.beginPath();
-        let delta = new Point(0, 0);
-        if (this.#faceDirection === "right") {
-            delta.x = 100;
-        }
-        if (this.#faceDirection === "left") {
-            delta.x = -100;
-        }
-        if (this.#faceDirection === "up") {
-            delta.y = -100;
-        }
-        ctx.rect(this._pos.addConst(delta).x, this._pos.addConst(delta).y, 20, 20);
-        ctx.fillStyle = "orange";
-        ctx.fill();
-
-        // Depurando canJump...
-        ctx.beginPath();
-        ctx.rect(0, 0, 1920, 100);
-        ctx.fillStyle = this.#canJump ? "green" : "red";
-        ctx.fill();
-
         const currentSprite = this._sprites[this.#getCurrentSprite()];
         currentSprite.setStepsPerFrame(1);  // No creo que las animaciones se vayan a acelerar
         currentSprite.resume();
-        currentSprite.draw(this._pos.x, this._pos.y + (this.#vSegment.p1.y + this.#vSegment.p2.y) / 2);
+        currentSprite.draw(this._pos.x, this._pos.y + (this.#vSegment.p1.y + this.#vSegment.p2.y) / 2, cameraPos);
 
         const hitEllipse = this.#crouched ? this._hitEllipseCrouched : this._hitEllipseStraight;
-        hitEllipse.draw(ctx);
+        hitEllipse.draw(ctx, cameraPos);
     }
 }
