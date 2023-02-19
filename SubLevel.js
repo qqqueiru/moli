@@ -9,7 +9,8 @@ class SubLevel {
     #cameraPos;
     #playerProjectiles = [];  // Lista de proyectiles presentes en el subnivel...
     #enemyProjectiles = [];
-    #grenades = [];  // Lista de granadas presentes en el subnivel...
+    #playerGrenades = [];  // Lista de granadas presentes en el subnivel...
+    #enemyGrenades = [];
     #backgroundImg = ImageManager.getImage("background_test_00");
     constructor() {
         this.#platforms = new Map();  // Characters can walk over these segments
@@ -113,14 +114,14 @@ class SubLevel {
         if (inputs.get("j")?.consumeIfActivated()) {
             const projectile = this.#player.shoot();
             if (projectile) {
-                this.#playerProjectiles = this.#playerProjectiles.concat(projectile);
+                this.#playerProjectiles.push(projectile);
             }
         }
         if (inputs.get("l")?.consumeIfActivated()) {
             const grenade = this.#player.throwGrenade();
             if (grenade) {
                 grenade.setPlatforms(this.#platforms);
-                this.#grenades = this.#grenades.concat(grenade);
+                this.#playerGrenades.push(grenade);
             }
         }
         if (inputs.get("k")?.consumeIfActivated()) {
@@ -160,10 +161,15 @@ class SubLevel {
                 npc.moveLeft();
             }
 
-            if (Date.now() % 2000 < 20) {
+            if (Date.now() % 1000 < 20) {
                 const projectile = npc.shoot();
                 if (projectile) {
-                    this.#enemyProjectiles = this.#enemyProjectiles.concat(projectile);
+                    this.#enemyProjectiles.push(projectile);
+                }
+                const grenade = npc.throwGrenade();
+                if (grenade) {
+                    grenade.setPlatforms(this.#platforms);
+                    this.#enemyGrenades.push(grenade);
                 }
             }
         }
@@ -200,14 +206,34 @@ class SubLevel {
     }
 
     updateGrenades() {
-        const nGrenades = this.#grenades.length;
-        for (let i = nGrenades - 1; i >= 0; --i) {
-            const grenade = this.#grenades[i];
+        const nPlayerGrenades = this.#playerGrenades.length;
+        for (let i = nPlayerGrenades - 1; i >= 0; --i) {
+            const grenade = this.#playerGrenades[i];
             grenade.update();
             if (grenade.isBeyondLimits()) {
-                this.#grenades.splice(i, 1);
+                this.#playerGrenades.splice(i, 1);
+                continue;
             }
-            grenade.checkHit();  // TODO, comprobar si golpeó a alguien. No necesariamente el proyectil desaparece al tocar a alguien...
+            if (grenade.checkHit(this.#npcs) || grenade.hasStopped()) {
+                grenade.explode(this.#npcs);
+                this.#playerGrenades.splice(i, 1);
+                continue;
+            }
+        }
+
+        const nEnemyGrenades = this.#enemyGrenades.length;
+        for (let i = nEnemyGrenades - 1; i >= 0; --i) {
+            const grenade = this.#enemyGrenades[i];
+            grenade.update();
+            if (grenade.isBeyondLimits()) {
+                this.#enemyGrenades.splice(i, 1);
+                continue;
+            }
+            if (grenade.checkHit([this.#player]) || grenade.hasStopped()) {
+                grenade.explode([this.#player]);
+                this.#enemyGrenades.splice(i, 1);
+                continue;
+            }
         }
     }
 
@@ -263,10 +289,13 @@ class SubLevel {
         for (const projectile of this.#enemyProjectiles) {
             projectile.draw(ctx, this.#cameraPos);
         }
+        for (const grenade of this.#enemyGrenades) {
+            grenade.draw(ctx, this.#cameraPos);
+        }
         for (const projectile of this.#playerProjectiles) {
             projectile.draw(ctx, this.#cameraPos);
         }
-        for (const grenade of this.#grenades) {
+        for (const grenade of this.#playerGrenades) {
             grenade.draw(ctx, this.#cameraPos);
         }
     }

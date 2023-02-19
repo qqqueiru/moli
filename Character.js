@@ -329,14 +329,28 @@ class Character {
     }
 
     /**
-     * Returns true if projectile hits the character.
-     * The projectile is a segment whose points are its current and previous position.
-     * That segment will be checked for collision with the character's ellipse
-     * @param {Segment} projectileSegment 
+     * Returns true if segment collides the character.
+     * @param {Segment} segment 
      */
-    getsHit(projectileSegment) {
+    getsHitBySegment(segment) {
         const hitEllipse = this.#crouched ? this._hitEllipseCrouched : this._hitEllipseStraight;
-        const hitPoints = projectileSegment.getDiscretePoints();
+        const hitPoints = segment.getDiscretePoints();
+        for (const hitPoint of hitPoints) {
+            if (hitEllipse.isPointInside(hitPoint)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if circle collides the character
+     * @param {Circle} circle 
+     * @returns 
+     */
+    getsHitByCircle(circle) {
+        const hitEllipse = this.#crouched ? this._hitEllipseCrouched : this._hitEllipseStraight;
+        const hitPoints = circle.getDiscretePoints();
         for (const hitPoint of hitPoints) {
             if (hitEllipse.isPointInside(hitPoint)) {
                 return true;

@@ -59,7 +59,7 @@ class Projectile {
     checkHit(characters) {
         const segmentToCheck = new Segment(this.#pos, this.#previousPos);
         for (const character of characters) {
-            if (character.getsHit(segmentToCheck)) {
+            if (character.getsHitBySegment(segmentToCheck)) {
                 character.inflictDamage(this.#damage);
                 return true;  // NOTE: en caso de tener un proyectil que daña a más de un personaje a la vez, habría que plantearlo de otro modo
             }

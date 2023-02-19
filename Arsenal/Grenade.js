@@ -74,10 +74,38 @@ class Grenade {
         }
     }
 
-    checkHit() {
-        // TODO
+    /**
+     * Returns true if the grenade hit someone from the character array
+     * @param {[Character]} characters
+     * @returns
+     */
+    checkHit(characters) {
         const segmentToCheck = new Segment(this.#pos, this.#previousPos);
-        // return entidad que golpeó a la cual haga daño y que sea enemiga...
+        for (const character of characters) {
+            if (character.getsHitBySegment(segmentToCheck)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    hasStopped() {
+        return Math.abs(this.#vx) < 1;
+    }
+
+    /**
+     * Inflicts damage on nearby characters
+     * @param {[Character]} characters 
+     */
+    explode(characters) {
+        const blastRadius = 100;
+        const blastCircle = new Circle(this.#pos, blastRadius);
+        for (const character of characters) {
+            if (character.getsHitByCircle(blastCircle)) {
+                character.inflictDamage(this.#damage);
+            }
+        }
+
     }
 
     isBeyondLimits() {
