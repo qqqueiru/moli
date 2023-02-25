@@ -27,10 +27,10 @@ class Circle {
         );
 
         const discretePoints = [];
-        discretePoints.push(segment_0.getDiscretePoints());
-        discretePoints.push(segment_1.getDiscretePoints());
-        discretePoints.push(segment_2.getDiscretePoints());
-        discretePoints.push(segment_3.getDiscretePoints());
+        discretePoints.push(...segment_0.getDiscretePoints());
+        discretePoints.push(...segment_1.getDiscretePoints());
+        discretePoints.push(...segment_2.getDiscretePoints());
+        discretePoints.push(...segment_3.getDiscretePoints());
 
         return discretePoints;
     }
