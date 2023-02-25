@@ -132,6 +132,7 @@ class SubLevel {
         if (inputs.get("j")?.consumeIfActivated()) {
             const projectile = this.#player.shoot();
             if (projectile) {
+                projectile.setWalls(this.#walls);
                 this.#playerProjectiles.push(projectile);
             }
         }
@@ -186,6 +187,7 @@ class SubLevel {
             // if (Date.now() % 1000 < 20) {
             //     const projectile = npc.shoot();
             //     if (projectile) {
+            //         projectile.setWalls(this.#walls);
             //         this.#enemyProjectiles.push(projectile);
             //     }
             //     const grenade = npc.throwGrenade();
@@ -204,6 +206,11 @@ class SubLevel {
             const projectile = this.#playerProjectiles[i];
             projectile.update();
             if (projectile.isBeyondLimits()) {
+                this.#playerProjectiles.splice(i, 1);
+                continue;
+            }
+            const hitWallPoint = projectile.getHitWallPoint();
+            if (hitWallPoint != null) {
                 this.#playerProjectiles.splice(i, 1);
                 continue;
             }

@@ -7,6 +7,8 @@ class Projectile {
     #distanceTraveled = 0;
     #maxDistance = GameScreen.drawDistance;  // Puede depender de la dirección de disparo (idealmente no debería sobresalir de la pantalla)
     #beyondLimits = false;
+    #walls = [];
+    #hitWallPoint = null;
 
     constructor(damage, speed, direction, startingPoint, maxDistance) {
         this.#damage = damage;
@@ -18,6 +20,10 @@ class Projectile {
         this.#maxDistance = maxDistance;
     }
 
+    setWalls(walls) {
+        this.#walls = walls;
+    }
+
     update() {
         let velocityVector = new Point(0, 0);
         if (this.#direction === "right") { velocityVector = new Point(this.#speed, 0); }
@@ -27,13 +33,33 @@ class Projectile {
         if ((velocityVector.x * velocityVector.x + velocityVector.y + velocityVector.y) == 0) {
             console.error("projectile with 0 speed");
         }
-
+        this.#previousPos = this.#pos.clone();
         this.#pos.add(velocityVector);
         this.#distanceTraveled += this.#speed;
 
         if (this.#distanceTraveled >= this.#maxDistance) {
             this.#beyondLimits = true;
         }
+
+        this.#updateWallHit();
+    }
+
+    #updateWallHit() {
+        const lerpSegment = new Segment(this.#pos, this.#previousPos);
+        for (const [id, wall] of this.#walls) {
+            if (!wall.bouncesGrenades()) {
+                continue;
+            }
+            const wallSegment = wall.getSegment();
+            if (Segment.doIntersect(wallSegment, lerpSegment)) {
+                this.#hitWallPoint = Segment.pointIntersection(wallSegment, lerpSegment);
+                break;
+            }
+        }
+    }
+
+    getHitWallPoint() {
+        return this.#hitWallPoint;
     }
 
     isBeyondLimits() {
