@@ -88,7 +88,10 @@ class Grenade {
             const wallSegment = wall.getSegment();
             if (Segment.doIntersect(wallSegment, lerpSegment)) {
                 const pIntersection = Segment.pointIntersection(wallSegment, lerpSegment);
-                this.#pos.x -= 2 * (this.#pos.x - pIntersection.x) + Math.sign(this.#vx);
+                // this.#pos.x -= 2 * (this.#pos.x - pIntersection.x) + Math.sign(this.#vx);
+                // New position may trespass another wall or floor segment
+                this.#pos.x = pIntersection.x - Math.sign(this.#vx);
+                this.#pos.y = this.#previousPos.y;
                 this.#vx *= -1;
             }
         }
