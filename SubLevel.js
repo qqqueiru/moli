@@ -92,22 +92,6 @@ class SubLevel {
             if (intersection === null) {continue;}
             break;
         }
-        // Este bloque se comenta ya que no funciona, pero no sería necesario ya que los máximos en velocidad no permiten estas situaciones
-        // if (intersection === null) {
-        //     // Hay que ver si interseca la interpolación
-        //     const lerpSegment = character.getBotTipLerpSegment();  // Quizás la interpolación sea más segura haciéndola entre centros directamente
-        //     for (const availablePlatformId of availablePlatformIds) {
-        //         const platform = this.#platforms.get(availablePlatformId);
-        //         const bottomSegment = platform.getSegment();
-        //         if (!Segment.doIntersect(lerpSegment, bottomSegment)) {
-        //             continue;
-        //         }
-        //         intersection = Segment.pointIntersection(lerpSegment, bottomSegment) - 1;
-        //         lastPlatformTouchedId = availablePlatformId;
-        //         alert("OJO interseccion de interpolacion con bottip!");
-        //         break;
-        //     }
-        // }
         if (intersection !== null) {
             if (!character.isMovingDown()) { return; }
 
@@ -116,9 +100,6 @@ class SubLevel {
             character.setLastPlatformTouchedId(lastPlatformTouchedId);
             character.setVy(0);
             character.setCoyoteIterations(15);
-            // if (character === this.#player && inputs.get("k")?.consumeIfActivated()) {
-            //     character.setCanJump(true);
-            // }
         }
         if (character.getCoyoteIterations() > 0) {
             character.setCanJump(true);
@@ -130,6 +111,9 @@ class SubLevel {
     }
 
     updatePlayerControl() {
+        if (this.#upBuffer.length > 0 && Date.now() - this.#upBuffer[0] > 250) {
+            this.#upBuffer.shift();
+        }
         if (this.#player.getCurrentState() != "ALIVE") {
             return;
         }
@@ -282,9 +266,6 @@ class SubLevel {
         for (const npc of this.#npcs) {
             this.#reviseCharacterPosWithPlatforms(npc);
             this.#reviseCharacterPosWithWalls(npc);
-        }
-        if (this.#upBuffer.length > 0 && Date.now() - this.#upBuffer[0] > 250) {
-            this.#upBuffer.shift();
         }
 
         this.updatePlayerControl();

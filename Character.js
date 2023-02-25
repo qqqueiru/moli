@@ -345,7 +345,9 @@ class Character {
             const margin = 50;  // Chapucilla
             this.updateAvailablePlatforms(yLimit - margin);
             const platformIdxToIgnore = this.#availablePlatformIds.indexOf(this.#lastPlatformTouchedId);
-            this.#availablePlatformIds.splice(platformIdxToIgnore, 1);
+            if (platformIdxToIgnore >= 0) {
+                this.#availablePlatformIds.splice(platformIdxToIgnore, 1);
+            }
             this.#lastPlatformTouchedId = null;
         }
 
