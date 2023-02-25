@@ -338,16 +338,17 @@ class Character {
             this.updateAvailablePlatforms();
         }
 
-        const botTip = this._pos.addConst(this.#vSegment.p2);
+        let botTip = this._pos.addConst(this.#vSegment.p2);
         if (this.#platforms.get(this.#lastPlatformTouchedId)?.mayFallOutside(botTip) && this.#finishedJumping) {
             // Falling from platform without jumping (just going beyond its lateral limits)
-            const yLimit = this.#platforms.get(this.#lastPlatformTouchedId).getYFromLimit(botTip);
-            const margin = 50;  // Chapucilla
-            this.updateAvailablePlatforms(yLimit - margin);
+            botTip = this.#platforms.get(this.#lastPlatformTouchedId).getNearestPointLimit(botTip);
+            // const yLimit = this.#platforms.get(this.#lastPlatformTouchedId).getYFromLimit(botTip);
+            const yLimit = botTip.y;
+            this.updateAvailablePlatforms(yLimit, botTip.x);
             const platformIdxToIgnore = this.#availablePlatformIds.indexOf(this.#lastPlatformTouchedId);
-            if (platformIdxToIgnore >= 0) {
-                this.#availablePlatformIds.splice(platformIdxToIgnore, 1);
-            }
+            // if (platformIdxToIgnore >= 0) {
+            //     this.#availablePlatformIds.splice(platformIdxToIgnore, 1);
+            // }
             this.#lastPlatformTouchedId = null;
         }
 
@@ -369,11 +370,14 @@ class Character {
         this.#walls = walls;
     }
 
-    updateAvailablePlatforms(yLimit = null) {
+    updateAvailablePlatforms(yLimit = null, xCorrection = null) {
         this.#availablePlatformIds = [];
         const botTip = this._pos.addConst(this.#vSegment.p2);
         if (yLimit !== null && botTip.y > yLimit) {
             botTip.y = yLimit;
+        }
+        if (xCorrection !== null) {
+            botTip.x = xCorrection;
         }
         for (const [id, platform] of this.#platforms) {
             if (platform.isPointAbovePlatform(botTip)) {

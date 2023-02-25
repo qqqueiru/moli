@@ -48,6 +48,26 @@ class Platform {
         return outLeft || outRight;
     }
 
+    getNearestXLimit(x) {
+        const dp1 = Math.abs(x - this.#segment.p1.x);
+        const dp2 = Math.abs(x - this.#segment.p2.x);
+        if (dp1 > dp2) {
+            return this.#segment.p2.x;
+        } else {
+            return this.#segment.p1.x;
+        }
+    }
+
+    getNearestPointLimit(p) {
+        const dp1 = p.distanceFromPoint(this.#segment.p1);
+        const dp2 = p.distanceFromPoint(this.#segment.p2);
+        if (dp1 > dp2) {
+            return this.#segment.p2;
+        } else {
+            return this.#segment.p1;
+        }
+    }
+
     getYFromLimit(p) {
         let yLimit = null;
         if (p.x <= this.#segment.p1.x && this.#segment.p1.x <= this.#segment.p2.x) {
