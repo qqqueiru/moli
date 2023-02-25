@@ -130,6 +130,9 @@ class SubLevel {
     }
 
     updatePlayerControl() {
+        if (this.#player.getCurrentState() != "ALIVE") {
+            return;
+        }
         if (inputs.get("w")?.isPressed()) {
             this.#player.setLookingUp(true);
         } else {
@@ -181,6 +184,9 @@ class SubLevel {
     updateNpcAi() {
         // testing
         for (const npc of this.#npcs) {
+            if (npc.getCurrentState() != "ALIVE") {
+                continue;
+            }
             npc.setLookingUp(false);
             npc.dontMove();
             npc.setCrouched(false);
@@ -193,18 +199,18 @@ class SubLevel {
                 npc.moveLeft();
             }
 
-            if (Date.now() % 1000 < 20) {
-                const projectile = npc.shoot();
-                if (projectile) {
-                    this.#enemyProjectiles.push(projectile);
-                }
-                const grenade = npc.throwGrenade();
-                if (grenade) {
-                    grenade.setPlatforms(this.#platforms);
-                    grenade.setWalls(this.#walls);
-                    this.#enemyGrenades.push(grenade);
-                }
-            }
+            // if (Date.now() % 1000 < 20) {
+            //     const projectile = npc.shoot();
+            //     if (projectile) {
+            //         this.#enemyProjectiles.push(projectile);
+            //     }
+            //     const grenade = npc.throwGrenade();
+            //     if (grenade) {
+            //         grenade.setPlatforms(this.#platforms);
+            //         grenade.setWalls(this.#walls);
+            //         this.#enemyGrenades.push(grenade);
+            //     }
+            // }
         }
     }
 
@@ -217,7 +223,7 @@ class SubLevel {
                 this.#playerProjectiles.splice(i, 1);
                 continue;
             }
-            if (projectile.checkHit(this.#npcs)) {  // NOTE: Quizás el proyectil pueda impactar a más de un personaje a la vez. Por el momento si impacta en uno, desaparece.
+            if (projectile.checkHit(this.#npcs, ["SPAWNING", "ALIVE"])) {  // NOTE: Quizás el proyectil pueda impactar a más de un personaje a la vez. Por el momento si impacta en uno, desaparece.
                 this.#playerProjectiles.splice(i, 1);
                 continue;
             }
@@ -231,7 +237,7 @@ class SubLevel {
                 this.#enemyProjectiles.splice(i, 1);
                 continue;
             }
-            if (projectile.checkHit([this.#player])) {
+            if (projectile.checkHit([this.#player], ["ALIVE"])) {
                 this.#enemyProjectiles.splice(i, 1);
                 continue;
             }
@@ -247,8 +253,8 @@ class SubLevel {
                 this.#playerGrenades.splice(i, 1);
                 continue;
             }
-            if (grenade.checkHit(this.#npcs) || grenade.hasStopped()) {
-                grenade.explode(this.#npcs);
+            if (grenade.checkHit(this.#npcs, ["SPAWNING", "ALIVE"]) || grenade.hasStopped()) {
+                grenade.explode(this.#npcs, ["SPAWNING", "ALIVE"]);
                 this.#playerGrenades.splice(i, 1);
                 continue;
             }
@@ -262,8 +268,8 @@ class SubLevel {
                 this.#enemyGrenades.splice(i, 1);
                 continue;
             }
-            if (grenade.checkHit([this.#player]) || grenade.hasStopped()) {
-                grenade.explode([this.#player]);
+            if (grenade.checkHit([this.#player], ["ALIVE"]) || grenade.hasStopped()) {
+                grenade.explode([this.#player], ["ALIVE"]);
                 this.#enemyGrenades.splice(i, 1);
                 continue;
             }
@@ -289,6 +295,16 @@ class SubLevel {
         this.#player.update();
         for (const npc of this.#npcs) {
             npc.update();
+        }
+
+        if (this.#player.isDead()) {
+            this.#player = new Player();  // Just create a new player and garbage out the dead player
+            this.#player.setPlatforms(this.#platforms);
+            this.#player.setWalls(this.#walls);
+            this.#player.setWeapon(new Pistol(this.#player));
+            this.#player.setGrenadeThrower(new BasicGrenadeThrower(this.#player));
+            this.#player.updateAvailablePlatforms();
+            this.#cameraPos = this.#player.getPos();  // Testing camera pos
         }
     }
 

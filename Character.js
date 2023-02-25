@@ -50,8 +50,75 @@ class Character {
     _hitEllipseStraight = new Ellipse(this._pos, 50, 100);
     // #maxYFromLastFloorIntersection
     // Solamente se permite el salto si hay interseccion del segmento vertical y vy > 0
+
+    #states;
     constructor() {
-        // TODO
+        this.#states = {
+            currentState: "NONE",
+            NONE: new CharacterState(
+                "NONE", 
+                0, 
+                () => {
+                    // NOP
+                },
+                () => {
+                    // if (this.#canSpawn) {  // TODO, ?
+                        this.#states.currentState = "SPAWNING";
+                    // }
+                },
+            ),
+            SPAWNING: new CharacterState(
+                "SPAWNING", 
+                120, 
+                () => {
+                    // NOP
+                },
+                () => {
+                    console.log("Now character is alive")
+                    this.#states.currentState = "ALIVE";
+                },
+            ),
+            ALIVE:  new CharacterState(
+                "ALIVE", 
+                -1, 
+                () => {
+                    if (this.#health <= 0) {
+                        this.#states.currentState = "DYING";
+                    }
+                },
+                () => {
+                    // NOP
+                },
+            ),
+            DYING: new CharacterState(
+                "DYING", 
+                0, 
+                () => {
+                    // NOP
+                },
+                () => {
+                    this.#states.currentState = "DEAD";
+                },
+            ),
+            DEAD: new CharacterState(
+                "DEAD", 
+                -1, 
+                () => {
+                    // NOP
+                },
+                () => {
+                    // NOP
+                },
+            ),
+        };
+    }
+
+    getCurrentState() {
+        return this.#states.currentState;
+    }
+
+    isDead() {
+        return this.#states.currentState == "DEAD";
     }
 
     setVx(newVx) {
@@ -288,6 +355,8 @@ class Character {
             const segmentY = this.#platforms.get(this.#lastPlatformTouchedId)?.getYFromX(this._pos.x);
             this._pos.y = segmentY - this.#vSegment.p2.y + 1;  // +1 para que el personaje pueda intersecar con la plataforma
         }
+
+        this.#states[this.#states.currentState].update();
     }
 
     setPlatforms(platforms) {
@@ -371,6 +440,9 @@ class Character {
     }
 
     inflictDamage(damage) {
+        if (this.#states.currentState != "ALIVE") {
+            return;
+        }
         this.#health -= damage;
     }
 

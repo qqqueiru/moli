@@ -97,11 +97,15 @@ class Grenade {
     /**
      * Returns true if the grenade hit someone from the character array
      * @param {[Character]} characters
+     * @param {[string]} hitStates if a character is in one of these states it will be checked for hit
      * @returns
      */
-    checkHit(characters) {
+    checkHit(characters, hitStates) {
         const segmentToCheck = new Segment(this.#pos, this.#previousPos);
         for (const character of characters) {
+            if (!hitStates.includes(character.getCurrentState())) {
+                continue;
+            }
             if (character.getsHitBySegment(segmentToCheck)) {
                 return true;
             }
@@ -115,17 +119,20 @@ class Grenade {
 
     /**
      * Inflicts damage on nearby characters
-     * @param {[Character]} characters 
+     * @param {[Character]} characters
+     * @param {[string]} hitStates if a character is in one of these states it will be checked for hit
      */
-    explode(characters) {
+    explode(characters, hitStates) {
         const blastRadius = 100;
         const blastCircle = new Circle(this.#pos, blastRadius);
         for (const character of characters) {
+            if (!hitStates.includes(character.getCurrentState())) {
+                continue;
+            }
             if (character.getsHitByCircle(blastCircle)) {
                 character.inflictDamage(this.#damage);
             }
         }
-
     }
 
     isBeyondLimits() {

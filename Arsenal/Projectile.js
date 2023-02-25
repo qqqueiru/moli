@@ -54,11 +54,15 @@ class Projectile {
     /**
      * Returns true if the projectile hits a character from the input array of characters
      * @param {[Character]} characters
+     * @param {[string]} hitStates if a character is in one of these states it will be checked for hit
      * @returns 
      */
-    checkHit(characters) {
+    checkHit(characters, hitStates) {
         const segmentToCheck = new Segment(this.#pos, this.#previousPos);
         for (const character of characters) {
+            if (!hitStates.includes(character.getCurrentState())) {
+                continue;
+            }
             if (character.getsHitBySegment(segmentToCheck)) {
                 character.inflictDamage(this.#damage);
                 return true;  // NOTE: en caso de tener un proyectil que daña a más de un personaje a la vez, habría que plantearlo de otro modo
