@@ -5,11 +5,14 @@ class Player extends Character {
     constructor() {
         super();
         this._sprites = {
+            blank: new AnimatedSprite("player_blank", 1, 1, 1, -1, ctx),
             right: new AnimatedSprite("player_right", 1, 1, 1, -1, ctx),
             left: new AnimatedSprite("player_left", 1, 1, 1, -1, ctx),
             crouch_right: new AnimatedSprite("player_crouch_right", 1, 1, 1, -1, ctx),
             crouch_left: new AnimatedSprite("player_crouch_left", 1, 1, 1, -1, ctx),
             up: new AnimatedSprite("player_up", 1, 1, 1, -1, ctx),
+            dead_right: new AnimatedSprite("player_dead_right", 1, 1, 1, -1, ctx),
+            dead_left: new AnimatedSprite("player_dead_left", 1, 1, 1, -1, ctx),
         };
 
         this._hitEllipseCrouched = new Ellipse(this._pos, 15, 40);

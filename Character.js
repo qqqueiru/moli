@@ -218,11 +218,22 @@ class Character {
     }
 
     #getCurrentSprite() {
-        if (this.#crouched) {
-            return "crouch_" + this.#faceDirection;
-        } else {
-            return this.#faceDirection;
+        const defaultSprite = "blank";
+        if (this.#states.currentState == "ALIVE" || this.#states.currentState == "SPAWNING") {
+            if (this.#crouched) {
+                return "crouch_" + this.#faceDirection;
+            } else {
+                return this.#faceDirection;
+            }
         }
+        if (this.#states.currentState == "DYING") {
+            // NOP
+        }
+        if (this.#states.currentState == "DEAD") {
+            return "dead_" + this.#faceDirection;
+        }
+
+        return defaultSprite;
     }
 
     getShootingHeight() {

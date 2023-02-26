@@ -24,18 +24,24 @@ class ImageManager {
     static loadImages() {
         ImageManager.loadImage("moli", "./img/moli.png");
 
+        ImageManager.loadImage("player_blank", "./img/player/player_blank.png");
         ImageManager.loadImage("player_right", "./img/player/player_right.png");
         ImageManager.loadImage("player_left", "./img/player/player_left.png");
         ImageManager.loadImage("player_up", "./img/player/player_up.png");
         ImageManager.loadImage("player_crouch_right", "./img/player/player_crouch_right.png");
         ImageManager.loadImage("player_crouch_left", "./img/player/player_crouch_left.png");
+        ImageManager.loadImage("player_dead_right", "./img/player/player_dead_right.png");
+        ImageManager.loadImage("player_dead_left", "./img/player/player_dead_left.png");
 
         // Test NPC
+        ImageManager.loadImage("npc_blank", "./img/npcs/test/npc_blank.png");
         ImageManager.loadImage("npc_right", "./img/npcs/test/npc_right.png");
         ImageManager.loadImage("npc_left", "./img/npcs/test/npc_left.png");
         ImageManager.loadImage("npc_up", "./img/npcs/test/npc_up.png");
         ImageManager.loadImage("npc_crouch_right", "./img/npcs/test/npc_crouch_right.png");
         ImageManager.loadImage("npc_crouch_left", "./img/ncps/test/npc_crouch_left.png");
+        ImageManager.loadImage("npc_dead_right", "./img/npcs/test/npc_dead_right.png");
+        ImageManager.loadImage("npc_dead_left", "./img/npcs/test/npc_dead_left.png");
 
         ImageManager.loadImage("background_test_00", "./img/background/background_test_00.png");
 
