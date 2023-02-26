@@ -1,52 +1,45 @@
 class SubLevel {
-    #platforms;
-    #walls;
-    #topSegments;
-    #leftSegments;
-    #rightSegments;
+    #platforms = new Map();  // Characters can walk over these segments
+    #walls = new Map();  // Characters cannot trespass walls
+    #topSegments = [];  // Characters can't go above these segments
+    #leftSegments = [];
+    #rightSegments = [];
     #player;
-    #npcs;
+    #npcs = [];
     #upBuffer = [];
-    #cameraPos;
+    _cameraPos = new Point(0, 0);
     #playerProjectiles = [];  // Lista de proyectiles presentes en el subnivel...
     #enemyProjectiles = [];
     #playerGrenades = [];  // Lista de granadas presentes en el subnivel...
     #enemyGrenades = [];
-    #backgroundImg = ImageManager.getImage("background_test_00");
+    #backgroundImg = "";
     constructor() {
-        this.#platforms = new Map();  // Characters can walk over these segments
-        this.#walls = new Map();  // Characters cannot trespass walls
-        this.#topSegments = [];  // Characters can't go above these segments
-        this.#leftSegments = [];  // blablabla
-        this.#rightSegments = [];
-        this.#player = new Player();  // TODO planteamiento
-        this.#npcs = [];
-        this.#npcs.push(new NPC(new Point(500, 400)));  // Test
-        this.#cameraPos = this.#player.getPos();  // Testing camera pos
+    }
 
-        // Debugging...
-        let i = 0;
-        this.#platforms.set(i, new Platform(i, new Segment({x: 200, y: 450}, {x: 800, y: 700})));
-        ++i;
-        this.#platforms.set(i, new Platform(i, new Segment({x: 800, y: 700}, {x: 1700, y: 600})));
-        ++i;
+    setBackgroundImg(imgId) {
+        this.#backgroundImg = ImageManager.getImage(imgId);
+    }
 
-        i = 0;
-        this.#walls.set(i, new Wall(i, new Segment({x: 200, y: 450}, {x: 200, y: 300}), false));
-        ++i;
-        this.#walls.set(i, new Wall(i, new Segment({x: 1700, y: 600}, {x: 1700, y: 300}), true));
-        ++i;
+    setPlatforms(platforms) {
+        this.#platforms = platforms;
+    }
 
+    setWalls(walls) {
+        this.#walls = walls;
+    }
+
+    setPlayer(player) {
+        this.#player = player;
         this.#player.setPlatforms(this.#platforms);
         this.#player.setWalls(this.#walls);
-        this.#player.setWeapon(new Pistol(this.#player));
-        this.#player.setGrenadeThrower(new BasicGrenadeThrower(this.#player));
         this.#player.updateAvailablePlatforms();
+    }
 
+    setNpcs(npcs) {
+        this.#npcs = npcs;
         for (const npc of this.#npcs) {
             npc.setPlatforms(this.#platforms);
-            npc.setWeapon(new Pistol(npc));
-            npc.setGrenadeThrower(new BasicGrenadeThrower(npc));
+            npc.setWalls(this.#walls);
             npc.updateAvailablePlatforms();
         }
     }
@@ -184,7 +177,7 @@ class SubLevel {
                 npc.moveLeft();
             }
 
-            // if (Date.now() % 1000 < 20) {
+            // if (Date.now() % 2000 < 20) {
             //     const projectile = npc.shoot();
             //     if (projectile) {
             //         projectile.setWalls(this.#walls);
@@ -286,13 +279,7 @@ class SubLevel {
         }
 
         if (this.#player.isDead()) {
-            this.#player = new Player();  // Just create a new player and garbage out the dead player
-            this.#player.setPlatforms(this.#platforms);
-            this.#player.setWalls(this.#walls);
-            this.#player.setWeapon(new Pistol(this.#player));
-            this.#player.setGrenadeThrower(new BasicGrenadeThrower(this.#player));
-            this.#player.updateAvailablePlatforms();
-            this.#cameraPos = this.#player.getPos();  // Testing camera pos
+            this.onPlayerDeath();
         }
     }
 
@@ -301,24 +288,24 @@ class SubLevel {
         ctx.clearRect(0, 0, GameScreen.width, GameScreen.height);
         ctx.drawImage(
             this.#backgroundImg,
-            GameScreen.width / 2 - this.#cameraPos.x,
-            GameScreen.height / 2 - this.#cameraPos.y,
+            GameScreen.width / 2 - this._cameraPos.x,
+            GameScreen.height / 2 - this._cameraPos.y,
             GameScreen.width,
             GameScreen.height
         );
 
         for (const npc of this.#npcs) {
-            npc.draw(ctx, this.#cameraPos);
+            npc.draw(ctx, this._cameraPos);
         }
 
-        this.#player.draw(ctx, this.#cameraPos);
+        this.#player.draw(ctx, this._cameraPos);
 
         // Debug floor segments
         ctx.beginPath();
         for (const [id, platform] of this.#platforms) {
             const segment = platform.getSegment();
-            ctx.moveTo(segment.p1.x + GameScreen.width / 2 - this.#cameraPos.x, segment.p1.y + GameScreen.height / 2 - this.#cameraPos.y);
-            ctx.lineTo(segment.p2.x + GameScreen.width / 2 - this.#cameraPos.x, segment.p2.y + GameScreen.height / 2 - this.#cameraPos.y);
+            ctx.moveTo(segment.p1.x + GameScreen.width / 2 - this._cameraPos.x, segment.p1.y + GameScreen.height / 2 - this._cameraPos.y);
+            ctx.lineTo(segment.p2.x + GameScreen.width / 2 - this._cameraPos.x, segment.p2.y + GameScreen.height / 2 - this._cameraPos.y);
         }
         ctx.strokeStyle = "red";
         ctx.lineWidth = 5;
@@ -328,8 +315,8 @@ class SubLevel {
         ctx.beginPath();
         for (const [id, wall] of this.#walls) {
             const segment = wall.getSegment();
-            ctx.moveTo(segment.p1.x + GameScreen.width / 2 - this.#cameraPos.x, segment.p1.y + GameScreen.height / 2 - this.#cameraPos.y);
-            ctx.lineTo(segment.p2.x + GameScreen.width / 2 - this.#cameraPos.x, segment.p2.y + GameScreen.height / 2 - this.#cameraPos.y);
+            ctx.moveTo(segment.p1.x + GameScreen.width / 2 - this._cameraPos.x, segment.p1.y + GameScreen.height / 2 - this._cameraPos.y);
+            ctx.lineTo(segment.p2.x + GameScreen.width / 2 - this._cameraPos.x, segment.p2.y + GameScreen.height / 2 - this._cameraPos.y);
         }
         ctx.strokeStyle = "orange";
         ctx.lineWidth = 5;
@@ -337,16 +324,16 @@ class SubLevel {
 
         // Los proyectiles y granadas se dibujan por encima de todo
         for (const projectile of this.#enemyProjectiles) {
-            projectile.draw(ctx, this.#cameraPos);
+            projectile.draw(ctx, this._cameraPos);
         }
         for (const grenade of this.#enemyGrenades) {
-            grenade.draw(ctx, this.#cameraPos);
+            grenade.draw(ctx, this._cameraPos);
         }
         for (const projectile of this.#playerProjectiles) {
-            projectile.draw(ctx, this.#cameraPos);
+            projectile.draw(ctx, this._cameraPos);
         }
         for (const grenade of this.#playerGrenades) {
-            grenade.draw(ctx, this.#cameraPos);
+            grenade.draw(ctx, this._cameraPos);
         }
     }
 }

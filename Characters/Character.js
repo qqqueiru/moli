@@ -23,7 +23,7 @@ class Character {
 
     #previousPos = new Point(0, 0);
     #previousVy = 0;    
-    _pos = new Point(500, 500);
+    _pos = new Point(0, 0);
     #vx = 0;  // TODO establecer un máximo
     #vy = 0;
     #jumpVy = -200;
@@ -52,7 +52,11 @@ class Character {
     // Solamente se permite el salto si hay interseccion del segmento vertical y vy > 0
 
     #states;
-    constructor() {
+    constructor(pos) {
+        if (pos) {
+            this._pos = pos.clone();
+            this.#previousPos = this._pos.clone();
+        }
         this.#states = {
             currentState: "NONE",
             NONE: new CharacterState(
@@ -69,7 +73,7 @@ class Character {
             ),
             SPAWNING: new CharacterState(
                 "SPAWNING", 
-                120, 
+                60, 
                 () => {
                     // NOP
                 },

@@ -2,8 +2,8 @@
  * Class for the player character
  */
 class Player extends Character {
-    constructor() {
-        super();
+    constructor(pos) {
+        super(pos);
         this._sprites = {
             blank: new AnimatedSprite("player_blank", 1, 1, 1, 1, ctx),
             right: new AnimatedSprite("player_right", 1, 1, 1, 1, ctx),

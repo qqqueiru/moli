@@ -81,8 +81,8 @@ class AudioManager {
         }, 2000);
     }
     static loadAudios() {
-        AudioManager.loadAudio("left", "./audio/left.ogg", 10);
-        AudioManager.loadAudio("right", "./audio/right.ogg", 10);
+        AudioManager.loadAudio("selection_up", "./audio/selection_up.ogg", 10);
+        AudioManager.loadAudio("selection_down", "./audio/selection_down.ogg", 10);
         AudioManager.loadAudio("enter", "./audio/enter.ogg", 10);
         AudioManager.loadAudio("back", "./audio/back.ogg", 10);
         AudioManager.loadAudio("reward", "./audio/reward.ogg", 10);

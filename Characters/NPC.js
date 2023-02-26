@@ -1,6 +1,6 @@
 class NPC extends Character {
     constructor(pos) {
-        super();
+        super(pos);
         this._sprites = {
             blank: new AnimatedSprite("npc_blank", 1, 1, 1, 1, ctx),
             right: new AnimatedSprite("npc_right", 1, 1, 1, 1, ctx),

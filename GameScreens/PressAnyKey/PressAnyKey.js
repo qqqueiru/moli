@@ -12,9 +12,7 @@ class PressAnyKey extends GameScreen {
         if (GameScreen.inputs.get("AnyKey")?.consumeIfActivated()) {
             // document.documentElement.requestFullscreen();
             AudioManager.playSoundEffect("enter");
-            // GameScreen.currentScreen = new StartMenu();
-            // Debugging...
-            GameScreen.currentScreen = new Level();
+            GameScreen.currentScreen = new StartMenu();
         }
     }
 

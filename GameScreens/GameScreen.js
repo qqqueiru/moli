@@ -7,7 +7,7 @@ class GameScreen {
 
     static fontColor = "#856345";
     static fontColorLighter = "#ffdddd";
-    static fontFamily = "TimesNewRoman";
+    static fontFamily = "Arial";
 
     constructor() {
     }

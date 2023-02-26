@@ -75,10 +75,10 @@ const TR = {
         la: "Omnia jura reservata",
     },
     about2: {
-        en: "MMXXII Marín, SPAIN",
-        es: "MMXXII Marín, ESPAÑA",
-        gl: "MMXXII Marín, ESPAÑA",
-        la: "MMXXII Marín, HISPANIA",
+        en: "MMXXIII Marín, SPAIN",
+        es: "MMXXIII Marín, ESPAÑA",
+        gl: "MMXXIII Marín, ESPAÑA",
+        la: "MMXXIII Marín, HISPANIA",
     },
     GAMEOVER: {
         en: "GAME OVER",

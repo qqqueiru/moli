@@ -51,7 +51,8 @@ class StartMenu extends GameScreen {
 
     #startGame() {
         AudioManager.playSoundEffect("enter");
-        GameScreen.currentScreen = new Play();
+        GameScreen.currentScreen = new Level1();
+        AudioManager.stopLoop("menu");
     }
 
     #openHelpMenu() {
@@ -168,30 +169,30 @@ class StartMenu extends GameScreen {
 
     update() {
         if (
-            GameScreen.inputs.get("ArrowUp")?.consumeIfActivated() ||
-            GameScreen.inputs.get("ArrowLeft")?.consumeIfActivated()
+            GameScreen.inputs.get("arrowup")?.consumeIfActivated() ||
+            GameScreen.inputs.get("arrowleft")?.consumeIfActivated()
         ) {
             const currentOptionIndex = --this.#menus[this.#menus.currentMenu].currentOptionIndex;
             const optionsLength = this.#menus[this.#menus.currentMenu].options.length;
             if (currentOptionIndex < 0) {
                 this.#menus[this.#menus.currentMenu].currentOptionIndex = optionsLength - 1;
             }
-            AudioManager.playSoundEffect("left");
+            AudioManager.playSoundEffect("selection_up");
         }
         if (
-            GameScreen.inputs.get("ArrowDown")?.consumeIfActivated() ||
-            GameScreen.inputs.get("ArrowRight")?.consumeIfActivated()
+            GameScreen.inputs.get("arrowdown")?.consumeIfActivated() ||
+            GameScreen.inputs.get("arrowright")?.consumeIfActivated()
         ) {
             const currentOptionIndex = ++this.#menus[this.#menus.currentMenu].currentOptionIndex;
             const optionsLength = this.#menus[this.#menus.currentMenu].options.length;
             if (currentOptionIndex >= optionsLength) {
                 this.#menus[this.#menus.currentMenu].currentOptionIndex = 0;
             }
-            AudioManager.playSoundEffect("right");
+            AudioManager.playSoundEffect("selection_down");
         }
 
         if (
-            GameScreen.inputs.get("Enter")?.consumeIfActivated() ||
+            GameScreen.inputs.get("enter")?.consumeIfActivated() ||
             GameScreen.inputs.get(" ")?.consumeIfActivated()
         ) {
             const currentMenu = this.#menus.currentMenu;
@@ -201,8 +202,8 @@ class StartMenu extends GameScreen {
         }
 
         if (
-            GameScreen.inputs.get("Backspace")?.consumeIfActivated() ||
-            GameScreen.inputs.get("Escape")?.consumeIfActivated()
+            GameScreen.inputs.get("backspace")?.consumeIfActivated() ||
+            GameScreen.inputs.get("escape")?.consumeIfActivated()
         ) {
             this.#backToMainMenu();
         }
