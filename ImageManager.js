@@ -32,6 +32,8 @@ class ImageManager {
         ImageManager.loadImage("player_crouch_left", "./img/player/player_crouch_left.png");
         ImageManager.loadImage("player_dead_right", "./img/player/player_dead_right.png");
         ImageManager.loadImage("player_dead_left", "./img/player/player_dead_left.png");
+        ImageManager.loadImage("player_dying_right", "./img/player/player_dying_right.png");
+        ImageManager.loadImage("player_dying_left", "./img/player/player_dying_left.png");
 
         // Test NPC
         ImageManager.loadImage("npc_blank", "./img/npcs/test/npc_blank.png");
@@ -42,6 +44,8 @@ class ImageManager {
         ImageManager.loadImage("npc_crouch_left", "./img/ncps/test/npc_crouch_left.png");
         ImageManager.loadImage("npc_dead_right", "./img/npcs/test/npc_dead_right.png");
         ImageManager.loadImage("npc_dead_left", "./img/npcs/test/npc_dead_left.png");
+        ImageManager.loadImage("npc_dying_right", "./img/npcs/test/npc_dying_right.png");
+        ImageManager.loadImage("npc_dying_left", "./img/npcs/test/npc_dying_left.png");
 
         ImageManager.loadImage("background_test_00", "./img/background/background_test_00.png");
 

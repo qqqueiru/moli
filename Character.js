@@ -104,9 +104,13 @@ class Character {
             ),
             DYING: new CharacterState(
                 "DYING", 
-                0, 
+                50, 
                 () => {
-                    // NOP
+                    if (Math.abs(this.#vx) < 0.1) {
+                        this.#vx = 0;
+                    } else {
+                        this.#vx *= 0.9; 
+                    }
                 },
                 () => {
                     this.#states.currentState = "DEAD";
@@ -243,7 +247,7 @@ class Character {
             }
         }
         if (this.#states.currentState == "DYING") {
-            // NOP
+            return "dying_" + this.#faceDirection;
         }
         if (this.#states.currentState == "DEAD") {
             return "dead_" + this.#faceDirection;
@@ -503,7 +507,7 @@ class Character {
         ctx.stroke();
 
         const currentSprite = this._sprites[this.#getCurrentSprite()];
-        currentSprite.setStepsPerFrame(1);  // No creo que las animaciones se vayan a acelerar
+        // currentSprite.setStepsPerFrame(1);  // No creo que las animaciones se vayan a acelerar
         currentSprite.resume();
         currentSprite.draw(this._pos.x, this._pos.y + (this.#vSegment.p1.y + this.#vSegment.p2.y) / 2, cameraPos);
 
