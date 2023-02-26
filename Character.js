@@ -84,6 +84,18 @@ class Character {
                 () => {
                     if (this.#health <= 0) {
                         this.#states.currentState = "DYING";
+                        if (this.#canJump) {
+                            this.startJump();
+                            this.#iterationsToBeJumped = 1;
+                        }
+                        if (this.#faceDirection == "up") {
+                            this.#faceDirection = this.#previousFaceDirection;
+                        }
+                        if (this.#faceDirection == "left") {
+                            this.#vx = 10;
+                        } else {
+                            this.#vx = -10;
+                        }
                     }
                 },
                 () => {
@@ -104,7 +116,11 @@ class Character {
                 "DEAD", 
                 -1, 
                 () => {
-                    // NOP
+                    if (Math.abs(this.#vx) < 0.1) {
+                        this.#vx = 0;
+                    } else {
+                        this.#vx *= 0.9; 
+                    }
                 },
                 () => {
                     // NOP
@@ -307,6 +323,8 @@ class Character {
     }
 
     update() {
+        this.#states[this.#states.currentState].update();
+
         if (this.#coyoteIterations > 0) {
             this.#coyoteIterations--;
         }
@@ -344,6 +362,7 @@ class Character {
         this._pos.x += this.#vx;
         this._pos.y += this.#vy;
 
+
         if (this.#vy >= 0 && this.#previousVy < 0) {
             // Starting to fall after jumping
             this.updateAvailablePlatforms();
@@ -362,15 +381,12 @@ class Character {
             // }
             this.#lastPlatformTouchedId = null;
         }
-
         // Attaching to current platform if not jumping
         const withinPlatformBounds = this.#platforms.get(this.#lastPlatformTouchedId)?.isWithinXBounds(this._pos.x);
         if (this.#finishedJumping && withinPlatformBounds) {
             const segmentY = this.#platforms.get(this.#lastPlatformTouchedId)?.getYFromX(this._pos.x);
             this._pos.y = segmentY - this.#vSegment.p2.y + 1;  // +1 para que el personaje pueda intersecar con la plataforma
         }
-
-        this.#states[this.#states.currentState].update();
     }
 
     setPlatforms(platforms) {
