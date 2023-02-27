@@ -101,6 +101,11 @@ class SubLevel {
         if (this.#upBuffer.length > 0 && Date.now() - this.#upBuffer[0] > 250) {
             this.#upBuffer.shift();
         }
+        if (inputs.get("escape")?.consumeIfActivated()) {
+            // Sorry no pause buffering
+            GameScreen.previousScreen = GameScreen.currentScreen;
+            GameScreen.currentScreen = new PauseMenu();
+        }
         if (this.#player.getCurrentState() != "ALIVE") {
             return;
         }

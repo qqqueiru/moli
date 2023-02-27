@@ -15,6 +15,7 @@ const inputs = new Map();
 GameScreen.imgScale = 1;
 GameScreen.inputs = inputs;
 GameScreen.ctx = ctx;
+GameScreen.previousScreen;  // Useful when resuming from pause menu
 GameScreen.currentScreen = new LoadingScreen();
 GameScreen.width = canvas.width;
 GameScreen.height = canvas.height;

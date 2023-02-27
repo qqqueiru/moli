@@ -80,6 +80,12 @@ const TR = {
         gl: "MMXXIII Marín, ESPAÑA",
         la: "MMXXIII Marín, HISPANIA",
     },
+    PAUSE: {
+        en: "PAUSE",
+        es: "PAUSA",
+        gl: "PAUSA",
+        la: "PAUSA",
+    },
     GAMEOVER: {
         en: "GAME OVER",
         es: "FIN DEL JUEGO",
@@ -91,6 +97,12 @@ const TR = {
         es: (score) => {return `Has conseguido ${score} punto${score == "I" ? "" : "s"}`},
         gl: (score) => {return `Marcaches ${score} punto${score == "I" ? "" : "s"}`},
         la: (score) => {return `Vos laceratum ${score} punct${score == "I" ? "um" : "a"}`},
+    },
+    RESUME: {
+        en: "RESUME",
+        es: "REANUDAR",
+        gl: "RETOMAR",
+        la: "RESUMO",
     },
     RESTART: {
         en: "RESTART",
