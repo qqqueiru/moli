@@ -11,6 +11,14 @@ class Wall {
         this.#vy = 0;
         this.#bouncesGrenades = bouncesGrenades;
     }
+
+    moveTo(newPos) {
+        const segmentCenter = this.#segment.getCenter();
+        const delta = newPos.substractConst(segmentCenter);
+        this.#segment.p1.x += delta.x; this.#segment.p1.y += delta.y;
+        this.#segment.p2.x += delta.x; this.#segment.p2.y += delta.y;
+    }
+
     setVx(newVx) {
         this.#vx = newVx;
     }
@@ -33,12 +41,12 @@ class Wall {
     bouncesGrenades() {
         return this.#bouncesGrenades;
     }
-    draw(ctx) {
-        // Dibujado del segmento del suelo
+
+    draw(ctx, cameraPos) {
         ctx.beginPath();
-        ctx.moveTo(this.#segment.p1.x, this.#segment.p1.y);
-        ctx.lineTo(this.#segment.p2.x, this.#segment.p2.y);
-        ctx.strokeStyle = "red";
+        ctx.moveTo(this.#segment.p1.x + GameScreen.width / 2 - cameraPos.x, this.#segment.p1.y + GameScreen.height / 2 - cameraPos.y);
+        ctx.lineTo(this.#segment.p2.x + GameScreen.width / 2 - cameraPos.x, this.#segment.p2.y + GameScreen.height / 2 - cameraPos.y);
+        ctx.strokeStyle = "orange";
         ctx.lineWidth = 5;
         ctx.stroke();
     }

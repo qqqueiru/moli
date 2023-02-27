@@ -330,7 +330,28 @@ class Character {
         return this._pos.addConst(this.#hSegment.p2);
     }
 
+    #revisePosWithWalls() {
+        const characterSegment = this.getHSegmentAbs();
+        for (const [id, wall] of this.#walls) {
+            const wallSegment = wall.getSegment();
+            if (!Segment.doIntersect(wallSegment, characterSegment)) {
+                continue;
+            }
+            const intersection = Segment.pointIntersection(characterSegment, wallSegment);
+
+            if (intersection.x > this._pos.x) {
+                // Player must not pass to the right, so it must be moved to the left accordingly
+                const rightTip = this.getRightTip();
+                this.moveRel(intersection.substractConst(rightTip));
+            } else {
+                const leftTip = this.getLeftTip();
+                this.moveRel(intersection.substractConst(leftTip));
+            }
+        }
+    }
+
     update() {
+        this.#revisePosWithWalls();
         this.#states[this.#states.currentState].update();
 
         if (this.#coyoteIterations > 0) {

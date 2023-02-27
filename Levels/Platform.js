@@ -29,15 +29,16 @@ class Platform {
     getSegment() {
         return this.#segment;
     }
-    draw(ctx) {
+    draw(ctx, cameraPos) {
         // Dibujado del segmento del suelo
         ctx.beginPath();
-        ctx.moveTo(this.#segment.p1.x, this.#segment.p1.y);
-        ctx.lineTo(this.#segment.p2.x, this.#segment.p2.y);
+        ctx.moveTo(this.#segment.p1.x + GameScreen.width / 2 - cameraPos.x, this.#segment.p1.y + GameScreen.height / 2 - cameraPos.y);
+        ctx.lineTo(this.#segment.p2.x + GameScreen.width / 2 - cameraPos.x, this.#segment.p2.y + GameScreen.height / 2 - cameraPos.y);
         ctx.strokeStyle = "red";
         ctx.lineWidth = 5;
         ctx.stroke();
     }
+
     isPointAbovePlatform(p) {
         return this.#segment.isPointAbove(p);
     }

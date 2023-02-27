@@ -119,4 +119,10 @@ class Segment {
 
         return discretePoints;
     }
+
+    getCenter() {
+        const midX = (this.p1.x + this.p2.x) / 2;
+        const midY = (this.p1.y + this.p2.y) / 2;
+        return new Point(midX, midY);
+    }
 }

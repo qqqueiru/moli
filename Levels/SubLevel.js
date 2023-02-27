@@ -13,6 +13,9 @@ class SubLevel {
     #playerGrenades = [];  // Lista de granadas presentes en el subnivel...
     #enemyGrenades = [];
     #backgroundImg = "";
+    #cameraWallLeft = new Wall(-1, new Segment({x: 0, y: 0}, {x: 0, y: 1080}), false);
+    #cameraWallRight = new Wall(-2, new Segment({x: 0, y: 0}, {x: 0, y: 1080}), false);
+
     constructor() {
     }
 
@@ -31,7 +34,11 @@ class SubLevel {
     setPlayer(player) {
         this.#player = player;
         this.#player.setPlatforms(this.#platforms);
-        this.#player.setWalls(this.#walls);
+        const playerWalls = new Map(this.#walls);
+        this.#player.setWalls(playerWalls);
+        playerWalls.set(-1, this.#cameraWallLeft);
+        playerWalls.set(-2, this.#cameraWallRight);
+
         this.#player.updateAvailablePlatforms();
     }
 
@@ -41,27 +48,6 @@ class SubLevel {
             npc.setPlatforms(this.#platforms);
             npc.setWalls(this.#walls);
             npc.updateAvailablePlatforms();
-        }
-    }
-
-    #reviseCharacterPosWithWalls(character) {
-        const characterSegment = character.getHSegmentAbs();
-        for (const [id, wall] of this.#walls) {
-            const wallSegment = wall.getSegment();
-            if (!Segment.doIntersect(wallSegment, characterSegment)) {
-                continue;
-            }
-            const intersection = Segment.pointIntersection(characterSegment, wallSegment);
-            const characterPos = character.getPos();
-
-            if (intersection.x > characterPos.x) {
-                // Player must not pass to the right, so it must be moved to the left accordingly
-                const rightTip = character.getRightTip();
-                character.moveRel(intersection.substractConst(rightTip));
-            } else {
-                const leftTip = character.getLeftTip();
-                character.moveRel(intersection.substractConst(leftTip));
-            }
         }
     }
 
@@ -260,12 +246,17 @@ class SubLevel {
         }
     }
 
+    #moveCameraWalls() {
+        this.#cameraWallLeft.moveTo(this._cameraPos.addConst(new Point(-GameScreen.width / 2, 0)));
+        this.#cameraWallRight.moveTo(this._cameraPos.addConst(new Point(GameScreen.width / 2, 0)));
+    }
+
     update() {
+        this.#moveCameraWalls();
+
         this.#reviseCharacterPosWithPlatforms(this.#player);
-        this.#reviseCharacterPosWithWalls(this.#player);
         for (const npc of this.#npcs) {
             this.#reviseCharacterPosWithPlatforms(npc);
-            this.#reviseCharacterPosWithWalls(npc);
         }
 
         this.updatePlayerControl();
@@ -301,26 +292,16 @@ class SubLevel {
         this.#player.draw(ctx, this._cameraPos);
 
         // Debug floor segments
-        ctx.beginPath();
         for (const [id, platform] of this.#platforms) {
-            const segment = platform.getSegment();
-            ctx.moveTo(segment.p1.x + GameScreen.width / 2 - this._cameraPos.x, segment.p1.y + GameScreen.height / 2 - this._cameraPos.y);
-            ctx.lineTo(segment.p2.x + GameScreen.width / 2 - this._cameraPos.x, segment.p2.y + GameScreen.height / 2 - this._cameraPos.y);
+            platform.draw(ctx, this._cameraPos);
         }
-        ctx.strokeStyle = "red";
-        ctx.lineWidth = 5;
-        ctx.stroke();
 
         // Debug wall segments
-        ctx.beginPath();
         for (const [id, wall] of this.#walls) {
-            const segment = wall.getSegment();
-            ctx.moveTo(segment.p1.x + GameScreen.width / 2 - this._cameraPos.x, segment.p1.y + GameScreen.height / 2 - this._cameraPos.y);
-            ctx.lineTo(segment.p2.x + GameScreen.width / 2 - this._cameraPos.x, segment.p2.y + GameScreen.height / 2 - this._cameraPos.y);
+            wall.draw(ctx, this._cameraPos);
         }
-        ctx.strokeStyle = "orange";
-        ctx.lineWidth = 5;
-        ctx.stroke();
+        this.#cameraWallLeft.draw(ctx, this._cameraPos);
+        this.#cameraWallRight.draw(ctx, this._cameraPos);
 
         // Los proyectiles y granadas se dibujan por encima de todo
         for (const projectile of this.#enemyProjectiles) {
