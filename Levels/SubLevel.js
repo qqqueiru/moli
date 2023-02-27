@@ -18,6 +18,8 @@ class SubLevel {
     #loopSprites = [];
     #onceSprites = [];
 
+    _triggers = [];
+
     constructor() {
     }
 
@@ -289,6 +291,14 @@ class SubLevel {
         if (this.#player.isDead()) {
             this.onPlayerDeath();
         }
+
+        const nTriggers = this._triggers.length;
+        for (let i = nTriggers - 1; i >= 0; --i) {
+            this._triggers[i].update();
+            if (this._triggers[i].isDone()) {
+                this._triggers.splice(i, 1);
+            }
+        }
     }
 
     draw(ctx) {
@@ -345,6 +355,10 @@ class SubLevel {
 
         for (const loopSprite of this.#loopSprites) {
             loopSprite.draw(this._cameraPos);
+        }
+
+        for (const trigger of this._triggers) {
+            trigger.draw(ctx, this._cameraPos);
         }
     }
 }

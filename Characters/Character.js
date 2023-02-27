@@ -208,6 +208,10 @@ class Character {
         }
     }
 
+    getHealth() {
+        return this.#health;
+    }
+
     startJump() {
         let startedJump = false;
         if (this.#canJump && this.#iterationsToBeJumped == 0) {

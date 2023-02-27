@@ -33,10 +33,28 @@ class SubLevel1_1 extends SubLevel {
         }
         {
             const npcs = [];
-            // npcs.push(new NPC(new Point(500, 400)));
-            // npcs[npcs.length - 1].setWeapon(new Pistol(npcs[npcs.length - 1]));
-            // npcs[npcs.length - 1].setGrenadeThrower(new BasicGrenadeThrower(npcs[npcs.length - 1]));
+            npcs.push(new NPC(new Point(500, 400)));
+            npcs[npcs.length - 1].setWeapon(new Pistol(npcs[npcs.length - 1]));
+            npcs[npcs.length - 1].setGrenadeThrower(new BasicGrenadeThrower(npcs[npcs.length - 1]));
             this.setNpcs(npcs);
+
+            // this._triggers.push(new HealthTrigger(npcs[0], 0, () => {
+            //     alert("Example health trigger");
+            // }));
+            // this._triggers.push(
+            //     new LocationTrigger(
+            //         npcs[0], 
+            //         new Ellipse(new Point(900, 800), 100, 100), 
+            //         () => {
+            //             alert("Example location trigger");
+            //         }
+            //     )
+            // );
+        }
+        {
+            // this._triggers.push(new TimeTrigger(600, () => {
+            //     alert("Example trigger");
+            // }));
         }
 
     }
