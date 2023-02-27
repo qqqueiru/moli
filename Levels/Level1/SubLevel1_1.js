@@ -9,7 +9,7 @@ class SubLevel1_1 extends SubLevel {
             const platforms = new Map();
             platforms.set(i, new Platform(i, new Segment({x: 500, y: 450}, {x: 1000, y: 200})));
             ++i;
-            platforms.set(i, new Platform(i, new Segment({x: 1000, y: 200}, {x: 1700, y: 700})));
+            platforms.set(i, new Platform(i, new Segment({x: 1000, y: 200}, {x: 1400, y: 700})));
             ++i;
             platforms.set(i, new Platform(i, new Segment({x: 0, y: 800}, {x: 1920, y: 800})));
             ++i;
@@ -25,7 +25,7 @@ class SubLevel1_1 extends SubLevel {
             this.setWalls(walls);
         }
         {
-            const player = new Player(new Point(500, 400));  // TODO planteamiento
+            const player = new Player(new Point(1347, 200));  // TODO planteamiento
             player.setWeapon(new Pistol(player));
             player.setGrenadeThrower(new BasicGrenadeThrower(player));
             this.setPlayer(player);
@@ -33,9 +33,9 @@ class SubLevel1_1 extends SubLevel {
         }
         {
             const npcs = [];
-            npcs.push(new NPC(new Point(500, 400)));
-            npcs[npcs.length - 1].setWeapon(new Pistol(npcs[npcs.length - 1]));
-            npcs[npcs.length - 1].setGrenadeThrower(new BasicGrenadeThrower(npcs[npcs.length - 1]));
+            // npcs.push(new NPC(new Point(500, 400)));
+            // npcs[npcs.length - 1].setWeapon(new Pistol(npcs[npcs.length - 1]));
+            // npcs[npcs.length - 1].setGrenadeThrower(new BasicGrenadeThrower(npcs[npcs.length - 1]));
             this.setNpcs(npcs);
         }
 

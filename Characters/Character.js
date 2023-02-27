@@ -392,7 +392,8 @@ class Character {
         this._pos.y += this.#vy;
 
 
-        if (this.#vy >= 0 && this.#previousVy < 0) {
+        // if (this.#vy >= 0 && this.#previousVy < 0) {
+        if (this.#vy <= 0) {
             // Starting to fall after jumping
             this.updateAvailablePlatforms();
         }
@@ -429,6 +430,9 @@ class Character {
     updateAvailablePlatforms(yLimit = null, xCorrection = null) {
         this.#availablePlatformIds = [];
         const botTip = this._pos.addConst(this.#vSegment.p2);
+        if (yLimit == null && xCorrection == null) {
+            botTip.y -= 50;
+        }
         if (yLimit !== null && botTip.y > yLimit) {
             botTip.y = yLimit;
         }
@@ -444,6 +448,10 @@ class Character {
 
     getAvailablePlatformIds() {
         return this.#availablePlatformIds;
+    }
+
+    getLastPlatformTouchedId() {
+        return this.#lastPlatformTouchedId;
     }
 
     setLastPlatformTouchedId(lastPlatformTouchedId) {

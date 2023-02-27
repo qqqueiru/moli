@@ -74,7 +74,7 @@ class SubLevel {
             break;
         }
         if (intersection !== null) {
-            if (!character.isMovingDown()) { return; }
+            if (!character.isMovingDown() && lastPlatformTouchedId != character.getLastPlatformTouchedId()) { return; }
 
             const delta = intersection.substractConst(characterSegment.p2);
             character.moveRel(delta);
