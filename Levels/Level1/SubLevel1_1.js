@@ -25,7 +25,7 @@ class SubLevel1_1 extends SubLevel {
             this.setWalls(walls);
         }
         {
-            const player = new Player(new Point(1347, 200));  // TODO planteamiento
+            const player = new Player(new Point(1600, 600));  // TODO planteamiento
             player.setWeapon(new Pistol(player));
             player.setGrenadeThrower(new BasicGrenadeThrower(player));
             this.setPlayer(player);

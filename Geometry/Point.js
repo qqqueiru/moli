@@ -27,6 +27,10 @@ class Point {
         return Math.sqrt((this.x - p.x) * (this.x - p.x) + (this.y - p.y) * (this.y - p.y))
     }
 
+    equals(p) {
+        return this.x === p.x && this.y === p.y;
+    }
+
     /**
      * Returns following values:
      * 0 --> p1, p2 and p3 are collinear

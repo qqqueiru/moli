@@ -52,6 +52,8 @@ class Character {
     // Solamente se permite el salto si hay interseccion del segmento vertical y vy > 0
 
     #states;
+
+    #tracePoints = [];
     constructor(pos) {
         if (pos) {
             this._pos = pos.clone();
@@ -420,6 +422,14 @@ class Character {
             const segmentY = this.#platforms.get(this.#lastPlatformTouchedId)?.getYFromX(this._pos.x);
             this._pos.y = segmentY - this.#vSegment.p2.y + 1;  // +1 para que el personaje pueda intersecar con la plataforma
         }
+
+        if (!this._pos.equals(this.#previousPos)) {
+            // this.#tracePoints.push(this.getFloorRayCast().p2.clone());
+        }
+    }
+
+    getTracePoints() {
+        return this.#tracePoints;
     }
 
     setPlatforms(platforms) {
@@ -541,6 +551,18 @@ class Character {
         ctx.strokeStyle = "blue";
         ctx.lineWidth = 5;
         ctx.stroke();
+
+        if (this.#tracePoints.length > 0) {
+            for (let i = 1; i < this.#tracePoints.length; ++i) {
+                ctx.moveTo(this.#tracePoints[i - 1].x + GameScreen.width / 2 - cameraPos.x, this.#tracePoints[i -1].y + GameScreen.height / 2 - cameraPos.y);
+                ctx.lineTo(this.#tracePoints[i].x + GameScreen.width / 2 - cameraPos.x, this.#tracePoints[i].y + GameScreen.height / 2 - cameraPos.y);
+                ctx.moveTo(this.#tracePoints[i].x + GameScreen.width / 2 - cameraPos.x, this.#tracePoints[i].y + GameScreen.height / 2 - cameraPos.y);
+            }
+            ctx.strokeStyle = "green";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
 
         const currentSprite = this._sprites[this.#getCurrentSprite()];
         // currentSprite.setStepsPerFrame(1);  // No creo que las animaciones se vayan a acelerar
