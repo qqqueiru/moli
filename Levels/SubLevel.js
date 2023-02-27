@@ -62,6 +62,7 @@ class SubLevel {
         if (character.getCoyoteIterations() <= 0) {  // AKA Coyote Time
             character.setCanJump(false);  // Si no está tocando el suelo, no puede saltar
         }
+        let comingFromTop = false;
         for (const availablePlatformId of availablePlatformIds) {
             const platform = this.#platforms.get(availablePlatformId);
             const bottomSegment = platform.getSegment();
@@ -71,10 +72,13 @@ class SubLevel {
             intersection = Segment.pointIntersection(characterSegment, bottomSegment);
             lastPlatformTouchedId = availablePlatformId;
             if (intersection === null) {continue;}
+            const previousBotTip = character.getPreviousBotTip();
+            comingFromTop = platform.isPointAbovePlatform(previousBotTip);
             break;
         }
         if (intersection !== null) {
-            if (!character.isMovingDown() && lastPlatformTouchedId != character.getLastPlatformTouchedId()) { return; }
+            if (!comingFromTop) { return; }
+            // if (!character.isMovingDown() && lastPlatformTouchedId != character.getLastPlatformTouchedId()) { return; }
 
             const delta = intersection.substractConst(characterSegment.p2);
             character.moveRel(delta);

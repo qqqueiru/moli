@@ -311,6 +311,9 @@ class Character {
         this._pos.add(delta);
     }
 
+    getPreviousBotTip() {
+        return this.#previousPos.addConst(this.#vSegment.p2);
+    }
     getBotTipLerpSegment() {
         return new Segment(this._pos.addConst(this.#vSegment.p2), this.#previousPos.addConst(this.#vSegment.p2));
     }
