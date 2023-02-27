@@ -116,6 +116,10 @@ class Grenade {
         return false;
     }
 
+    getExplosionOnceSprite() {
+        return new OnceSprite("grenade_explosion", 1, 5, 1, 10, GameScreen.ctx, this.#pos);
+    }
+
     hasStopped() {
         return Math.abs(this.#vx) < 1;
     }

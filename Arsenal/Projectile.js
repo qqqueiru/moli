@@ -66,6 +66,14 @@ class Projectile {
         return this.#beyondLimits;
     }
 
+    getHitWallOnceSprite() {
+        return new OnceSprite("grenade_explosion", 1, 5, 1, 10, GameScreen.ctx, this.#hitWallPoint);
+    }
+
+    getHitCharacterOnceSprite() {
+        return new OnceSprite("grenade_explosion", 1, 5, 1, 10, GameScreen.ctx, this.#pos);
+    }
+
     draw(ctx, cameraPos) {
         if (this.#pos.distanceFromPoint(cameraPos) > GameScreen.drawDistance) {
             return;

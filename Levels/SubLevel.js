@@ -15,6 +15,8 @@ class SubLevel {
     #backgroundImg = "";
     #cameraWallLeft = new Wall(-1, new Segment({x: 0, y: 0}, {x: 0, y: 1080}), false);
     #cameraWallRight = new Wall(-2, new Segment({x: 0, y: 0}, {x: 0, y: 1080}), false);
+    #loopSprites = [];
+    #onceSprites = [];
 
     constructor() {
     }
@@ -191,10 +193,12 @@ class SubLevel {
             const hitWallPoint = projectile.getHitWallPoint();
             if (hitWallPoint != null) {
                 this.#playerProjectiles.splice(i, 1);
+                this.#onceSprites.push(projectile.getHitWallOnceSprite());
                 continue;
             }
             if (projectile.checkHit(this.#npcs, ["SPAWNING", "ALIVE"])) {  // NOTE: Quizás el proyectil pueda impactar a más de un personaje a la vez. Por el momento si impacta en uno, desaparece.
                 this.#playerProjectiles.splice(i, 1);
+                this.#onceSprites.push(projectile.getHitCharacterOnceSprite());
                 continue;
             }
         }
@@ -207,8 +211,15 @@ class SubLevel {
                 this.#enemyProjectiles.splice(i, 1);
                 continue;
             }
+            const hitWallPoint = projectile.getHitWallPoint();
+            if (hitWallPoint != null) {
+                this.#enemyProjectiles.splice(i, 1);
+                this.#onceSprites.push(projectile.getHitWallOnceSprite());
+                continue;
+            }
             if (projectile.checkHit([this.#player], ["ALIVE"])) {
                 this.#enemyProjectiles.splice(i, 1);
+                this.#onceSprites.push(projectile.getHitCharacterOnceSprite());
                 continue;
             }
         }
@@ -226,6 +237,7 @@ class SubLevel {
             if (grenade.checkHit(this.#npcs, ["SPAWNING", "ALIVE"]) || grenade.hasStopped()) {
                 grenade.explode(this.#npcs, ["SPAWNING", "ALIVE"]);
                 this.#playerGrenades.splice(i, 1);
+                this.#onceSprites.push(grenade.getExplosionOnceSprite());
                 continue;
             }
         }
@@ -241,6 +253,7 @@ class SubLevel {
             if (grenade.checkHit([this.#player], ["ALIVE"]) || grenade.hasStopped()) {
                 grenade.explode([this.#player], ["ALIVE"]);
                 this.#enemyGrenades.splice(i, 1);
+                this.#onceSprites.push(grenade.getExplosionOnceSprite());
                 continue;
             }
         }
@@ -315,6 +328,19 @@ class SubLevel {
         }
         for (const grenade of this.#playerGrenades) {
             grenade.draw(ctx, this._cameraPos);
+        }
+
+        const onceSpritesLength = this.#onceSprites.length;
+        for (let i = onceSpritesLength - 1; i >= 0; --i) {
+            this.#onceSprites[i].draw(this._cameraPos);
+            if (this.#onceSprites[i].isFinished()) {
+                this.#onceSprites.splice(i, 1);
+                continue;
+            }
+        }
+
+        for (const loopSprite of this.#loopSprites) {
+            loopSprite.draw(this._cameraPos);
         }
     }
 }

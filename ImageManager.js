@@ -49,6 +49,8 @@ class ImageManager {
 
         ImageManager.loadImage("background_test_00", "./img/background/background_test_00.png");
 
+        ImageManager.loadImage("grenade_explosion", "./img/grenades/grenade_explosion.png");
+
         // ImageManager.loadImage("moli_idle_right", "./img/moli_idle_right.png");
         // ImageManager.loadImage("moli_idle_left", "./img/moli_idle_left.png");
         // ImageManager.loadImage("moli_walking_right", "./img/moli_walking_right.png");
