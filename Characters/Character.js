@@ -215,6 +215,7 @@ class Character {
             this.#coyoteIterations = 0;
             startedJump = true;
             this.#finishedJumping = false;
+            this._pos.y -= 25;
         }
         return startedJump;
     }
