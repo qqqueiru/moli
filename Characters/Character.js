@@ -429,7 +429,7 @@ class Character {
         }
 
         if (!this._pos.equals(this.#previousPos)) {
-            // this.#tracePoints.push(this.getFloorRayCast().p2.clone());
+            this.#tracePoints.push(this.getFloorRayCast().p2.clone());
         }
     }
 
