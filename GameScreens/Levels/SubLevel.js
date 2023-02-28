@@ -311,8 +311,12 @@ class SubLevel {
         ctx.clearRect(0, 0, GameScreen.width, GameScreen.height);
         ctx.drawImage(
             this.#backgroundImg,
-            GameScreen.width / 2 - this._cameraPos.x,
-            GameScreen.height / 2 - this._cameraPos.y,
+            -GameScreen.width / 2 + this._cameraPos.x,
+            -GameScreen.height / 2 + this._cameraPos.y,
+            GameScreen.width,
+            GameScreen.height,
+            0,
+            0,
             GameScreen.width,
             GameScreen.height
         );
