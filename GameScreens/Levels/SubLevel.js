@@ -35,6 +35,10 @@ class SubLevel {
         this.#walls = walls;
     }
 
+    setLoopSprites(loopSprites) {
+        this.#loopSprites = loopSprites;
+    }
+
     setPlayer(player) {
         this.#player = player;
         this.#player.setPlatforms(this.#platforms);

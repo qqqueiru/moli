@@ -48,8 +48,13 @@ class ImageManager {
         ImageManager.loadImage("npc_dying_left", "./img/npcs/test/npc_dying_left.png");
 
         ImageManager.loadImage("background_test_00", "./img/background/background_test_00.png");
+        ImageManager.loadImage("sublevel1_1", "./img/background/sublevel1_1.png");
 
         ImageManager.loadImage("grenade_explosion", "./img/grenades/grenade_explosion.png");
+
+        // Loop Sprites
+        ImageManager.loadImage("agua_lavadero", "./img/loop_sprites/agua_lavadero.png");
+        ImageManager.loadImage("moscas", "./img/loop_sprites/moscas.png");
 
         // ImageManager.loadImage("moli_idle_right", "./img/moli_idle_right.png");
         // ImageManager.loadImage("moli_idle_left", "./img/moli_idle_left.png");
