@@ -413,7 +413,8 @@ class Character {
             // Falling from platform without jumping (just going beyond its lateral limits)
             botTip = this.#platforms.get(this.#lastPlatformTouchedId).getNearestPointLimit(botTip);
             // const yLimit = this.#platforms.get(this.#lastPlatformTouchedId).getYFromLimit(botTip);
-            const yLimit = botTip.y;
+            const margin = 25;
+            const yLimit = botTip.y - margin;
             this.updateAvailablePlatforms(yLimit, botTip.x);
             const platformIdxToIgnore = this.#availablePlatformIds.indexOf(this.#lastPlatformTouchedId);
             // if (platformIdxToIgnore >= 0) {
