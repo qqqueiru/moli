@@ -7,12 +7,12 @@ class Grenade {
     #previousPos = new Point(0, 0);
     #pos = new Point(0, 0);
     #startingPoint = new Point(0, 0);  // Punto desde el que el personaje tiró la granada
-    #maxDistance = GameScreen.drawDistance;  // Depende del startingPoint y de la cámara
+    #maxDistance = GameScreen.drawDistance * 3;  // Depende del startingPoint y de la cámara
     #beyondLimits = false;
     #platforms = [];
     #walls = [];
 
-    constructor(damage, speed, direction, startingPoint, maxDistance) {
+    constructor(damage, speed, direction, startingPoint) {
         this.#damage = damage;
         if (direction === "left") {
             this.#vx = -speed;
@@ -22,7 +22,6 @@ class Grenade {
         this.#previousPos = startingPoint.clone();
         this.#pos = new Point(startingPoint.x, startingPoint.y);
         this.#startingPoint = new Point(startingPoint.x, startingPoint.y);
-        this.#maxDistance = maxDistance;
     }
 
     setPlatforms(platforms) {
