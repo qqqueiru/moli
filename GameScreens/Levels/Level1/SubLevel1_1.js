@@ -52,6 +52,58 @@ class SubLevel1_1 extends SubLevel {
             ++i;
             platforms.set(i, new Platform(i, new Segment({x: 11964, y: 3038}, {x: 12385, y: 3159})));
             ++i;
+            // Casas
+            platforms.set(i, new Platform(i, new Segment({x: 4766, y: 2955}, {x: 5504, y: 2955})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 5568, y: 2964}, {x: 6191, y: 3194})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 6183, y: 3167}, {x: 6885, y: 3167})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 8540, y: 2926}, {x: 9330, y: 2926})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 9316, y: 3110}, {x: 9602, y: 3229})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 9607, y: 3184}, {x: 9660, y: 3083})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 9660, y: 3083}, {x: 9844, y: 3083})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 9844, y: 3083}, {x: 9912, y: 3184})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 9905, y: 2957}, {x: 10254, y: 2964})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 10254, y: 2964}, {x: 10557, y: 3112})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 10554, y: 2953}, {x: 11354, y: 2953})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 11330, y: 3228}, {x: 11502, y: 3228})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 16016, y: 1311}, {x: 16251, y: 1311})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 17145, y: 1311}, {x: 17380, y: 1311})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 16331, y: 1206}, {x: 17065, y: 1206})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 15878, y: 1012}, {x: 16694, y: 805})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 16694, y: 805}, {x: 17517, y: 1011})));
+            ++i;
+            // Casa Daspi
+            platforms.set(i, new Platform(i, new Segment({x: 17655, y: 1061}, {x: 18013, y: 955})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 18013, y: 955}, {x: 18371, y: 1059})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 17638, y: 1342}, {x: 17676, y: 1342})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 17676, y: 1405}, {x: 17915, y: 1405})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 17915, y: 1304}, {x: 17953, y: 1304})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 18079, y: 1304}, {x: 18116, y: 1304})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 18079, y: 1405}, {x: 18343, y: 1405})));
+            ++i;
+            platforms.set(i, new Platform(i, new Segment({x: 18343, y: 1342}, {x: 18380, y: 1342})));
+            ++i;
             this.setPlatforms(platforms);
         }
         {
