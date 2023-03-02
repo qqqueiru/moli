@@ -81,7 +81,7 @@ class SubLevel1_1 extends SubLevel {
             ++i;
             platforms.set(i, new Platform(i, new Segment({x: 17145, y: 1311}, {x: 17380, y: 1311})));
             ++i;
-            platforms.set(i, new Platform(i, new Segment({x: 16331, y: 1206}, {x: 17065, y: 1206})));
+            platforms.set(i, new Platform(i, new Segment({x: 16331, y: 1198}, {x: 17065, y: 1198})));
             ++i;
             platforms.set(i, new Platform(i, new Segment({x: 15878, y: 1012}, {x: 16694, y: 805})));
             ++i;
@@ -116,7 +116,7 @@ class SubLevel1_1 extends SubLevel {
             this.setWalls(walls);
         }
         {
-            const player = new Player(new Point(400, 2700));  // TODO planteamiento
+            const player = new Player(new Point(400, 2400));
             player.setWeapon(new Pistol(player));
             player.setGrenadeThrower(new BasicGrenadeThrower(player));
             this.setPlayer(player);
