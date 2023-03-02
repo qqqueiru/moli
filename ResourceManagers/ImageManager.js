@@ -56,6 +56,10 @@ class ImageManager {
         ImageManager.loadImage("agua_lavadero", "./img/loop_sprites/agua_lavadero.png");
         ImageManager.loadImage("moscas", "./img/loop_sprites/moscas.png");
 
+        // Static Sprites
+        ImageManager.loadImage("casa_moli", "./img/static_sprites/casa_moli.png");
+        ImageManager.loadImage("terraza_caserio", "./img/static_sprites/terraza_caserio.png");
+
         // ImageManager.loadImage("moli_idle_right", "./img/moli_idle_right.png");
         // ImageManager.loadImage("moli_idle_left", "./img/moli_idle_left.png");
         // ImageManager.loadImage("moli_walking_right", "./img/moli_walking_right.png");

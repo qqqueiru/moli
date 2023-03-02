@@ -153,7 +153,11 @@ class SubLevel1_1 extends SubLevel {
             bgSprites.push(new LoopSprite("agua_lavadero", 1, 2, 1, 5, GameScreen.ctx, new Point(11843, 3378)));
             bgSprites.push(new LoopSprite("moscas", 1, 5, 1, 5, GameScreen.ctx, new Point(7157, 3107)));
             this.setBgSprites(bgSprites);
-            // TODO add foreground sprites            
+
+            const fgSprites = [];
+            fgSprites.push(new StaticSprite("casa_moli", 1, GameScreen.ctx, new Point(759.72519, 3248.9289)));
+            fgSprites.push(new StaticSprite("terraza_caserio", 1, GameScreen.ctx, new Point(16700.30271, 1155.30786)));
+            this.setFgSprites(fgSprites);
         }
 
     }
