@@ -34,16 +34,16 @@ class SubLevel1_1 extends SubLevel {
             ++i;
 
             // Additional platforms
-            // Iglesia
-            platforms.set(i, new Platform(i, new Segment({x: 7518, y: 2830}, {x: 7905, y: 2703})));
+            // Iglesia -413
+            platforms.set(i, new Platform(i, new Segment({x: 7105, y: 2830}, {x: 7492, y: 2703})));
             ++i;
-            platforms.set(i, new Platform(i, new Segment({x: 7905, y: 2703}, {x: 8712, y: 2886})));
+            platforms.set(i, new Platform(i, new Segment({x: 7492, y: 2703}, {x: 8299, y: 2886})));
             ++i;
-            platforms.set(i, new Platform(i, new Segment({x: 7713, y: 2985}, {x: 8706, y: 2640})));
+            platforms.set(i, new Platform(i, new Segment({x: 7300, y: 2985}, {x: 8293, y: 2640})));
             ++i;
-            platforms.set(i, new Platform(i, new Segment({x: 7450, y: 3147}, {x: 7702, y: 3147})));
+            platforms.set(i, new Platform(i, new Segment({x: 7037, y: 3147}, {x: 7289, y: 3147})));
             ++i;
-            platforms.set(i, new Platform(i, new Segment({x: 7274, y: 3248}, {x: 8930, y: 3248})));
+            platforms.set(i, new Platform(i, new Segment({x: 6861, y: 3248}, {x: 8499, y: 3248})));
             ++i;
             // Lavadero
             platforms.set(i, new Platform(i, new Segment({x: 11807, y: 3295}, {x: 11881, y: 3295})));
@@ -100,7 +100,7 @@ class SubLevel1_1 extends SubLevel {
             // Loop sprites
             const loopSprites = [];
             loopSprites.push(new LoopSprite("agua_lavadero", 1, 2, 1, 5, GameScreen.ctx, new Point(11843, 3378)));
-            loopSprites.push(new LoopSprite("moscas", 1, 5, 1, 5, GameScreen.ctx, new Point(7570, 3107)));
+            loopSprites.push(new LoopSprite("moscas", 1, 5, 1, 5, GameScreen.ctx, new Point(7157, 3107)));
             this.setLoopSprites(loopSprites);
         }
 

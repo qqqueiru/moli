@@ -333,7 +333,7 @@ class SubLevel {
 
         // Debug floor segments
         for (const [id, platform] of this.#platforms) {
-            platform.draw(ctx, this._cameraPos);
+            // platform.draw(ctx, this._cameraPos);
         }
 
         // Debug wall segments
