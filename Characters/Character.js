@@ -80,7 +80,6 @@ class Character {
                     // NOP
                 },
                 () => {
-                    console.log("Now character is alive")
                     this.#states.currentState = "ALIVE";
                 },
             ),
