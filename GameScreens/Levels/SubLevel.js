@@ -15,8 +15,8 @@ class SubLevel {
     #backgroundImg = "";
     #cameraWallLeft = new Wall(-1, new Segment({x: 0, y: 0}, {x: 0, y: 1080}), false);
     #cameraWallRight = new Wall(-2, new Segment({x: 0, y: 0}, {x: 0, y: 1080}), false);
-    #loopSprites = [];
-    #onceSprites = [];
+    #bgSprites = [];  // Includes any complementary sprite (OnceSprite, LoopSprite, StaticSprite...) the sublevel may have
+    #fgSprites = [];  // Background sprites will be drawn under the characters, and foreground ones will be drawn over.
 
     _triggers = [];
 
@@ -35,8 +35,12 @@ class SubLevel {
         this.#walls = walls;
     }
 
-    setLoopSprites(loopSprites) {
-        this.#loopSprites = loopSprites;
+    setBgSprites(bgSprites) {
+        this.#bgSprites = bgSprites;
+    }
+
+    setFgSprites(fgSprites) {
+        this.#fgSprites = fgSprites;
     }
 
     setPlayer(player) {
@@ -208,12 +212,12 @@ class SubLevel {
             const hitWallPoint = projectile.getHitWallPoint();
             if (hitWallPoint != null) {
                 this.#playerProjectiles.splice(i, 1);
-                this.#onceSprites.push(projectile.getHitWallOnceSprite());
+                this.#fgSprites.push(projectile.getHitWallOnceSprite());
                 continue;
             }
             if (projectile.checkHit(this.#npcs, ["SPAWNING", "ALIVE"])) {  // NOTE: Quizás el proyectil pueda impactar a más de un personaje a la vez. Por el momento si impacta en uno, desaparece.
                 this.#playerProjectiles.splice(i, 1);
-                this.#onceSprites.push(projectile.getHitCharacterOnceSprite());
+                this.#fgSprites.push(projectile.getHitCharacterOnceSprite());
                 continue;
             }
         }
@@ -229,12 +233,12 @@ class SubLevel {
             const hitWallPoint = projectile.getHitWallPoint();
             if (hitWallPoint != null) {
                 this.#enemyProjectiles.splice(i, 1);
-                this.#onceSprites.push(projectile.getHitWallOnceSprite());
+                this.#fgSprites.push(projectile.getHitWallOnceSprite());
                 continue;
             }
             if (projectile.checkHit([this.#player], ["ALIVE"])) {
                 this.#enemyProjectiles.splice(i, 1);
-                this.#onceSprites.push(projectile.getHitCharacterOnceSprite());
+                this.#fgSprites.push(projectile.getHitCharacterOnceSprite());
                 continue;
             }
         }
@@ -252,7 +256,7 @@ class SubLevel {
             if (grenade.checkHit(this.#npcs, ["SPAWNING", "ALIVE"]) || grenade.hasStopped()) {
                 grenade.explode(this.#npcs, ["SPAWNING", "ALIVE"]);
                 this.#playerGrenades.splice(i, 1);
-                this.#onceSprites.push(grenade.getExplosionOnceSprite());
+                this.#fgSprites.push(grenade.getExplosionOnceSprite());
                 continue;
             }
         }
@@ -268,7 +272,7 @@ class SubLevel {
             if (grenade.checkHit([this.#player], ["ALIVE"]) || grenade.hasStopped()) {
                 grenade.explode([this.#player], ["ALIVE"]);
                 this.#enemyGrenades.splice(i, 1);
-                this.#onceSprites.push(grenade.getExplosionOnceSprite());
+                this.#fgSprites.push(grenade.getExplosionOnceSprite());
                 continue;
             }
         }
@@ -325,6 +329,15 @@ class SubLevel {
             GameScreen.height
         );
 
+        const bgSpritesLength = this.#bgSprites.length;
+        for (let i = bgSpritesLength - 1; i >= 0; --i) {
+            this.#bgSprites[i].draw(this._cameraPos);
+            if (this.#bgSprites[i].isFinished()) {
+                this.#bgSprites.splice(i, 1);
+                continue;
+            }
+        }
+
         for (const npc of this.#npcs) {
             npc.draw(ctx, this._cameraPos);
         }
@@ -357,17 +370,13 @@ class SubLevel {
             grenade.draw(ctx, this._cameraPos);
         }
 
-        const onceSpritesLength = this.#onceSprites.length;
-        for (let i = onceSpritesLength - 1; i >= 0; --i) {
-            this.#onceSprites[i].draw(this._cameraPos);
-            if (this.#onceSprites[i].isFinished()) {
-                this.#onceSprites.splice(i, 1);
+        const fgSpritesLength = this.#fgSprites.length;
+        for (let i = fgSpritesLength - 1; i >= 0; --i) {
+            this.#fgSprites[i].draw(this._cameraPos);
+            if (this.#fgSprites[i].isFinished()) {
+                this.#fgSprites.splice(i, 1);
                 continue;
             }
-        }
-
-        for (const loopSprite of this.#loopSprites) {
-            loopSprite.draw(this._cameraPos);
         }
 
         for (const trigger of this._triggers) {

@@ -149,11 +149,11 @@ class SubLevel1_1 extends SubLevel {
             // }));
         }
         {
-            // Loop sprites
-            const loopSprites = [];
-            loopSprites.push(new LoopSprite("agua_lavadero", 1, 2, 1, 5, GameScreen.ctx, new Point(11843, 3378)));
-            loopSprites.push(new LoopSprite("moscas", 1, 5, 1, 5, GameScreen.ctx, new Point(7157, 3107)));
-            this.setLoopSprites(loopSprites);
+            const bgSprites = [];
+            bgSprites.push(new LoopSprite("agua_lavadero", 1, 2, 1, 5, GameScreen.ctx, new Point(11843, 3378)));
+            bgSprites.push(new LoopSprite("moscas", 1, 5, 1, 5, GameScreen.ctx, new Point(7157, 3107)));
+            this.setBgSprites(bgSprites);
+            // TODO add foreground sprites            
         }
 
     }

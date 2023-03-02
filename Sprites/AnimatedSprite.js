@@ -78,4 +78,8 @@ class AnimatedSprite {
     resume() {
         this.#paused = false;
     }
+
+    isFinished() {
+        return false;
+    }
 }
