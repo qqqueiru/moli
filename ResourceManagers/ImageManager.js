@@ -53,6 +53,7 @@ class ImageManager {
         ImageManager.loadImage("grenade_explosion", "./img/grenades/grenade_explosion.png");
 
         // Loop Sprites
+        ImageManager.loadImage("energy_drink", "./img/loop_sprites/energy_drink.png");
         ImageManager.loadImage("agua_lavadero", "./img/loop_sprites/agua_lavadero.png");
         ImageManager.loadImage("moscas", "./img/loop_sprites/moscas.png");
 

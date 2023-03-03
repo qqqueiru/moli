@@ -116,7 +116,7 @@ class SubLevel1_1 extends SubLevel {
             this.setWalls(walls);
         }
         {
-            const player = new Player(new Point(400, 2400));
+            const player = new Player(new Point(400, 2700));
             player.setWeapon(new Pistol(player));
             player.setGrenadeThrower(new BasicGrenadeThrower(player));
             this.setPlayer(player);
@@ -158,6 +158,12 @@ class SubLevel1_1 extends SubLevel {
             fgSprites.push(new StaticSprite("casa_moli", 1, GameScreen.ctx, new Point(759.72519, 3248.9289)));
             fgSprites.push(new StaticSprite("terraza_caserio", 1, GameScreen.ctx, new Point(16700.30271, 1155.30786)));
             this.setFgSprites(fgSprites);
+        }
+        {
+            // Collectables
+            const collectables = [];
+            collectables.push(new Can(new Point(960, 2700)));
+            this.setCollectables(collectables);
         }
 
     }

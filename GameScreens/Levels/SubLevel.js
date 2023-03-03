@@ -17,6 +17,7 @@ class SubLevel {
     #cameraWallRight = new Wall(-2, new Segment({x: 0, y: 0}, {x: 0, y: 1080}), false);
     #bgSprites = [];  // Includes any complementary sprite (OnceSprite, LoopSprite, StaticSprite...) the sublevel may have
     #fgSprites = [];  // Background sprites will be drawn under the characters, and foreground ones will be drawn over.
+    #collectables = [];
 
     _triggers = [];
 
@@ -41,6 +42,10 @@ class SubLevel {
 
     setFgSprites(fgSprites) {
         this.#fgSprites = fgSprites;
+    }
+
+    setCollectables(collectables) {
+        this.#collectables = collectables;
     }
 
     setPlayer(player) {
@@ -278,6 +283,18 @@ class SubLevel {
         }
     }
 
+    updateCollectables() {
+        const nCollectables = this.#collectables.length;
+        for (let i = nCollectables - 1; i >= 0; --i) {
+            const collectable = this.#collectables[i];
+            collectable.update();
+            if (collectable.checkHit(this.#player, ["ALIVE"])) {
+                this.#collectables.splice(i, 1);
+                continue;
+            }
+        }
+    }
+
     #moveCameraWalls() {
         this.#cameraWallLeft.moveTo(this._cameraPos.addConst(new Point(-GameScreen.width / 2, 0)));
         this.#cameraWallRight.moveTo(this._cameraPos.addConst(new Point(GameScreen.width / 2, 0)));
@@ -295,6 +312,7 @@ class SubLevel {
         this.updateNpcAi();
         this.updateProjectiles();
         this.updateGrenades();
+        this.updateCollectables();
 
         this.#player.update();
         for (const npc of this.#npcs) {
@@ -381,6 +399,10 @@ class SubLevel {
 
         for (const trigger of this._triggers) {
             trigger.draw(ctx, this._cameraPos);
+        }
+
+        for (const collectable of this.#collectables) {
+            collectable.draw(ctx, this._cameraPos);
         }
     }
 }
