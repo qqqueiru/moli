@@ -30,7 +30,7 @@ class SubLevel1_1 extends SubLevel {
             ++i;
             platforms.set(i, new Platform(i, new Segment({x: 12602, y: 3512}, {x: 15366, y: 1518})));
             ++i;
-            platforms.set(i, new Platform(i, new Segment({x: 15366, y: 1518}, {x: 18520, y: 1518})));
+            platforms.set(i, new Platform(i, new Segment({x: 15366, y: 1518}, {x: 20000, y: 1518})));
             ++i;
 
             // Additional platforms
@@ -109,10 +109,10 @@ class SubLevel1_1 extends SubLevel {
         {
             let i = 0;
             const walls = new Map();
-            // walls.set(i, new Wall(i, new Segment({x: 50 * 3.779527377, y: 0}, {x: 50 * 3.779527377, y: 10000}), false));
-            // ++i;
-            // walls.set(i, new Wall(i, new Segment({x: 698 * 3.779527377, y: 0}, {x: 698 * 3.779527377, y: 10000}), false));
-            // ++i;
+            walls.set(i, new Wall(i, new Segment({x: 191, y: 0}, {x: 191, y: 10000}), false));
+            ++i;
+            walls.set(i, new Wall(i, new Segment({x: 20000, y: 0}, {x: 20000, y: 10000}), false));
+            ++i;
             this.setWalls(walls);
         }
         {
@@ -155,7 +155,7 @@ class SubLevel1_1 extends SubLevel {
             this.setBgSprites(bgSprites);
 
             const fgSprites = [];
-            fgSprites.push(new StaticSprite("casa_moli", 1, GameScreen.ctx, new Point(759.72519, 3248.9289)));
+            fgSprites.push(new StaticSprite("casa_moli", 1, GameScreen.ctx, new Point(759.72519, 3198.9289)));
             fgSprites.push(new StaticSprite("terraza_caserio", 1, GameScreen.ctx, new Point(16700.30271, 1155.30786)));
             this.setFgSprites(fgSprites);
         }
