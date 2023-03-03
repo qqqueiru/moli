@@ -162,7 +162,15 @@ class SubLevel1_1 extends SubLevel {
         {
             // Collectables
             const collectables = [];
-            collectables.push(new Can(new Point(960, 2700)));
+            collectables.push(new Can(new Point(991, 2807)));
+            collectables.push(new Can(new Point(1138, 2723)));
+            collectables.push(new Can(new Point(1268, 2807)));
+            collectables.push(new Can(new Point(1384, 2924)));
+            collectables.push(new Can(new Point(1500, 3040)));
+            collectables.push(new Can(new Point(1515, 3477)));
+            collectables.push(new Can(new Point(1716, 3477)));
+            collectables.push(new Can(new Point(1901, 3576)));
+            collectables.push(new Can(new Point(2081, 3649)));
             this.setCollectables(collectables);
         }
 
