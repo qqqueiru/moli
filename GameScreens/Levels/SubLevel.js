@@ -380,6 +380,15 @@ class SubLevel {
         this.#cameraWallLeft.draw(ctx, this._camera.getPos());
         this.#cameraWallRight.draw(ctx, this._camera.getPos());
 
+        const fgSpritesLength = this.#fgSprites.length;
+        for (let i = fgSpritesLength - 1; i >= 0; --i) {
+            this.#fgSprites[i].draw(this._camera.getPos());
+            if (this.#fgSprites[i].isFinished()) {
+                this.#fgSprites.splice(i, 1);
+                continue;
+            }
+        }
+
         // Los proyectiles y granadas se dibujan por encima de todo
         for (const projectile of this.#enemyProjectiles) {
             projectile.draw(ctx, this._camera.getPos());
@@ -392,15 +401,6 @@ class SubLevel {
         }
         for (const grenade of this.#playerGrenades) {
             grenade.draw(ctx, this._camera.getPos());
-        }
-
-        const fgSpritesLength = this.#fgSprites.length;
-        for (let i = fgSpritesLength - 1; i >= 0; --i) {
-            this.#fgSprites[i].draw(this._camera.getPos());
-            if (this.#fgSprites[i].isFinished()) {
-                this.#fgSprites.splice(i, 1);
-                continue;
-            }
         }
 
         for (const trigger of this._triggers) {
