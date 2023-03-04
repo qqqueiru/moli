@@ -1,5 +1,7 @@
 class Camera {
-    // dead zone
+    // Dead zone
+    #deadX = 384 / 2;
+    #deadY = 108 / 2;
     #pos_0;  // Current pos
     #pos_1;  // Previous pos
     #kp = 0.05;
@@ -34,11 +36,23 @@ class Camera {
     }
 
     follow(point) {
-        // TODO if point is in the dead zone, this will return
+        // If target position is within the dead zone, there is no need to change camera position
+        const xWithinDeadZone = (point.x > (this.#pos_0.x - this.#deadX)) && (point.x < (this.#pos_0.x + this.#deadX));
+        const yWithinDeadZone = (point.y > (this.#pos_0.y - this.#deadY)) && (point.y < (this.#pos_0.y + this.#deadY));
 
         // PID like regulation, without the integral part
         const error_0 = point.substractConst(this.#pos_0);
+        if (point.x < this.#pos_0.x) { error_0.x += this.#deadX; }
+        if (point.x > this.#pos_0.x) { error_0.x -= this.#deadX; }
+        if (point.y < this.#pos_0.y) { error_0.y += this.#deadY; }
+        if (point.y > this.#pos_0.y) { error_0.y -= this.#deadY; }
+
         const error_1 = point.substractConst(this.#pos_1);
+        if (point.x < this.#pos_1.x) { error_1.x += this.#deadX; }
+        if (point.x > this.#pos_1.x) { error_1.x -= this.#deadX; }
+        if (point.y < this.#pos_1.y) { error_1.y += this.#deadY; }
+        if (point.y > this.#pos_1.y) { error_1.y -= this.#deadY; }
+
         const deltaError = error_0.substractConst(error_1);
         const changeP = error_0.multiplyConst(this.#kp);
         const changeD = deltaError.multiplyConst(this.#kd);
@@ -51,7 +65,13 @@ class Camera {
         if (change.y <= -this.#maxChange) { change.y = -this.#maxChange; }
 
         this.#pos_1 = this.#pos_0.clone();
-        this.#pos_0 = this.#pos_0.addConst(change);
+        this.#pos_0 = this.#pos_0.clone();
+        if (!xWithinDeadZone) {
+            this.#pos_0.x += change.x;
+        }
+        if (!yWithinDeadZone) {
+            this.#pos_0.y += change.y;
+        }
 
         // Check limits (camera must not see beyond level bounds)
         if (this.#pos_0.x < GameScreen.width / 2) { this.#pos_0.x = GameScreen.width / 2; }
