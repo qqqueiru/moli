@@ -12,6 +12,11 @@ class Point {
         this.x -= p.x;
         this.y -= p.y;
     }
+    multiply(k) {
+        this.x *= k;
+        this.y *= k;
+    }
+
     clone() {
         return new Point(this.x, this.y);
     }
@@ -21,6 +26,9 @@ class Point {
     }
     substractConst(p) {
         return new Point(this.x - p.x, this.y - p.y);
+    }
+    multiplyConst(k) {
+        return new Point(this.x * k, this.y * k);
     }
 
     distanceFromPoint(p) {

@@ -7,7 +7,6 @@ class SubLevel {
     #player;
     #npcs = [];
     #upBuffer = [];
-    _cameraPos = new Point(0, 0);
     #playerProjectiles = [];  // Lista de proyectiles presentes en el subnivel...
     #enemyProjectiles = [];
     #playerGrenades = [];  // Lista de granadas presentes en el subnivel...
@@ -21,11 +20,16 @@ class SubLevel {
 
     _triggers = [];
 
+    _camera = new Camera();
+
     constructor() {
     }
 
     setBackgroundImg(imgId) {
         this.#backgroundImg = ImageManager.getImage(imgId);
+        const w = this.#backgroundImg.width;
+        const h = this.#backgroundImg.height;
+        this._camera.setSubLevelDimensions(w, h);
     }
 
     setPlatforms(platforms) {
@@ -296,8 +300,8 @@ class SubLevel {
     }
 
     #moveCameraWalls() {
-        this.#cameraWallLeft.moveTo(this._cameraPos.addConst(new Point(-GameScreen.width / 2, 0)));
-        this.#cameraWallRight.moveTo(this._cameraPos.addConst(new Point(GameScreen.width / 2, 0)));
+        this.#cameraWallLeft.moveTo(this._camera.getPos().addConst(new Point(-GameScreen.width / 2, 0)));
+        this.#cameraWallRight.moveTo(this._camera.getPos().addConst(new Point(GameScreen.width / 2, 0)));
     }
 
     update() {
@@ -330,6 +334,8 @@ class SubLevel {
                 this._triggers.splice(i, 1);
             }
         }
+
+        this._camera.update();
     }
 
     draw(ctx) {
@@ -337,8 +343,8 @@ class SubLevel {
         ctx.clearRect(0, 0, GameScreen.width, GameScreen.height);
         ctx.drawImage(
             this.#backgroundImg,
-            -GameScreen.width / 2 + this._cameraPos.x,
-            -GameScreen.height / 2 + this._cameraPos.y,
+            -GameScreen.width / 2 + this._camera.getPos().x,
+            -GameScreen.height / 2 + this._camera.getPos().y,
             GameScreen.width,
             GameScreen.height,
             0,
@@ -349,7 +355,7 @@ class SubLevel {
 
         const bgSpritesLength = this.#bgSprites.length;
         for (let i = bgSpritesLength - 1; i >= 0; --i) {
-            this.#bgSprites[i].draw(this._cameraPos);
+            this.#bgSprites[i].draw(this._camera.getPos());
             if (this.#bgSprites[i].isFinished()) {
                 this.#bgSprites.splice(i, 1);
                 continue;
@@ -357,40 +363,40 @@ class SubLevel {
         }
 
         for (const npc of this.#npcs) {
-            npc.draw(ctx, this._cameraPos);
+            npc.draw(ctx, this._camera.getPos());
         }
 
-        this.#player.draw(ctx, this._cameraPos);
+        this.#player.draw(ctx, this._camera.getPos());
 
         // Debug floor segments
         for (const [id, platform] of this.#platforms) {
-            // platform.draw(ctx, this._cameraPos);
+            // platform.draw(ctx, this._camera.getPos());
         }
 
         // Debug wall segments
         for (const [id, wall] of this.#walls) {
-            wall.draw(ctx, this._cameraPos);
+            wall.draw(ctx, this._camera.getPos());
         }
-        this.#cameraWallLeft.draw(ctx, this._cameraPos);
-        this.#cameraWallRight.draw(ctx, this._cameraPos);
+        this.#cameraWallLeft.draw(ctx, this._camera.getPos());
+        this.#cameraWallRight.draw(ctx, this._camera.getPos());
 
         // Los proyectiles y granadas se dibujan por encima de todo
         for (const projectile of this.#enemyProjectiles) {
-            projectile.draw(ctx, this._cameraPos);
+            projectile.draw(ctx, this._camera.getPos());
         }
         for (const grenade of this.#enemyGrenades) {
-            grenade.draw(ctx, this._cameraPos);
+            grenade.draw(ctx, this._camera.getPos());
         }
         for (const projectile of this.#playerProjectiles) {
-            projectile.draw(ctx, this._cameraPos);
+            projectile.draw(ctx, this._camera.getPos());
         }
         for (const grenade of this.#playerGrenades) {
-            grenade.draw(ctx, this._cameraPos);
+            grenade.draw(ctx, this._camera.getPos());
         }
 
         const fgSpritesLength = this.#fgSprites.length;
         for (let i = fgSpritesLength - 1; i >= 0; --i) {
-            this.#fgSprites[i].draw(this._cameraPos);
+            this.#fgSprites[i].draw(this._camera.getPos());
             if (this.#fgSprites[i].isFinished()) {
                 this.#fgSprites.splice(i, 1);
                 continue;
@@ -398,11 +404,11 @@ class SubLevel {
         }
 
         for (const trigger of this._triggers) {
-            trigger.draw(ctx, this._cameraPos);
+            trigger.draw(ctx, this._camera.getPos());
         }
 
         for (const collectable of this.#collectables) {
-            collectable.draw(ctx, this._cameraPos);
+            collectable.draw(ctx, this._camera.getPos());
         }
     }
 }

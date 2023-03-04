@@ -120,7 +120,7 @@ class SubLevel1_1 extends SubLevel {
             player.setWeapon(new Pistol(player));
             player.setGrenadeThrower(new BasicGrenadeThrower(player));
             this.setPlayer(player);
-            this._cameraPos = player.getPos();  // Testing camera pos
+            this._camera.setFirstPoint(player.getPos());
         }
         {
             const npcs = [];
@@ -182,6 +182,6 @@ class SubLevel1_1 extends SubLevel {
         player.setWeapon(new Pistol(player));
         player.setGrenadeThrower(new BasicGrenadeThrower(player));
         this.subLevels.get(this.currentSubLevelId).setPlayer(player);
-        this._cameraPos = player.getPos();
+        this._camera.setFirstPoint(player.getPos());
     }
 }
