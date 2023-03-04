@@ -1,7 +1,6 @@
 class Camera {
-    // Dead zone
-    #deadX = 384 / 2;
-    #deadY = 108 / 2;
+    #deadZone = new Point(384 / 2, 108 / 2);
+    #pos;  // Camera pos to return (includes shaking if applicable)
     #pos_0;  // Current pos
     #pos_1;  // Previous pos
     #kp = 0.05;
@@ -9,18 +8,24 @@ class Camera {
     #maxChange = 1000;
     #targetPoint;  // Point to follow
     #offset = new Point(0, -100);  // Useful when looking ahead or needing to look up
-    #subLevelWidth;
-    #subLevelHeight;
+    #subLevelDim;
+    #minBound;
+    #maxBound;
+    #iterationsShaking = 0;
+    #iterationsToShake = 60;
+    #shakeAmplitude = 100;
     constructor() {
         // NOP
     }
 
     setSubLevelDimensions(w, h) {
-        this.#subLevelWidth = w;
-        this.#subLevelHeight = h;
+        this.#subLevelDim = new Point(w, h);
+        this.#minBound = new Point(0, 0);
+        this.#maxBound = new Point(w, h);
     }
 
     setFirstPoint(point) {
+        this.#pos = point.clone();
         this.#pos_0 = point.clone();
         this.#pos_1 = point.clone();
         this.setTargetPoint(point);
@@ -37,21 +42,21 @@ class Camera {
 
     follow(point) {
         // If target position is within the dead zone, there is no need to change camera position
-        const xWithinDeadZone = (point.x > (this.#pos_0.x - this.#deadX)) && (point.x < (this.#pos_0.x + this.#deadX));
-        const yWithinDeadZone = (point.y > (this.#pos_0.y - this.#deadY)) && (point.y < (this.#pos_0.y + this.#deadY));
+        const xWithinDeadZone = (point.x > (this.#pos_0.x - this.#deadZone.x)) && (point.x < (this.#pos_0.x + this.#deadZone.x));
+        const yWithinDeadZone = (point.y > (this.#pos_0.y - this.#deadZone.y)) && (point.y < (this.#pos_0.y + this.#deadZone.y));
 
         // PID like regulation, without the integral part
         const error_0 = point.substractConst(this.#pos_0);
-        if (point.x < this.#pos_0.x) { error_0.x += this.#deadX; }
-        if (point.x > this.#pos_0.x) { error_0.x -= this.#deadX; }
-        if (point.y < this.#pos_0.y) { error_0.y += this.#deadY; }
-        if (point.y > this.#pos_0.y) { error_0.y -= this.#deadY; }
+        if (point.x < this.#pos_0.x) { error_0.x += this.#deadZone.x; }
+        if (point.x > this.#pos_0.x) { error_0.x -= this.#deadZone.x; }
+        if (point.y < this.#pos_0.y) { error_0.y += this.#deadZone.y; }
+        if (point.y > this.#pos_0.y) { error_0.y -= this.#deadZone.y; }
 
         const error_1 = point.substractConst(this.#pos_1);
-        if (point.x < this.#pos_1.x) { error_1.x += this.#deadX; }
-        if (point.x > this.#pos_1.x) { error_1.x -= this.#deadX; }
-        if (point.y < this.#pos_1.y) { error_1.y += this.#deadY; }
-        if (point.y > this.#pos_1.y) { error_1.y -= this.#deadY; }
+        if (point.x < this.#pos_1.x) { error_1.x += this.#deadZone.x; }
+        if (point.x > this.#pos_1.x) { error_1.x -= this.#deadZone.x; }
+        if (point.y < this.#pos_1.y) { error_1.y += this.#deadZone.y; }
+        if (point.y > this.#pos_1.y) { error_1.y -= this.#deadZone.y; }
 
         const deltaError = error_0.substractConst(error_1);
         const changeP = error_0.multiplyConst(this.#kp);
@@ -73,18 +78,32 @@ class Camera {
             this.#pos_0.y += change.y;
         }
 
-        // Check limits (camera must not see beyond level bounds)
-        if (this.#pos_0.x < GameScreen.width / 2) { this.#pos_0.x = GameScreen.width / 2; }
-        if (this.#pos_0.y < GameScreen.height / 2) { this.#pos_0.y = GameScreen.height / 2; }
-        if (this.#pos_0.x > this.#subLevelWidth - GameScreen.width / 2) { this.#pos_0.x = this.#subLevelWidth - GameScreen.width / 2; }
-        if (this.#pos_0.y > this.#subLevelHeight - GameScreen.height / 2) { this.#pos_0.y = this.#subLevelHeight - GameScreen.height / 2; }
+        this.#limitCameraPosToBounds(this.#pos_0);
+
+        this.#pos = this.#pos_0.clone();
+        if (this.#iterationsShaking > 0) {
+            const decayFactor = this.#iterationsShaking / this.#iterationsToShake * this.#iterationsShaking / this.#iterationsToShake;
+            this.#pos.x += this.#shakeAmplitude * (0.5 - Math.random()) * decayFactor;
+            this.#pos.y += this.#shakeAmplitude * (0.5 - Math.random()) * decayFactor;
+            --this.#iterationsShaking;
+            this.#limitCameraPosToBounds(this.#pos);
+        }
+    }
+
+    #limitCameraPosToBounds(cameraPos) {
+        // Check limits (camera must not see beyond limit bounds)
+        if (cameraPos.x < this.#minBound.x + GameScreen.width / 2) { cameraPos.x = this.#minBound.x + GameScreen.width / 2; }
+        if (cameraPos.y < this.#minBound.y + GameScreen.height / 2) { cameraPos.y = this.#minBound.y + GameScreen.height / 2; }
+        if (cameraPos.x > this.#maxBound.x - GameScreen.width / 2) { cameraPos.x = this.#maxBound.x - GameScreen.width / 2; }
+        if (cameraPos.y > this.#maxBound.y - GameScreen.height / 2) { cameraPos.y = this.#maxBound.y - GameScreen.height / 2; }
+
     }
 
     shake() {
-        // TODO
+        this.#iterationsShaking = this.#iterationsToShake;
     }
 
     getPos() {
-        return this.#pos_0;
+        return this.#pos;
     }
 }
