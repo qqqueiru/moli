@@ -142,6 +142,10 @@ class Character {
         return this.#states.currentState;
     }
 
+    getVx() {
+        return this.#vx;
+    }
+
     isDead() {
         return this.#states.currentState == "DEAD";
     }

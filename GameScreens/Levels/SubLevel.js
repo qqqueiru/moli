@@ -4,7 +4,7 @@ class SubLevel {
     #topSegments = [];  // Characters can't go above these segments
     #leftSegments = [];
     #rightSegments = [];
-    #player;
+    _player;
     #npcs = [];
     #upBuffer = [];
     #playerProjectiles = [];  // Lista de proyectiles presentes en el subnivel...
@@ -53,14 +53,14 @@ class SubLevel {
     }
 
     setPlayer(player) {
-        this.#player = player;
-        this.#player.setPlatforms(this.#platforms);
+        this._player = player;
+        this._player.setPlatforms(this.#platforms);
         const playerWalls = new Map(this.#walls);
-        this.#player.setWalls(playerWalls);
+        this._player.setWalls(playerWalls);
         playerWalls.set(-1, this.#cameraWallLeft);
         playerWalls.set(-2, this.#cameraWallRight);
 
-        this.#player.updateAvailablePlatforms();
+        this._player.updateAvailablePlatforms();
     }
 
     setNpcs(npcs) {
@@ -123,30 +123,31 @@ class SubLevel {
             GameScreen.previousScreen = GameScreen.currentScreen;
             GameScreen.currentScreen = new PauseMenu();
         }
-        if (this.#player.getCurrentState() != "ALIVE") {
+        if (this._player.getCurrentState() != "ALIVE") {
             return;
         }
         if (inputs.get("w")?.isPressed()) {
-            this.#player.setLookingUp(true);
+            this._player.setLookingUp(true);
         } else {
-            this.#player.setLookingUp(false);
+            this._player.setLookingUp(false);
         }
-        this.#player.dontMove();
+        this._player.dontMove();
         if (inputs.get("a")?.isPressed()) {
-            this.#player.moveLeft();
+            this._player.moveLeft();
         }
         if (inputs.get("d")?.isPressed()) {
-            this.#player.moveRight();
+            this._player.moveRight();
         }
         if (inputs.get("j")?.consumeIfActivated()) {
-            const projectile = this.#player.shoot();
+            this._camera.shake();
+            const projectile = this._player.shoot();
             if (projectile) {
                 projectile.setWalls(this.#walls);
                 this.#playerProjectiles.push(projectile);
             }
         }
         if (inputs.get("l")?.consumeIfActivated()) {
-            const grenade = this.#player.throwGrenade();
+            const grenade = this._player.throwGrenade();
             if (grenade) {
                 grenade.setPlatforms(this.#platforms);
                 grenade.setWalls(this.#walls);
@@ -157,20 +158,20 @@ class SubLevel {
             this.#upBuffer.push(Date.now());
         }
         if (this.#upBuffer.length > 0) {
-            const startedJump = this.#player.startJump();
+            const startedJump = this._player.startJump();
             if (startedJump) {
                 this.#upBuffer.shift();
             }
         }
         if (inputs.get("k")?.isPressed()) {
-            // this.#player.jump();
-            this.#player.setCrouched(false);
+            // this._player.jump();
+            this._player.setCrouched(false);
         } else {
-            // this.#player.stopJumping();
+            // this._player.stopJumping();
             if (inputs.get("s")?.isPressed()) {
-                this.#player.setCrouched(true);
+                this._player.setCrouched(true);
             } else {
-                this.#player.setCrouched(false);
+                this._player.setCrouched(false);
             }
         }
     }
@@ -184,12 +185,12 @@ class SubLevel {
             npc.setLookingUp(false);
             npc.dontMove();
             npc.setCrouched(false);
-            npc.setFaceDirection(this.#player.getPos().x > npc.getPos().x ? "right" : "left");
-            if (this.#player.getPos().x - npc.getPos().x > 300) {
+            npc.setFaceDirection(this._player.getPos().x > npc.getPos().x ? "right" : "left");
+            if (this._player.getPos().x - npc.getPos().x > 300) {
                 npc.moveRight();
             }
 
-            if (this.#player.getPos().x - npc.getPos().x < -300) {
+            if (this._player.getPos().x - npc.getPos().x < -300) {
                 npc.moveLeft();
             }
 
@@ -245,7 +246,7 @@ class SubLevel {
                 this.#fgSprites.push(projectile.getHitWallOnceSprite());
                 continue;
             }
-            if (projectile.checkHit([this.#player], ["ALIVE"])) {
+            if (projectile.checkHit([this._player], ["ALIVE"])) {
                 this.#enemyProjectiles.splice(i, 1);
                 this.#fgSprites.push(projectile.getHitCharacterOnceSprite());
                 continue;
@@ -278,8 +279,8 @@ class SubLevel {
                 this.#enemyGrenades.splice(i, 1);
                 continue;
             }
-            if (grenade.checkHit([this.#player], ["ALIVE"]) || grenade.hasStopped()) {
-                grenade.explode([this.#player], ["ALIVE"]);
+            if (grenade.checkHit([this._player], ["ALIVE"]) || grenade.hasStopped()) {
+                grenade.explode([this._player], ["ALIVE"]);
                 this.#enemyGrenades.splice(i, 1);
                 this.#fgSprites.push(grenade.getExplosionOnceSprite());
                 continue;
@@ -292,7 +293,7 @@ class SubLevel {
         for (let i = nCollectables - 1; i >= 0; --i) {
             const collectable = this.#collectables[i];
             collectable.update();
-            if (collectable.checkHit(this.#player, ["ALIVE"])) {
+            if (collectable.checkHit(this._player, ["ALIVE"])) {
                 this.#collectables.splice(i, 1);
                 continue;
             }
@@ -307,7 +308,7 @@ class SubLevel {
     update() {
         this.#moveCameraWalls();
 
-        this.#reviseCharacterPosWithPlatforms(this.#player);
+        this.#reviseCharacterPosWithPlatforms(this._player);
         for (const npc of this.#npcs) {
             this.#reviseCharacterPosWithPlatforms(npc);
         }
@@ -318,12 +319,12 @@ class SubLevel {
         this.updateGrenades();
         this.updateCollectables();
 
-        this.#player.update();
+        this._player.update();
         for (const npc of this.#npcs) {
             npc.update();
         }
 
-        if (this.#player.isDead()) {
+        if (this._player.isDead()) {
             this.onPlayerDeath();
         }
 
@@ -366,7 +367,7 @@ class SubLevel {
             npc.draw(ctx, this._camera.getPos());
         }
 
-        this.#player.draw(ctx, this._camera.getPos());
+        this._player.draw(ctx, this._camera.getPos());
 
         // Debug floor segments
         for (const [id, platform] of this.#platforms) {
@@ -410,5 +411,7 @@ class SubLevel {
         for (const collectable of this.#collectables) {
             collectable.draw(ctx, this._camera.getPos());
         }
+
+        this._camera.draw(ctx);
     }
 }

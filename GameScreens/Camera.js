@@ -7,7 +7,7 @@ class Camera {
     #kd = 0.5;
     #maxChange = 1000;
     #targetPoint;  // Point to follow
-    #offset = new Point(0, -100);  // Useful when looking ahead or needing to look up
+    offset = new Point(0, 0);  // Useful when looking ahead or needing to look up
     #subLevelDim;
     #minBound;
     #maxBound;
@@ -37,7 +37,7 @@ class Camera {
     }
 
     update() {
-        this.follow(this.#targetPoint.addConst(this.#offset));
+        this.follow(this.#targetPoint.addConst(this.offset));
     }
 
     follow(point) {
@@ -105,5 +105,37 @@ class Camera {
 
     getPos() {
         return this.#pos;
+    }
+
+    draw(ctx) {
+        ctx.beginPath();
+        ctx.rect(
+            GameScreen.width / 2,
+            GameScreen.height / 2,
+            10,
+            10
+        );
+        ctx.fillStyle = "red";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.rect(
+            GameScreen.width / 2 + this.#targetPoint.x - this.#pos.x,
+            GameScreen.height / 2 + this.#targetPoint.y - this.#pos.y, 
+            10, 
+            10
+        );
+        ctx.fillStyle = "orange";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.rect(
+            GameScreen.width / 2 + this.#targetPoint.x + this.offset.x - this.#pos.x,
+            GameScreen.height / 2 + this.#targetPoint.y + this.offset.y - this.#pos.y,
+            10,
+            10
+        );
+        ctx.fillStyle = "yellow";
+        ctx.fill();
     }
 }
