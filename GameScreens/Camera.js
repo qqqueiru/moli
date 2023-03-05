@@ -18,6 +18,24 @@ class Camera {
         // NOP
     }
 
+    setSubLevelLimits(minBound, maxBound) {
+        if (minBound.x == -1) {
+            minBound.x = 0;
+        }
+        if (minBound.y == -1) {
+            minBound.y = 0;
+        }
+        if (maxBound.x == -1) {
+            maxBound.x = this.#subLevelDim.x;
+        }
+        if (maxBound.y == -1) {
+            maxBound.y = this.#subLevelDim.y;
+        }
+
+        this.#minBound = minBound;
+        this.#maxBound = maxBound;
+    }
+
     setSubLevelDimensions(w, h) {
         this.#subLevelDim = new Point(w, h);
         this.#minBound = new Point(0, 0);
@@ -96,7 +114,6 @@ class Camera {
         if (cameraPos.y < this.#minBound.y + GameScreen.height / 2) { cameraPos.y = this.#minBound.y + GameScreen.height / 2; }
         if (cameraPos.x > this.#maxBound.x - GameScreen.width / 2) { cameraPos.x = this.#maxBound.x - GameScreen.width / 2; }
         if (cameraPos.y > this.#maxBound.y - GameScreen.height / 2) { cameraPos.y = this.#maxBound.y - GameScreen.height / 2; }
-
     }
 
     shake() {

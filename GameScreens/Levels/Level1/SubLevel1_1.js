@@ -1,5 +1,7 @@
 class SubLevel1_1 extends SubLevel {
     #playerVxNorms = [];
+    #inChurch = false;
+    #targetPointChurch = new Point(7900, 3200);
     constructor() {
         super();
         {
@@ -150,6 +152,18 @@ class SubLevel1_1 extends SubLevel {
             // }));
         }
         {
+            this._triggers.push(
+                new LocationTrigger(
+                    this._player, 
+                    new Ellipse(new Point(7730, 3120), 750, 850), 
+                    () => {
+                        this.#inChurch = true;
+                        this._camera.setTargetPoint(this.#targetPointChurch);
+                    }
+                )
+            );
+        }
+        {
             const bgSprites = [];
             bgSprites.push(new LoopSprite("agua_lavadero", 1, 2, 1, 5, GameScreen.ctx, new Point(11843, 3378)));
             bgSprites.push(new LoopSprite("moscas", 1, 5, 1, 5, GameScreen.ctx, new Point(7157, 3107)));
@@ -250,6 +264,10 @@ class SubLevel1_1 extends SubLevel {
             }
         }
 
+        if (this.#inChurch) {
+            this.#targetPointChurch.y = this._player.getPos().y;
+            this._camera.offset.x = 0;
+        }
     }
 
     onPlayerDeath() {
