@@ -181,6 +181,7 @@ class SubLevel1_1 extends SubLevel {
         super.update();
 
         // Update camera offset
+        // X Offset
         const playerVx = this._player.getVx();
         const playerVxNorm = Math.sign(playerVx);
         this.#playerVxNorms.push(playerVxNorm);
@@ -204,6 +205,51 @@ class SubLevel1_1 extends SubLevel {
                 }
             }
         }
+        // Y Offset
+        const playerPos = this._player.getPos();
+        if (playerPos.x > 4000 && playerPos.x < 12500) {
+            if (playerPos.y < 3060) {
+                // Player is on the roofs
+                if (this._camera.offset.y < 300) {
+                    this._camera.offset.y += 10;
+                }
+            } else if (playerPos.y > 3200) {
+                // Player is on the floor street
+                if (this._camera.offset.y > -300) {
+                    this._camera.offset.y -= 10;
+                }
+            } else {
+                if (this._camera.offset.y > 0) {
+                    this._camera.offset.y -= 5;
+                } else if (this._camera.offset.y < 0) {
+                    this._camera.offset.y += 5;
+                }
+            }
+        } else if (playerPos.x > 12600 /*&& playerPos.x < 15600*/) {
+            if (playerPos.y < 990) {
+                // Player is on the roofs
+                if (this._camera.offset.y < 300) {
+                    this._camera.offset.y += 10;
+                }
+            } else if (playerPos.y > 1150) {
+                if (this._camera.offset.y > -300) {
+                    this._camera.offset.y -= 10;
+                }
+            } else {
+                if (this._camera.offset.y > 0) {
+                    this._camera.offset.y -= 5;
+                } else if (this._camera.offset.y < 0) {
+                    this._camera.offset.y += 5;
+                }
+            }
+        } else {
+            if (this._camera.offset.y > 0) {
+                this._camera.offset.y -= 10;
+            } else if (this._camera.offset.y < 0) {
+                this._camera.offset.y += 10;
+            }
+        }
+
     }
 
     onPlayerDeath() {
