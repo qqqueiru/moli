@@ -12,8 +12,8 @@ class SubLevel {
     #playerGrenades = [];  // Lista de granadas presentes en el subnivel...
     #enemyGrenades = [];
     #backgroundImg = "";
-    #cameraWallLeft = new Wall(-1, new Segment({x: 0, y: 0}, {x: 0, y: 1080}), false);
-    #cameraWallRight = new Wall(-2, new Segment({x: 0, y: 0}, {x: 0, y: 1080}), false);
+    #cameraWallLeft = new Wall(-1, new Segment({x: 0, y: 0}, {x: 0, y: 10800}), false);
+    #cameraWallRight = new Wall(-2, new Segment({x: 0, y: 0}, {x: 0, y: 10800}), false);
     #bgSprites = [];  // Includes any complementary sprite (OnceSprite, LoopSprite, StaticSprite...) the sublevel may have
     #fgSprites = [];  // Background sprites will be drawn under the characters, and foreground ones will be drawn over.
     #collectables = [];
