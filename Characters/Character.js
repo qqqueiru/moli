@@ -347,6 +347,12 @@ class Character {
         const characterSegment = this.getHSegmentAbs();
         for (const [id, wall] of this.#walls) {
             const wallSegment = wall.getSegment();
+            if (id == -1 && this._pos.x < wallSegment.p1.x) {  // Left camera wall trespass
+                this._pos.x = wallSegment.p1.x + 1;
+            }
+            if (id == -2 && this._pos.x > wallSegment.p1.x) {  // Right camera wall trespass
+                this._pos.x = wallSegment.p1.x - 1;
+            }
             if (!Segment.doIntersect(wallSegment, characterSegment)) {
                 continue;
             }
