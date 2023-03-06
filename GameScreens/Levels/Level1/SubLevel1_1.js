@@ -2,6 +2,12 @@ class SubLevel1_1 extends SubLevel {
     #playerVxNorms = [];
     _inChurch = false;
     _targetPointChurch = new Point(7900, 3200);
+    _inLavadero = false;
+    _targetPointLavadero = new Point(11950, 3120);
+    _inCaserio = false;
+    _targetPointCaserio = new Point(16885, 1258);
+    _inRoldans = false;
+    _targetPointRoldans = new Point(18370, 1258);
     constructor() {
         super();
         {
@@ -197,11 +203,84 @@ class SubLevel1_1 extends SubLevel {
                 new Ellipse(new Point(7730, 3120), 50, 50),
                 () => { this.resumeFromChurch(); }
             )
-        )
+        );
     }
 
     resumeFromChurch() {
         this._inChurch = false;
+        this._camera.setTargetPoint(this._player.getPos());
+        this._triggers.push(
+            new LocationTrigger(
+                this._player, 
+                new Ellipse(new Point(11950, 3120), 750, 850), 
+                () => { this.pauseAtLavadero(); }
+            )
+        );
+    }
+
+    pauseAtLavadero() {
+        this._inLavadero = true;
+        this._camera.setTargetPoint(this._targetPointLavadero);
+        this._triggers.push(
+            new LocationTrigger(
+                this._player,
+                new Ellipse(new Point(11950, 3120), 50, 50),
+                () => { this.resumeFromLavadero(); }
+            )
+        );
+    }
+
+    resumeFromLavadero() {
+        this._inLavadero = false;
+        this._camera.setTargetPoint(this._player.getPos());
+        this._triggers.push(
+            new LocationTrigger(
+                this._player, 
+                new Ellipse(new Point(16685, 1258), 750, 850), 
+                () => { this.pauseAtCaserio(); }
+            )
+        );
+    }
+
+    pauseAtCaserio() {
+        this._inCaserio = true;
+        this._camera.setTargetPoint(this._targetPointCaserio);
+        this._triggers.push(
+            new LocationTrigger(
+                this._player,
+                new Ellipse(new Point(16685, 1258), 50, 50),
+                () => { this.resumeFromCaserio(); }
+            )
+        );
+    }
+
+    resumeFromCaserio() {
+        this._inCaserio = false;
+        this._camera.setTargetPoint(this._player.getPos());
+        this._triggers.push(
+            new LocationTrigger(
+                this._player, 
+                new Ellipse(new Point(18370, 1258), 750, 850), 
+                () => { this.pauseAtRoldans(); }
+            )
+        );
+    }
+
+    pauseAtRoldans() {
+        this._inRoldans = true;
+        this._camera.setTargetPoint(this._targetPointRoldans);
+        this._triggers.push(
+            new LocationTrigger(
+                this._player,
+                new Ellipse(new Point(18370, 1258), 50, 50),
+                () => { this.resumeFromRoldans(); }
+            )
+        );
+    }
+
+    resumeFromRoldans() {
+        alert("GAME OVER...");
+        this._inRoldans = false;
         this._camera.setTargetPoint(this._player.getPos());
     }
 
@@ -282,8 +361,19 @@ class SubLevel1_1 extends SubLevel {
             this._targetPointChurch.y = this._player.getPos().y;
             this._camera.offset.x = 0;
         }
-
-        // TODO poner pausa de camara en lavadero y luego en caserio...
+        if (this._inLavadero) {
+            this._targetPointLavadero.y = this._player.getPos().y;
+            this._camera.offset.x = 0;
+        }
+        if (this._inCaserio) {
+            this._targetPointCaserio.y = this._player.getPos().y;
+            this._camera.offset.x = 0;
+        }
+        if (this._inRoldans) {
+            // this._targetPointRoldans.y = this._player.getPos().y;
+            this._camera.offset.x = 0;
+            this._camera.offset.y = 0;
+        }
     }
 
     onPlayerDeath() {
