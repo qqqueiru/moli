@@ -1,7 +1,7 @@
 class SubLevel1_1 extends SubLevel {
     #playerVxNorms = [];
-    #inChurch = false;
-    #targetPointChurch = new Point(7900, 3200);
+    _inChurch = false;
+    _targetPointChurch = new Point(7900, 3200);
     constructor() {
         super();
         {
@@ -156,10 +156,7 @@ class SubLevel1_1 extends SubLevel {
                 new LocationTrigger(
                     this._player, 
                     new Ellipse(new Point(7730, 3120), 750, 850), 
-                    () => {
-                        this.#inChurch = true;
-                        this._camera.setTargetPoint(this.#targetPointChurch);
-                    }
+                    () => { this.pauseAtChurch(); }
                 )
             );
         }
@@ -189,6 +186,23 @@ class SubLevel1_1 extends SubLevel {
             this.setCollectables(collectables);
         }
 
+    }
+
+    pauseAtChurch() {
+        this._inChurch = true;
+        this._camera.setTargetPoint(this._targetPointChurch);
+        this._triggers.push(
+            new LocationTrigger(
+                this._player,
+                new Ellipse(new Point(7730, 3120), 50, 50),
+                () => { this.resumeFromChurch(); }
+            )
+        )
+    }
+
+    resumeFromChurch() {
+        this._inChurch = false;
+        this._camera.setTargetPoint(this._player.getPos());
     }
 
     update() {
@@ -264,10 +278,12 @@ class SubLevel1_1 extends SubLevel {
             }
         }
 
-        if (this.#inChurch) {
-            this.#targetPointChurch.y = this._player.getPos().y;
+        if (this._inChurch) {
+            this._targetPointChurch.y = this._player.getPos().y;
             this._camera.offset.x = 0;
         }
+
+        // TODO poner pausa de camara en lavadero y luego en caserio...
     }
 
     onPlayerDeath() {
