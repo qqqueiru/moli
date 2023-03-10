@@ -88,6 +88,8 @@ class AudioManager {
         AudioManager.loadAudio("reward", "./audio/reward.ogg", 10);
         AudioManager.loadAudio("menu", "./audio/menu.ogg", 1);
         AudioManager.loadAudio("silence", "./audio/silence.ogg", 1);
+
+        AudioManager.loadAudio("level_1", "./audio/level_1.ogg", 1);
     }
 
 }

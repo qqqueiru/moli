@@ -22,7 +22,13 @@ class SubLevel {
 
     _camera = new Camera();
 
+    _levelMusicId = "silence";
+
     constructor() {
+    }
+
+    setLevelMusicId(levelMusicId) {
+        this._levelMusicId = levelMusicId;
     }
 
     setBackgroundImg(imgId) {
@@ -121,6 +127,7 @@ class SubLevel {
         if (inputs.get("escape")?.consumeIfActivated()) {
             // Sorry no pause buffering
             GameScreen.previousScreen = GameScreen.currentScreen;
+            AudioManager.stopLoop(this._levelMusicId);
             GameScreen.currentScreen = new PauseMenu();
         }
         if (this._player.getCurrentState() != "ALIVE") {
@@ -306,6 +313,8 @@ class SubLevel {
     }
 
     update() {
+        AudioManager.playLoop(this._levelMusicId);
+
         this.#moveCameraWalls();
 
         this.#reviseCharacterPosWithPlatforms(this._player);
