@@ -24,7 +24,8 @@ class Character {
     #previousPos = new Point(0, 0);
     #previousVy = 0;    
     _pos = new Point(0, 0);
-    #vx = 0;  // TODO establecer un máximo
+    _maxSpeedX = 10;
+    #vx = 0;
     #vy = 0;
     #jumpVy = -200;
     #maxVy = 10;
@@ -97,9 +98,9 @@ class Character {
                             this.#faceDirection = this.#previousFaceDirection;
                         }
                         if (this.#faceDirection == "left") {
-                            this.#vx = 10;
+                            this.#vx = this._maxSpeedX;
                         } else {
-                            this.#vx = -10;
+                            this.#vx = -this._maxSpeedX;
                         }
                     }
                 },
@@ -189,7 +190,7 @@ class Character {
     }
 
     moveRight() {
-        this.#vx = this.#crouched ? 5 : 10;
+        this.#vx = this.#crouched ? this._maxSpeedX / 2 : this._maxSpeedX;
         this.#vx += this.#iterationsToBeJumped > 0 ? 2 : 0;
         if (this.#finishedJumping && !this.#lookingUp) {
             this.#faceDirection = "right";
@@ -197,7 +198,7 @@ class Character {
     }
 
     moveLeft() {
-        this.#vx = this.#crouched ? -5 : -10;
+        this.#vx = this.#crouched ? -this._maxSpeedX / 2 : -this._maxSpeedX;
         this.#vx += this.#iterationsToBeJumped > 0 ? -2 : 0;
         if (this.#finishedJumping && !this.#lookingUp) {
             this.#faceDirection = "left";

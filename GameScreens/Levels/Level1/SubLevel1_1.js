@@ -133,9 +133,15 @@ class SubLevel1_1 extends SubLevel {
         }
         {
             const npcs = [];
-            // npcs.push(new NPC(new Point(500, 400)));
-            // npcs[npcs.length - 1].setWeapon(new Pistol(npcs[npcs.length - 1]));
-            // npcs[npcs.length - 1].setGrenadeThrower(new BasicGrenadeThrower(npcs[npcs.length - 1]));
+            npcs.push(new NPC(new Point(800, 2700)));
+            npcs.push(new NPC(new Point(1000, 2700)));
+            npcs.push(new NPC(new Point(1200, 2700)));
+
+            for (const npc of npcs) {
+                npc.setWeapon(new SlowPistol(npc));
+                npc.setGrenadeThrower(new BasicGrenadeThrower(npc));
+                npc.onlyActivateUntilCloseToPlayer();  // First npcs won't be activated until player gets near them. Dynamically spawned npcs will automatically search and destroy the player.
+            }
             this.setNpcs(npcs);
 
             // this._triggers.push(new HealthTrigger(npcs[0], 0, () => {

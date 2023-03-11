@@ -186,6 +186,10 @@ class SubLevel {
     updateNpcAi() {
         // testing
         for (const npc of this.#npcs) {
+            const isCloseToPlayer = npc.checkCloseToPlayer(this._player.getPos());
+            if (!npc.isActivated()) {
+                continue;
+            }
             if (npc.getCurrentState() != "ALIVE") {
                 continue;
             }
@@ -193,27 +197,28 @@ class SubLevel {
             npc.dontMove();
             npc.setCrouched(false);
             npc.setFaceDirection(this._player.getPos().x > npc.getPos().x ? "right" : "left");
-            if (this._player.getPos().x - npc.getPos().x > 300) {
+            if (this._player.getPos().x - npc.getPos().x > npc.getSafetyDistance() + 1) {
                 npc.moveRight();
             }
 
-            if (this._player.getPos().x - npc.getPos().x < -300) {
+            if (this._player.getPos().x - npc.getPos().x < -npc.getSafetyDistance() - 1) {
                 npc.moveLeft();
             }
 
-            // if (Date.now() % 2000 < 20) {
-            //     const projectile = npc.shoot();
-            //     if (projectile) {
-            //         projectile.setWalls(this.#walls);
-            //         this.#enemyProjectiles.push(projectile);
-            //     }
-            //     const grenade = npc.throwGrenade();
-            //     if (grenade) {
-            //         grenade.setPlatforms(this.#platforms);
-            //         grenade.setWalls(this.#walls);
-            //         this.#enemyGrenades.push(grenade);
-            //     }
-            // }
+            // TODO different NPC shoot rate
+            if (Date.now() % 2000 < 20 && isCloseToPlayer) {
+                const projectile = npc.shoot();
+                if (projectile) {
+                    projectile.setWalls(this.#walls);
+                    this.#enemyProjectiles.push(projectile);
+                }
+                // const grenade = npc.throwGrenade();
+                // if (grenade) {
+                //     grenade.setPlatforms(this.#platforms);
+                //     grenade.setWalls(this.#walls);
+                //     this.#enemyGrenades.push(grenade);
+                // }
+            }
         }
     }
 

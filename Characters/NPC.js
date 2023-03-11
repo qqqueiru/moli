@@ -1,4 +1,6 @@
 class NPC extends Character {
+    #activated = true;
+    #safetyDistance = 0;
     constructor(pos) {
         super(pos);
         this._sprites = {
@@ -16,5 +18,28 @@ class NPC extends Character {
 
         this._hitEllipseCrouched = new Ellipse(this._pos, 40, 55);
         this._hitEllipseStraight = new Ellipse(this._pos, 40, 110, 0, -20);
+
+        this._maxSpeedX = 4 + 2 * Math.random();
+        this.#safetyDistance = 200 + 500 * Math.random();
+    }
+
+    getSafetyDistance() {
+        return this.#safetyDistance;
+    }
+
+    checkCloseToPlayer(playerPos) {
+        if (playerPos.distanceFromPoint(this._pos) < 1920) {
+            this.#activated = true;
+            return true;
+        }
+        return false;
+    }
+
+    onlyActivateUntilCloseToPlayer() {
+        this.#activated = false;
+    }
+
+    isActivated() {
+        return this.#activated;
     }
 }
