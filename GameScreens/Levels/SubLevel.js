@@ -214,6 +214,10 @@ class SubLevel {
                 npc.moveLeft();
             }
 
+            if (!this._player.isJumping() && this._player.getPos().y < npc.getPos().y - 200) {
+                npc.startJump();
+            }
+
             if (Date.now() % npc.getShootRate() < 20 && isCloseToPlayer && isInScreen) {
                 const projectile = npc.shoot();
                 if (projectile) {

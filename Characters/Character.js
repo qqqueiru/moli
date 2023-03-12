@@ -69,6 +69,7 @@ class Character {
         this.#coyoteIterations = 0;
         this.#crouched = false;
         this.#lookingUp = false;
+        this.#finishedJumping = false;  // Se puede usar para saber si se ha de dibujar el salto
         this.#health = 1;
         this._states = {
             currentState: "NONE",
@@ -515,6 +516,10 @@ class Character {
         if (this.#vx < 0) {
             this.#faceDirection = "left";
         }
+    }
+
+    isJumping() {
+        return !this.#finishedJumping;
     }
 
     /**
