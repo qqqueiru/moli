@@ -133,9 +133,23 @@ class SubLevel1_1 extends SubLevel {
         }
         {
             const npcs = [];
-            npcs.push(new NPC(new Point(800, 2700)));
-            npcs.push(new NPC(new Point(1000, 2700)));
-            npcs.push(new NPC(new Point(1200, 2700)));
+            // npcs.push(new NPC(new Point(2500, 3500)));
+            // npcs.push(new NPC(new Point(2770, 3500)));
+            npcs.push(new NPC(new Point(3000, 3400)));
+            npcs.push(new NPC(new Point(3260, 3230)));
+            npcs.push(new NPC(new Point(3500, 3330)));
+            npcs.push(new NPC(new Point(4200, 3330)));
+            npcs.push(new NPC(new Point(4800, 3330)));
+            npcs.push(new NPC(new Point(5200, 3330)));
+            for (let x = 4790; x < 12450; x += 130) {
+                npcs.push(new NPC(new Point(x, 3330)));
+            }
+            for (let x = 4980; x < 12250; x += 130) {
+                npcs.push(new NPC(new Point(x, 2700)));
+            }
+            for (let x = 7300; x < 8360; x += 130) {
+                npcs.push(new NPC(new Point(x, 2960)));
+            }
 
             for (const npc of npcs) {
                 npc.setWeapon(new SlowPistol(npc));

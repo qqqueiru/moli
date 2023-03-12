@@ -184,9 +184,15 @@ class SubLevel {
     }
 
     updateNpcAi() {
-        // testing
         for (const npc of this.#npcs) {
-            const isCloseToPlayer = npc.checkCloseToPlayer(this._player.getPos());
+            const isInScreenX = 2 * Math.abs(this._camera.getPos().x - npc.getPos().x) < GameScreen.width;
+            const isInScreenY = 2 * Math.abs(this._camera.getPos().y - npc.getPos().y) < GameScreen.height;
+            const isInScreen = isInScreenX && isInScreenY;
+
+            let isCloseToPlayer = false;
+            if (isInScreen) {
+                isCloseToPlayer = npc.checkCloseToPlayer(this._player.getPos());
+            }
             if (!npc.isActivated()) {
                 continue;
             }
@@ -205,8 +211,7 @@ class SubLevel {
                 npc.moveLeft();
             }
 
-            // TODO different NPC shoot rate
-            if (Date.now() % 2000 < 20 && isCloseToPlayer) {
+            if (Date.now() % npc.getShootRate() < 20 && isCloseToPlayer && isInScreen) {
                 const projectile = npc.shoot();
                 if (projectile) {
                     projectile.setWalls(this.#walls);
@@ -237,7 +242,8 @@ class SubLevel {
                 this.#fgSprites.push(projectile.getHitWallOnceSprite());
                 continue;
             }
-            if (projectile.checkHit(this.#npcs, ["SPAWNING", "ALIVE"])) {  // NOTE: Quizás el proyectil pueda impactar a más de un personaje a la vez. Por el momento si impacta en uno, desaparece.
+            const activatedNpcs = this.#npcs.filter((npc) => npc.isActivated());
+            if (projectile.checkHit(activatedNpcs, ["SPAWNING", "ALIVE"])) {  // NOTE: Quizás el proyectil pueda impactar a más de un personaje a la vez. Por el momento si impacta en uno, desaparece.
                 this.#playerProjectiles.splice(i, 1);
                 this.#fgSprites.push(projectile.getHitCharacterOnceSprite());
                 continue;
