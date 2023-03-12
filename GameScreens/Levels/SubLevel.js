@@ -214,7 +214,9 @@ class SubLevel {
                 npc.moveLeft();
             }
 
-            if (!this._player.isJumping() && this._player.getPos().y < npc.getPos().y - 200) {
+            if (Date.now() % npc.getJumpRate() < 20 && 
+                !this._player.isJumping() && 
+                this._player.getPos().y < npc.getPos().y - 200) {
                 npc.startJump();
             }
 

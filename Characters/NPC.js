@@ -2,6 +2,7 @@ class NPC extends Character {
     #activated = true;
     #safetyDistance = 0;
     #shootRate = 2000;  // ms. When ai is updated, npc will shoot at this rate
+    #jumpRate = 3000;  // ms. When ai is updated, npc will jump at this rate
     constructor(pos) {
         super(pos);
         this._sprites = {
@@ -23,10 +24,15 @@ class NPC extends Character {
         this._maxSpeedX = 4 + 2 * Math.random();
         this.#safetyDistance = 200 + 500 * Math.random();
         this.#shootRate = 2000 + 2000 * Math.random();
+        this.#jumpRate = 3000 + 3000 * Math.random();
     }
 
     getShootRate() {
         return this.#shootRate;
+    }
+
+    getJumpRate() {
+        return this.#jumpRate;
     }
 
     getSafetyDistance() {
