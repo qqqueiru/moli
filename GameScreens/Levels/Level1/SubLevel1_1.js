@@ -312,23 +312,23 @@ class SubLevel1_1 extends SubLevel {
         const playerVx = this._player.getVx();
         const playerVxNorm = Math.sign(playerVx);
         this.#playerVxNorms.push(playerVxNorm);
-        if (this.#playerVxNorms.length > 60) {
+        if (this.#playerVxNorms.length > 30) {
             const vx = this.#playerVxNorms.shift();
             if (vx != 0 && this.#playerVxNorms.every(v => v === vx)) {
                 if (vx < 0) {
                     if (this._camera.offset.x > -700) {
-                        this._camera.offset.x -= 10;
+                        this._camera.offset.x -= 20;
                     }
                 } else if (vx > 0) {
                     if (this._camera.offset.x < 700) {
-                        this._camera.offset.x += 10;
+                        this._camera.offset.x += 20;
                     }
                 }
             } else {
                 if (this._camera.offset.x > 0) {
-                    this._camera.offset.x -= 10;
+                    this._camera.offset.x -= 20;
                 } else if (this._camera.offset.x < 0) {
-                    this._camera.offset.x += 10;
+                    this._camera.offset.x += 20;
                 }
             }
         }
