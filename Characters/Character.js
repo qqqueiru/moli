@@ -52,7 +52,7 @@ class Character {
     // #maxYFromLastFloorIntersection
     // Solamente se permite el salto si hay interseccion del segmento vertical y vy > 0
 
-    #states;
+    _states;
 
     #tracePoints = [];
     constructor(pos) {
@@ -60,7 +60,17 @@ class Character {
             this._pos = pos.clone();
             this.#previousPos = this._pos.clone();
         }
-        this.#states = {
+        this.reset();
+    }
+
+    reset() {
+        this.#faceDirection = "right";  // right, left or up
+        this.#previousFaceDirection = "right";
+        this.#coyoteIterations = 0;
+        this.#crouched = false;
+        this.#lookingUp = false;
+        this.#health = 1;
+        this._states = {
             currentState: "NONE",
             NONE: new CharacterState(
                 "NONE", 
@@ -70,7 +80,7 @@ class Character {
                 },
                 () => {
                     // if (this.#canSpawn) {  // TODO, ?
-                        this.#states.currentState = "SPAWNING";
+                        this._states.currentState = "SPAWNING";
                     // }
                 },
             ),
@@ -81,7 +91,7 @@ class Character {
                     // NOP
                 },
                 () => {
-                    this.#states.currentState = "ALIVE";
+                    this._states.currentState = "ALIVE";
                 },
             ),
             ALIVE:  new CharacterState(
@@ -89,7 +99,7 @@ class Character {
                 -1, 
                 () => {
                     if (this.#health <= 0) {
-                        this.#states.currentState = "DYING";
+                        this._states.currentState = "DYING";
                         if (this.#canJump) {
                             this.startJump();
                             this.#iterationsToBeJumped = 1;
@@ -119,7 +129,7 @@ class Character {
                     }
                 },
                 () => {
-                    this.#states.currentState = "DEAD";
+                    this._states.currentState = "DEAD";
                 },
             ),
             DEAD: new CharacterState(
@@ -140,7 +150,7 @@ class Character {
     }
 
     getCurrentState() {
-        return this.#states.currentState;
+        return this._states.currentState;
     }
 
     getVx() {
@@ -148,7 +158,7 @@ class Character {
     }
 
     isDead() {
-        return this.#states.currentState == "DEAD";
+        return this._states.currentState == "DEAD";
     }
 
     setVx(newVx) {
@@ -254,17 +264,17 @@ class Character {
 
     #getCurrentSprite() {
         const defaultSprite = "blank";
-        if (this.#states.currentState == "ALIVE" || this.#states.currentState == "SPAWNING") {
+        if (this._states.currentState == "ALIVE" || this._states.currentState == "SPAWNING") {
             if (this.#crouched) {
                 return "crouch_" + this.#faceDirection;
             } else {
                 return this.#faceDirection;
             }
         }
-        if (this.#states.currentState == "DYING") {
+        if (this._states.currentState == "DYING") {
             return "dying_" + this.#faceDirection;
         }
-        if (this.#states.currentState == "DEAD") {
+        if (this._states.currentState == "DEAD") {
             return "dead_" + this.#faceDirection;
         }
 
@@ -372,7 +382,7 @@ class Character {
 
     update() {
         this.#revisePosWithWalls();
-        this.#states[this.#states.currentState].update();
+        this._states[this._states.currentState].update();
 
         if (this.#coyoteIterations > 0) {
             this.#coyoteIterations--;
@@ -539,7 +549,7 @@ class Character {
     }
 
     inflictDamage(damage) {
-        if (this.#states.currentState != "ALIVE") {
+        if (this._states.currentState != "ALIVE") {
             return;
         }
         this.#health -= damage;

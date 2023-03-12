@@ -184,6 +184,9 @@ class SubLevel {
     }
 
     updateNpcAi() {
+        if (this._player.getCurrentState() != "ALIVE") {
+            return;
+        }
         for (const npc of this.#npcs) {
             const isInScreenX = 2 * Math.abs(this._camera.getPos().x - npc.getPos().x) < GameScreen.width;
             const isInScreenY = 2 * Math.abs(this._camera.getPos().y - npc.getPos().y) < GameScreen.height;

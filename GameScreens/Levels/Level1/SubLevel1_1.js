@@ -397,11 +397,12 @@ class SubLevel1_1 extends SubLevel {
     }
 
     onPlayerDeath() {
-        alert("TODO test onPlayerDeath");
-        const player = new Player(new Point(500, 400));  // Just create a new player and garbage out the dead player
-        player.setWeapon(new Pistol(player));
-        player.setGrenadeThrower(new BasicGrenadeThrower(player));
-        this.subLevels.get(this.currentSubLevelId).setPlayer(player);
-        this._camera.setFirstPoint(player.getPos());
+        this._player.respawn();
+        // const respawnPos = this._player.getPos().addConst(new Point(0, -500));
+        // const player = new Player(respawnPos);  // Just create a new player and garbage out the dead player
+        // player.setWeapon(new Pistol(player));
+        // player.setGrenadeThrower(new BasicGrenadeThrower(player));
+        // this.setPlayer(player);
+        // this._camera.setFirstPoint(player.getPos());
     }
 }

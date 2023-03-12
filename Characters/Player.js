@@ -20,4 +20,33 @@ class Player extends Character {
         this._hitEllipseCrouched = new Ellipse(this._pos, 15, 40);
         this._hitEllipseStraight = new Ellipse(this._pos, 15, 80, 0, -20);
     }
+
+    respawn() {
+        this.reset();
+        this._pos.y -= 500;
+        this.updateAvailablePlatforms(this._pos.y + 50, this._pos.x);
+        this.setLastPlatformTouchedId(null);
+        this._states.currentState = "ALIVE";
+    }
+
+    inflictDamage(damage) {
+        const currentState = this._states.currentState;
+        if (currentState == "ALIVE" && this._states[currentState].getCurrentFrame() < 60 * 4) {
+            return;
+        }
+        super.inflictDamage(damage);
+    }
+
+    draw(ctx, cameraPos) {
+        super.draw(ctx, cameraPos);
+
+        const currentState = this._states.currentState;
+        if (currentState == "ALIVE" && this._states[currentState].getCurrentFrame() < 60 * 4) {
+            // Debug
+            ctx.beginPath();
+            ctx.rect(this._pos.x + GameScreen.width / 2 - cameraPos.x, this._pos.y + GameScreen.height / 2 - cameraPos.y, 20, 20);
+            ctx.fillStyle = "white";
+            ctx.fill();
+        }
+    }
 }
