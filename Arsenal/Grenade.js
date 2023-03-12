@@ -141,7 +141,13 @@ class Grenade {
         }
     }
 
-    isBeyondLimits() {
+    isBeyondLimits(cameraPos) {
+        const isInScreenX = 2 * Math.abs(cameraPos.x - this.#pos.x) < GameScreen.width;
+        const isInScreenY = 2 * Math.abs(cameraPos.y - this.#pos.y) < GameScreen.height;
+        const isInScreen = isInScreenX && isInScreenY;
+        if (!isInScreen) {
+            return true;
+        }
         return this.#beyondLimits;
     }
 

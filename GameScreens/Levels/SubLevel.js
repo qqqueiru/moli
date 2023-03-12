@@ -221,13 +221,15 @@ class SubLevel {
             }
 
             if (Date.now() % npc.getShootRate() < 20 && isCloseToPlayer && isInScreen) {
+                const enemyProjectilesDontSaturateScreen = this.#enemyProjectiles.length < 10;
                 const projectile = npc.shoot();
-                if (projectile) {
+                if (projectile && enemyProjectilesDontSaturateScreen) {
                     projectile.setWalls(this.#walls);
                     this.#enemyProjectiles.push(projectile);
                 }
+                // const enemyGrenadesDontSaturateScreen = this.#enemyGrenades.length < 10;
                 // const grenade = npc.throwGrenade();
-                // if (grenade) {
+                // if (grenade && enemyGrenadesDontSaturateScreen) {
                 //     grenade.setPlatforms(this.#platforms);
                 //     grenade.setWalls(this.#walls);
                 //     this.#enemyGrenades.push(grenade);
@@ -241,7 +243,7 @@ class SubLevel {
         for (let i = nPlayerProjectiles - 1; i >= 0; --i) {
             const projectile = this.#playerProjectiles[i];
             projectile.update();
-            if (projectile.isBeyondLimits()) {
+            if (projectile.isBeyondLimits(this._camera.getPos())) {
                 this.#playerProjectiles.splice(i, 1);
                 continue;
             }
@@ -263,7 +265,7 @@ class SubLevel {
         for (let i = nEnemyProjectiles - 1; i >= 0; --i) {
             const projectile = this.#enemyProjectiles[i];
             projectile.update();
-            if (projectile.isBeyondLimits()) {
+            if (projectile.isBeyondLimits(this._camera.getPos())) {
                 this.#enemyProjectiles.splice(i, 1);
                 continue;
             }
@@ -286,7 +288,7 @@ class SubLevel {
         for (let i = nPlayerGrenades - 1; i >= 0; --i) {
             const grenade = this.#playerGrenades[i];
             grenade.update();
-            if (grenade.isBeyondLimits()) {
+            if (grenade.isBeyondLimits(this._camera.getPos())) {
                 this.#playerGrenades.splice(i, 1);
                 continue;
             }
@@ -302,7 +304,7 @@ class SubLevel {
         for (let i = nEnemyGrenades - 1; i >= 0; --i) {
             const grenade = this.#enemyGrenades[i];
             grenade.update();
-            if (grenade.isBeyondLimits()) {
+            if (grenade.isBeyondLimits(this._camera.getPos())) {
                 this.#enemyGrenades.splice(i, 1);
                 continue;
             }
