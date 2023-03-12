@@ -95,7 +95,7 @@ class Character {
                             this.#iterationsToBeJumped = 1;
                         }
                         if (this.#faceDirection == "up") {
-                            this.#faceDirection = this.#previousFaceDirection;
+                            this.setLookingUp(false);
                         }
                         if (this.#faceDirection == "left") {
                             this.#vx = this._maxSpeedX;
