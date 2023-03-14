@@ -314,12 +314,12 @@ class SubLevel1_1 extends SubLevel {
         this.#playerVxNorms.push(playerVxNorm);
         if (this.#playerVxNorms.length > 30) {
             const vx = this.#playerVxNorms.shift();
-            if (vx != 0 && this.#playerVxNorms.every(v => v === vx)) {
+            if (true || (vx != 0 && this.#playerVxNorms.every(v => v === vx))) {
                 if (vx < 0) {
                     if (this._camera.offset.x > -700) {
-                        this._camera.offset.x -= 20;
+                        this._camera.offset.x -= 5;
                     }
-                } else if (vx > 0) {
+                } else if (vx >= 0) {
                     if (this._camera.offset.x < 700) {
                         this._camera.offset.x += 20;
                     }

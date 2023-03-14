@@ -13,7 +13,7 @@ class Camera {
     #maxBound;
     #iterationsShaking = 0;
     #iterationsToShake = 60;
-    #shakeAmplitude = 100;
+    #shakeAmplitude = 10;
     constructor() {
         // NOP
     }
