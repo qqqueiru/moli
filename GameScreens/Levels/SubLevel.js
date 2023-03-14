@@ -78,6 +78,14 @@ class SubLevel {
         }
     }
 
+    getDeadNpcCount() {
+        let count = 0;
+        for (const npc of this.#npcs) {
+            count += npc.getCurrentState() === "DEAD";
+        }
+        return count;
+    }
+
     #reviseCharacterPosWithBottomPlatforms(character) {
         let intersection = null;
         let lastPlatformTouchedId = null;

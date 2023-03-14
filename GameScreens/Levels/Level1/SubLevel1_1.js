@@ -217,13 +217,13 @@ class SubLevel1_1 extends SubLevel {
     pauseAtChurch() {
         this._inChurch = true;
         this._camera.setTargetPoint(this._targetPointChurch);
-        this._triggers.push(
-            new LocationTrigger(
-                this._player,
-                new Ellipse(new Point(7730, 3120), 50, 50),
-                () => { this.resumeFromChurch(); }
-            )
-        );
+        // this._triggers.push(
+        //     new LocationTrigger(
+        //         this._player,
+        //         new Ellipse(new Point(7730, 3120), 50, 50),
+        //         () => { this.resumeFromChurch(); }
+        //     )
+        // );
     }
 
     resumeFromChurch() {
@@ -241,13 +241,13 @@ class SubLevel1_1 extends SubLevel {
     pauseAtLavadero() {
         this._inLavadero = true;
         this._camera.setTargetPoint(this._targetPointLavadero);
-        this._triggers.push(
-            new LocationTrigger(
-                this._player,
-                new Ellipse(new Point(11950, 3120), 50, 50),
-                () => { this.resumeFromLavadero(); }
-            )
-        );
+        // this._triggers.push(
+        //     new LocationTrigger(
+        //         this._player,
+        //         new Ellipse(new Point(11950, 3120), 50, 50),
+        //         () => { this.resumeFromLavadero(); }
+        //     )
+        // );
     }
 
     resumeFromLavadero() {
@@ -265,13 +265,13 @@ class SubLevel1_1 extends SubLevel {
     pauseAtCaserio() {
         this._inCaserio = true;
         this._camera.setTargetPoint(this._targetPointCaserio);
-        this._triggers.push(
-            new LocationTrigger(
-                this._player,
-                new Ellipse(new Point(16685, 1258), 50, 50),
-                () => { this.resumeFromCaserio(); }
-            )
-        );
+        // this._triggers.push(
+        //     new LocationTrigger(
+        //         this._player,
+        //         new Ellipse(new Point(16685, 1258), 50, 50),
+        //         () => { this.resumeFromCaserio(); }
+        //     )
+        // );
     }
 
     resumeFromCaserio() {
@@ -289,13 +289,13 @@ class SubLevel1_1 extends SubLevel {
     pauseAtRoldans() {
         this._inRoldans = true;
         this._camera.setTargetPoint(this._targetPointRoldans);
-        this._triggers.push(
-            new LocationTrigger(
-                this._player,
-                new Ellipse(new Point(18370, 1258), 50, 50),
-                () => { this.resumeFromRoldans(); }
-            )
-        );
+        // this._triggers.push(
+        //     new LocationTrigger(
+        //         this._player,
+        //         new Ellipse(new Point(18370, 1258), 50, 50),
+        //         () => { this.resumeFromRoldans(); }
+        //     )
+        // );
     }
 
     resumeFromRoldans() {
@@ -380,19 +380,35 @@ class SubLevel1_1 extends SubLevel {
         if (this._inChurch) {
             this._targetPointChurch.y = this._player.getPos().y;
             this._camera.offset.x = 0;
+            console.log(this.getDeadNpcCount());
+            if (this.getDeadNpcCount() >= 74) {
+                this.resumeFromChurch();
+            }
         }
         if (this._inLavadero) {
             this._targetPointLavadero.y = this._player.getPos().y;
             this._camera.offset.x = 0;
+            console.log(this.getDeadNpcCount());
+            if (this.getDeadNpcCount() >= 125) {
+                this.resumeFromLavadero();
+            }
         }
         if (this._inCaserio) {
             this._targetPointCaserio.y = this._player.getPos().y;
             this._camera.offset.x = 0;
+            console.log(this.getDeadNpcCount());
+            if (this.getDeadNpcCount() >= 100) {
+                this.resumeFromCaserio();
+            }
         }
         if (this._inRoldans) {
             // this._targetPointRoldans.y = this._player.getPos().y;
             this._camera.offset.x = 0;
             this._camera.offset.y = 0;
+            console.log(this.getDeadNpcCount());
+            if (this.getDeadNpcCount() >= 100) {
+                this.resumeFromRoldans();
+            }
         }
     }
 
