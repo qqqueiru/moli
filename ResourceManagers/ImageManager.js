@@ -48,7 +48,7 @@ class ImageManager {
         ImageManager.loadImage("npc_left", "./img/npcs/test/npc_left.png");
         ImageManager.loadImage("npc_up", "./img/npcs/test/npc_up.png");
         ImageManager.loadImage("npc_crouch_right", "./img/npcs/test/npc_crouch_right.png");
-        ImageManager.loadImage("npc_crouch_left", "./img/ncps/test/npc_crouch_left.png");
+        ImageManager.loadImage("npc_crouch_left", "./img/npcs/test/npc_crouch_left.png");
         ImageManager.loadImage("npc_dead_right", "./img/npcs/test/npc_dead_right.png");
         ImageManager.loadImage("npc_dead_left", "./img/npcs/test/npc_dead_left.png");
         ImageManager.loadImage("npc_dying_right", "./img/npcs/test/npc_dying_right.png");
