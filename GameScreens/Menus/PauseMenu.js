@@ -109,7 +109,7 @@ class PauseMenu extends GameScreen {
         // https://www.sharelinkgenerator.com/
         setTimeout(()=>{
             const scoreToShow = this.#score > 0 ? this.#scoreRomanNumeral : 0;
-            const url = `https://twitter.com/intent/tweet?text=I%20scored%20${scoreToShow}%20point${this.#score == 1 ? "" : "s"}%20on%20Moli.%0Aqqqueiru.github.io/moli/`;
+            const url = `https://twitter.com/intent/tweet?text=I%20scored%20${scoreToShow}%20point${this.#score === 1 ? "" : "s"}%20on%20Moli.%0Aqqqueiru.github.io/moli/`;
             window.open(url, '_blank').focus();
         }, 100);
         inputs.clear();

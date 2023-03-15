@@ -105,10 +105,10 @@ class Character {
                             this.startJump();
                             this.#iterationsToBeJumped = 1;
                         }
-                        if (this.#faceDirection == "up") {
+                        if (this.#faceDirection === "up") {
                             this.setLookingUp(false);
                         }
-                        if (this.#faceDirection == "left") {
+                        if (this.#faceDirection === "left") {
                             this.#vx = this._maxSpeedX;
                         } else {
                             this.#vx = -this._maxSpeedX;
@@ -159,7 +159,7 @@ class Character {
     }
 
     isDead() {
-        return this._states.currentState == "DEAD";
+        return this._states.currentState === "DEAD";
     }
 
     setVx(newVx) {
@@ -229,7 +229,7 @@ class Character {
 
     startJump() {
         let startedJump = false;
-        if (this.#canJump && this.#iterationsToBeJumped == 0) {
+        if (this.#canJump && this.#iterationsToBeJumped === 0) {
             this.#iterationsToBeJumped = this.#maxIterationsJumped;
             this.#coyoteIterations = 0;
             startedJump = true;
@@ -265,17 +265,17 @@ class Character {
 
     #getCurrentSprite() {
         const defaultSprite = "blank";
-        if (this._states.currentState == "ALIVE" || this._states.currentState == "SPAWNING") {
+        if (this._states.currentState === "ALIVE" || this._states.currentState === "SPAWNING") {
             if (this.#crouched) {
                 return "crouch_" + this.#faceDirection;
             } else {
                 return this.#faceDirection;
             }
         }
-        if (this._states.currentState == "DYING") {
+        if (this._states.currentState === "DYING") {
             return "dying_" + this.#faceDirection;
         }
-        if (this._states.currentState == "DEAD") {
+        if (this._states.currentState === "DEAD") {
             return "dead_" + this.#faceDirection;
         }
 
@@ -359,10 +359,10 @@ class Character {
         const characterSegment = this.getHSegmentAbs();
         for (const [id, wall] of this.#walls) {
             const wallSegment = wall.getSegment();
-            if (id == -1 && this._pos.x < wallSegment.p1.x) {  // Left camera wall trespass
+            if (id === -1 && this._pos.x < wallSegment.p1.x) {  // Left camera wall trespass
                 this._pos.x = wallSegment.p1.x + 1;
             }
-            if (id == -2 && this._pos.x > wallSegment.p1.x) {  // Right camera wall trespass
+            if (id === -2 && this._pos.x > wallSegment.p1.x) {  // Right camera wall trespass
                 this._pos.x = wallSegment.p1.x - 1;
             }
             if (!Segment.doIntersect(wallSegment, characterSegment)) {
@@ -470,7 +470,7 @@ class Character {
     updateAvailablePlatforms(yLimit = null, xCorrection = null) {
         this.#availablePlatformIds = [];
         const botTip = this._pos.addConst(this.#vSegment.p2);
-        if (yLimit == null && xCorrection == null) {
+        if (yLimit === null && xCorrection === null) {
             botTip.y -= 50;
         }
         if (yLimit !== null && botTip.y > yLimit) {

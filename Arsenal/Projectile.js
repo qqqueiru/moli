@@ -30,7 +30,7 @@ class Projectile {
         if (this.#direction === "left") { velocityVector = new Point(-this.#speed, 0); }
         if (this.#direction === "up") { velocityVector = new Point(0, -this.#speed); }
         if (this.#direction === "down") { velocityVector = new Point(0, this.#speed); }
-        if ((velocityVector.x * velocityVector.x + velocityVector.y + velocityVector.y) == 0) {
+        if ((velocityVector.x * velocityVector.x + velocityVector.y + velocityVector.y) === 0) {
             console.error("projectile with 0 speed");
         }
         this.#previousPos = this.#pos.clone();

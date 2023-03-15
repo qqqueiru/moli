@@ -50,10 +50,10 @@ GameScreen.drawDistance = Math.sqrt(GameScreen.width * GameScreen.width + GameSc
 
 
 window.addEventListener("keydown", (event) => {
-    if (event.key == "F5") {
+    if (event.key === "F5") {
         return;
     }
-    if (event.key == "Tab") {
+    if (event.key === "Tab") {
         event.preventDefault();
         event.stopPropagation();
         return;
@@ -91,7 +91,7 @@ window.addEventListener("keyup", (event) => {
 // if (navigator.maxTouchPoints)
 // {
 //     window.addEventListener("touchstart", (event) => {
-//         if (event.touches.length == 0) {
+//         if (event.touches.length === 0) {
 //             return;
 //         }
 //         // NOTE: Tal vez convenga ubicar el criterio de si es enter, left o right en las distintas pantallas de juego

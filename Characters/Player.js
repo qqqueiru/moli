@@ -31,7 +31,7 @@ class Player extends Character {
 
     inflictDamage(damage) {
         const currentState = this._states.currentState;
-        if (currentState == "ALIVE" && this._states[currentState].getCurrentFrame() < 60 * 4) {
+        if (currentState === "ALIVE" && this._states[currentState].getCurrentFrame() < 60 * 4) {
             return;
         }
         super.inflictDamage(damage);
@@ -41,7 +41,7 @@ class Player extends Character {
         super.draw(ctx, cameraPos);
 
         const currentState = this._states.currentState;
-        if (currentState == "ALIVE" && this._states[currentState].getCurrentFrame() < 60 * 4) {
+        if (currentState === "ALIVE" && this._states[currentState].getCurrentFrame() < 60 * 4) {
             // Debug
             ctx.beginPath();
             ctx.rect(this._pos.x + GameScreen.width / 2 - cameraPos.x, this._pos.y + GameScreen.height / 2 - cameraPos.y, 20, 20);

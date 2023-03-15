@@ -93,10 +93,10 @@ const TR = {
         la: "FINIS LUDUM",
     },
     gameOver0: {
-        en: (score) => {return `You scored ${score} point${score == "I" ? "" : "s"}`},
-        es: (score) => {return `Has conseguido ${score} punto${score == "I" ? "" : "s"}`},
-        gl: (score) => {return `Marcaches ${score} punto${score == "I" ? "" : "s"}`},
-        la: (score) => {return `Vos laceratum ${score} punct${score == "I" ? "um" : "a"}`},
+        en: (score) => {return `You scored ${score} point${score === "I" ? "" : "s"}`},
+        es: (score) => {return `Has conseguido ${score} punto${score === "I" ? "" : "s"}`},
+        gl: (score) => {return `Marcaches ${score} punto${score === "I" ? "" : "s"}`},
+        la: (score) => {return `Vos laceratum ${score} punct${score === "I" ? "um" : "a"}`},
     },
     RESUME: {
         en: "RESUME",

@@ -14,7 +14,7 @@ class FontManager {
     }
     static fontsLoaded() {
         const fontsCount = FontManager.fonts.size;
-        if (fontsCount == 0) {
+        if (fontsCount === 0) {
             return 1;
         }
         let fontsLoaded = 0;

@@ -36,10 +36,10 @@ class Segment {
             
 
         // Special Cases
-        if (o1 == 0 && s1.onSegment(s2.p1)) { return true; }
-        if (o2 == 0 && s1.onSegment(s2.p2)) { return true; }
-        if (o3 == 0 && s2.onSegment(s1.p1)) { return true; }
-        if (o4 == 0 && s2.onSegment(s1.p2)) { return true; }
+        if (o1 === 0 && s1.onSegment(s2.p1)) { return true; }
+        if (o2 === 0 && s1.onSegment(s2.p2)) { return true; }
+        if (o3 === 0 && s2.onSegment(s1.p1)) { return true; }
+        if (o4 === 0 && s2.onSegment(s1.p2)) { return true; }
 
         return false; // Doesn't fall in any of the above cases
     }
@@ -73,7 +73,7 @@ class Segment {
         }
     }
     isPointAbove(p) {
-        if (this.p2.x == this.p1.x) { return false; }
+        if (this.p2.x === this.p1.x) { return false; }
         const yOfSegment = this.getY(p.x);
         return p.y <= yOfSegment;
     }

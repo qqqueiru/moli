@@ -9,7 +9,7 @@ class ImageManager {
     }
     static imgsLoaded() {
         const imgsCount = ImageManager.imgs.size;
-        if (imgsCount == 0) {
+        if (imgsCount === 0) {
             return 1;
         }
         let imgsLoaded = 0;

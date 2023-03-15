@@ -17,14 +17,14 @@ class AudioManager {
     }
     static audiosLoaded() {
         const audiosCount = AudioManager.audios.size;
-        if (audiosCount == 0) {
+        if (audiosCount === 0) {
             return 1;
         }
         let audiosLoaded = 0;
         for (const [id, clonesObj] of AudioManager.audios) {
             let audioLoaded = true;
             for (const audio of clonesObj.audios) {
-                audioLoaded *= audio.readyState == 4;  // HAVE_ENOUGH_DATA
+                audioLoaded *= audio.readyState === 4;  // HAVE_ENOUGH_DATA
             }
             audiosLoaded += audioLoaded;
         }

@@ -19,16 +19,16 @@ class Camera {
     }
 
     setSubLevelLimits(minBound, maxBound) {
-        if (minBound.x == -1) {
+        if (minBound.x === -1) {
             minBound.x = 0;
         }
-        if (minBound.y == -1) {
+        if (minBound.y === -1) {
             minBound.y = 0;
         }
-        if (maxBound.x == -1) {
+        if (maxBound.x === -1) {
             maxBound.x = this.#subLevelDim.x;
         }
-        if (maxBound.y == -1) {
+        if (maxBound.y === -1) {
             maxBound.y = this.#subLevelDim.y;
         }
 
