@@ -69,6 +69,14 @@ class AudioManager {
         audioToPlay.currentTime = 0;
         audioToPlay.loop = true;
     }
+    static isPlaying(soundId) {
+        if (!AudioManager.audios.has(soundId)) {
+            return false;
+        }
+        const clonesObj = AudioManager.audios.get(soundId);
+        const audioToPlay = clonesObj.audios[clonesObj.currentClone];
+        return !audioToPlay.paused;
+    }
     static startSilenceRoutine() {
         setInterval(() => {
             const silenceAudio = AudioManager.audios.get("silence").audios[0];

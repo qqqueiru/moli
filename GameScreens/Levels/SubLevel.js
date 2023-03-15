@@ -343,7 +343,9 @@ class SubLevel {
     }
 
     update() {
-        AudioManager.playLoop(this._levelMusicId);
+        if (!AudioManager.isPlaying(this._levelMusicId)) {
+            AudioManager.playLoop(this._levelMusicId);
+        }
 
         this.#moveCameraWalls();
 
