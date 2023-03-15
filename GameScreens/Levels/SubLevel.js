@@ -338,8 +338,8 @@ class SubLevel {
     }
 
     #moveCameraWalls() {
-        this.#cameraWallLeft.moveTo(this._camera.getPos().addConst(new Point(-GameScreen.width / 2, 0)));
-        this.#cameraWallRight.moveTo(this._camera.getPos().addConst(new Point(GameScreen.width / 2, 0)));
+        this.#cameraWallLeft.moveTo(this._camera.getPos().addConst(new Point(-GameScreen.width / 2 - 40, 0)));
+        this.#cameraWallRight.moveTo(this._camera.getPos().addConst(new Point(GameScreen.width / 2 + 40, 0)));
     }
 
     update() {

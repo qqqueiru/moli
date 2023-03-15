@@ -378,6 +378,7 @@ class Character {
                 const leftTip = this.getLeftTip();
                 this.moveRel(intersection.substractConst(leftTip));
             }
+            return;
         }
     }
 
