@@ -4,8 +4,15 @@ class ImageManager {
     static imgs = new Map();
     static loadImage(id, src) {
         const img = new Image();
+        img.decoded = false;
         img.src = src;
         ImageManager.imgs.set(id, img);
+        img.decode().then(() => {
+            img.decoded = true;
+        }).catch((error) => {
+            alert(`Could not load and decode img with src ${img.src}`);
+            console.error(error);
+        });
     }
     static imgsLoaded() {
         const imgsCount = ImageManager.imgs.size;
@@ -14,7 +21,7 @@ class ImageManager {
         }
         let imgsLoaded = 0;
         for (const [id, img] of ImageManager.imgs) {
-            imgsLoaded += img.complete;
+            imgsLoaded += img.complete && img.decoded;
         }
         return imgsLoaded / imgsCount;  // Número entre 0 y 1 que representa el progreso de carga
     }
@@ -48,7 +55,7 @@ class ImageManager {
         ImageManager.loadImage("npc_dying_left", "./img/npcs/test/npc_dying_left.png");
 
         ImageManager.loadImage("background_test_00", "./img/background/background_test_00.png");
-        ImageManager.loadImage("sublevel1_1", "./img/background/sublevel1_1.png");
+        ImageManager.loadImage("sublevel1_1", "./img/background/test_1.png");
 
         ImageManager.loadImage("grenade_explosion", "./img/grenades/grenade_explosion.png");
 
