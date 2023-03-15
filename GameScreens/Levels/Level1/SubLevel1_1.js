@@ -11,7 +11,7 @@ class SubLevel1_1 extends SubLevel {
     constructor() {
         super();
         {
-            this.setBackgroundImg("sublevel1_1");
+            this.setBackgroundImg(new BackgroundImage("sublevel1_1"));
         }
         {
             let i = 0;  // Id must not be negative

@@ -11,7 +11,7 @@ class SubLevel {
     #enemyProjectiles = [];
     #playerGrenades = [];  // Lista de granadas presentes en el subnivel...
     #enemyGrenades = [];
-    #backgroundImg = "";
+    #backgroundImg;
     #cameraWallLeft = new Wall(-1, new Segment({x: 0, y: 0}, {x: 0, y: 10800}), false);
     #cameraWallRight = new Wall(-2, new Segment({x: 0, y: 0}, {x: 0, y: 10800}), false);
     #bgSprites = [];  // Includes any complementary sprite (OnceSprite, LoopSprite, StaticSprite...) the sublevel may have
@@ -31,10 +31,10 @@ class SubLevel {
         this._levelMusicId = levelMusicId;
     }
 
-    setBackgroundImg(imgId) {
-        this.#backgroundImg = ImageManager.getImage(imgId);
-        const w = this.#backgroundImg.width;
-        const h = this.#backgroundImg.height;
+    setBackgroundImg(backgroundImg) {
+        this.#backgroundImg = backgroundImg;
+        const w = this.#backgroundImg.getTotalWidth();
+        const h = this.#backgroundImg.getTotalHeight();
         this._camera.setSubLevelDimensions(w, h);
     }
 
@@ -383,17 +383,8 @@ class SubLevel {
     draw(ctx) {
         ctx.beginPath();
         ctx.clearRect(0, 0, GameScreen.width, GameScreen.height);
-        ctx.drawImage(
-            this.#backgroundImg,
-            -GameScreen.width / 2 + this._camera.getPos().x,
-            -GameScreen.height / 2 + this._camera.getPos().y,
-            GameScreen.width,
-            GameScreen.height,
-            0,
-            0,
-            GameScreen.width,
-            GameScreen.height
-        );
+
+        this.#backgroundImg.draw(ctx, this._camera.getPos());
 
         const bgSpritesLength = this.#bgSprites.length;
         for (let i = bgSpritesLength - 1; i >= 0; --i) {
