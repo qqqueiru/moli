@@ -389,7 +389,7 @@ class SubLevel1_1 extends SubLevel {
             this._targetPointLavadero.y = this._player.getPos().y;
             this._camera.offset.x = 0;
             console.log(this.getDeadNpcCount());
-            if (this.getDeadNpcCount() >= 125) {
+            if (this.getDeadNpcCount() >= 130) {
                 this.resumeFromLavadero();
             }
         }
