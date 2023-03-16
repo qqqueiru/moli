@@ -7,12 +7,18 @@ class ImageManager {
         img.decoded = false;
         img.src = src;
         ImageManager.imgs.set(id, img);
-        img.decode().then(() => {
-            img.decoded = true;
-        }).catch((error) => {
-            alert(`Could not load and decode img with src ${img.src}`);
-            console.error(error);
-        });
+        const imgDecodeTry = () => {
+            img.decode().then(() => {
+                img.decoded = true;
+            }).catch((error) => {
+                // alert(`Could not load and decode img with src ${img.src}, ${error}`);
+                // console.warn(error);
+                console.warn("Decoding retried for", src);
+                setTimeout(imgDecodeTry, 100);
+                // imgDecodeTry();
+            });
+        }
+        imgDecodeTry();  // Chrome made me do this
     }
     static imgsLoaded() {
         const imgsCount = ImageManager.imgs.size;
@@ -54,9 +60,6 @@ class ImageManager {
         ImageManager.loadImage("npc_dying_right", "./img/npcs/test/npc_dying_right.png");
         ImageManager.loadImage("npc_dying_left", "./img/npcs/test/npc_dying_left.png");
 
-        ImageManager.loadImage("background_test_00", "./img/background/background_test_00.png");
-        ImageManager.loadImage("sublevel1_1", "./img/background/test_1.png");
-
         ImageManager.loadImage("grenade_explosion", "./img/grenades/grenade_explosion.png");
 
         // Loop Sprites
@@ -67,6 +70,39 @@ class ImageManager {
         // Static Sprites
         ImageManager.loadImage("casa_moli", "./img/static_sprites/casa_moli.png");
         ImageManager.loadImage("terraza_caserio", "./img/static_sprites/terraza_caserio.png");
+
+
+        // Background Image SubLevel1_1
+        ImageManager.loadImage("background_test_00", "./img/background/background_test_00.png");
+        // ImageManager.loadImage("sublevel1_1", "./img/background/sublevel1_1.png");
+        ImageManager.loadImage("sublevel1_1_x00y00", "./img/background/sublevel1_1/x00y00.png");
+        ImageManager.loadImage("sublevel1_1_x01y00", "./img/background/sublevel1_1/x01y00.png");
+        ImageManager.loadImage("sublevel1_1_x02y00", "./img/background/sublevel1_1/x02y00.png");
+        ImageManager.loadImage("sublevel1_1_x03y00", "./img/background/sublevel1_1/x03y00.png");
+        ImageManager.loadImage("sublevel1_1_x04y00", "./img/background/sublevel1_1/x04y00.png");
+        ImageManager.loadImage("sublevel1_1_x05y00", "./img/background/sublevel1_1/x05y00.png");
+        ImageManager.loadImage("sublevel1_1_x06y00", "./img/background/sublevel1_1/x06y00.png");
+        ImageManager.loadImage("sublevel1_1_x07y00", "./img/background/sublevel1_1/x07y00.png");
+        ImageManager.loadImage("sublevel1_1_x08y00", "./img/background/sublevel1_1/x08y00.png");
+        ImageManager.loadImage("sublevel1_1_x00y01", "./img/background/sublevel1_1/x00y01.png");
+        ImageManager.loadImage("sublevel1_1_x01y01", "./img/background/sublevel1_1/x01y01.png");
+        ImageManager.loadImage("sublevel1_1_x02y01", "./img/background/sublevel1_1/x02y01.png");
+        ImageManager.loadImage("sublevel1_1_x03y01", "./img/background/sublevel1_1/x03y01.png");
+        ImageManager.loadImage("sublevel1_1_x04y01", "./img/background/sublevel1_1/x04y01.png");
+        ImageManager.loadImage("sublevel1_1_x05y01", "./img/background/sublevel1_1/x05y01.png");
+        ImageManager.loadImage("sublevel1_1_x06y01", "./img/background/sublevel1_1/x06y01.png");
+        ImageManager.loadImage("sublevel1_1_x07y01", "./img/background/sublevel1_1/x07y01.png");
+        ImageManager.loadImage("sublevel1_1_x08y01", "./img/background/sublevel1_1/x08y01.png");
+        ImageManager.loadImage("sublevel1_1_x00y02", "./img/background/sublevel1_1/x00y02.png");
+        ImageManager.loadImage("sublevel1_1_x01y02", "./img/background/sublevel1_1/x01y02.png");
+        ImageManager.loadImage("sublevel1_1_x02y02", "./img/background/sublevel1_1/x02y02.png");
+        ImageManager.loadImage("sublevel1_1_x03y02", "./img/background/sublevel1_1/x03y02.png");
+        ImageManager.loadImage("sublevel1_1_x04y02", "./img/background/sublevel1_1/x04y02.png");
+        ImageManager.loadImage("sublevel1_1_x05y02", "./img/background/sublevel1_1/x05y02.png");
+        ImageManager.loadImage("sublevel1_1_x06y02", "./img/background/sublevel1_1/x06y02.png");
+        ImageManager.loadImage("sublevel1_1_x07y02", "./img/background/sublevel1_1/x07y02.png");
+        ImageManager.loadImage("sublevel1_1_x08y02", "./img/background/sublevel1_1/x08y02.png");
+
 
         // ImageManager.loadImage("moli_idle_right", "./img/moli_idle_right.png");
         // ImageManager.loadImage("moli_idle_left", "./img/moli_idle_left.png");

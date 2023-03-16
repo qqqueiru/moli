@@ -11,7 +11,12 @@ class SubLevel1_1 extends SubLevel {
     constructor() {
         super();
         {
-            this.setBackgroundImg(new BackgroundImage("sublevel1_1"));
+            const bgImg = new BackgroundImage();
+            // bgImg.addRow(["sublevel1_1"]);
+            bgImg.addRow(["sublevel1_1_x00y00", "sublevel1_1_x01y00", "sublevel1_1_x02y00", "sublevel1_1_x03y00", "sublevel1_1_x04y00", "sublevel1_1_x05y00", "sublevel1_1_x06y00", "sublevel1_1_x07y00", "sublevel1_1_x08y00"]);
+            bgImg.addRow(["sublevel1_1_x00y01", "sublevel1_1_x01y01", "sublevel1_1_x02y01", "sublevel1_1_x03y01", "sublevel1_1_x04y01", "sublevel1_1_x05y01", "sublevel1_1_x06y01", "sublevel1_1_x07y01", "sublevel1_1_x08y01"]);
+            bgImg.addRow(["sublevel1_1_x00y02", "sublevel1_1_x01y02", "sublevel1_1_x02y02", "sublevel1_1_x03y02", "sublevel1_1_x04y02", "sublevel1_1_x05y02", "sublevel1_1_x06y02", "sublevel1_1_x07y02", "sublevel1_1_x08y02"]);
+            this.setBackgroundImg(bgImg);
         }
         {
             let i = 0;  // Id must not be negative
@@ -380,7 +385,6 @@ class SubLevel1_1 extends SubLevel {
         if (this._inChurch) {
             this._targetPointChurch.y = this._player.getPos().y;
             this._camera.offset.x = 0;
-            console.log(this.getDeadNpcCount());
             if (this.getDeadNpcCount() >= 74) {
                 this.resumeFromChurch();
             }
@@ -388,7 +392,6 @@ class SubLevel1_1 extends SubLevel {
         if (this._inLavadero) {
             this._targetPointLavadero.y = this._player.getPos().y;
             this._camera.offset.x = 0;
-            console.log(this.getDeadNpcCount());
             if (this.getDeadNpcCount() >= 130) {
                 this.resumeFromLavadero();
             }
@@ -396,7 +399,6 @@ class SubLevel1_1 extends SubLevel {
         if (this._inCaserio) {
             this._targetPointCaserio.y = this._player.getPos().y;
             this._camera.offset.x = 0;
-            console.log(this.getDeadNpcCount());
             if (this.getDeadNpcCount() >= 100) {
                 this.resumeFromCaserio();
             }
@@ -405,7 +407,6 @@ class SubLevel1_1 extends SubLevel {
             // this._targetPointRoldans.y = this._player.getPos().y;
             this._camera.offset.x = 0;
             this._camera.offset.y = 0;
-            console.log(this.getDeadNpcCount());
             if (this.getDeadNpcCount() >= 100) {
                 this.resumeFromRoldans();
             }
