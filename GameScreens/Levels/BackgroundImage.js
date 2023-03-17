@@ -55,8 +55,22 @@ class BackgroundImage {
     #runningX = 0;
     #runningY = 0;
     #bgImgTiles = [];
+    #tileVertices = new Map();  // Map( x -> Map(y -> Array[TilesToDraw]) )
     constructor() {
 
+    }
+
+    #addTileVertex(vertex, bgImgTile) {
+        // JavaScript Set doesn't allow customizable comparison. Using Map of Maps instead.
+        if (!this.#tileVertices.has(vertex.x)) {
+            const yMap = new Map();
+            yMap.set(vertex.y, [bgImgTile]);
+            this.#tileVertices.set(vertex.x, yMap);
+        } else if (!this.#tileVertices.get(vertex.x).has(vertex.y)) {
+                this.#tileVertices.get(vertex.x).set(vertex.y, [bgImgTile]);
+        } else {
+            this.#tileVertices.get(vertex.x).get(vertex.y).push(bgImgTile);
+        }
     }
 
     addRow(imgIds) {
@@ -73,9 +87,18 @@ class BackgroundImage {
                 alert(`FOUND DIFFERENT HEIGHT ${h} FOR ROW IN BACKGROUND TILE ${imgId}`);
             }
             const leftTopCornerPos = new Point(this.#runningX, this.#runningY);
+            const rightTopCornerPos = new Point(this.#runningX + w, this.#runningY);
+            const leftBotCornerPos = new Point(this.#runningX, this.#runningY + h);
+            const rightBotCornerPos = new Point(this.#runningX + w, this.#runningY + h);
             bgImgTile.setPosByLeftTopCornerPos(leftTopCornerPos);
             this.#bgImgTiles.push(bgImgTile);
             this.#runningX += w;
+
+            // Tile Vertices
+            this.#addTileVertex(leftTopCornerPos, bgImgTile);
+            this.#addTileVertex(rightTopCornerPos, bgImgTile);
+            this.#addTileVertex(leftBotCornerPos, bgImgTile);
+            this.#addTileVertex(rightBotCornerPos, bgImgTile);            
         }
         this.#runningY += rowHeight;
     }
@@ -93,20 +116,42 @@ class BackgroundImage {
         // const cameraPosRounded = cameraPos.clone();
         // cameraPosRounded.x = Math.round(cameraPosRounded.x);
         // cameraPosRounded.y = Math.round(cameraPosRounded.y);
-        for (const bgImgTile of this.#bgImgTiles) {
-            bgImgTile.updateDistanceToCamera(cameraPos);
-        }
+        
+        // for (const bgImgTile of this.#bgImgTiles) {
+        //     bgImgTile.updateDistanceToCamera(cameraPos);
+        // }
 
-        this.#bgImgTiles.sort((bgImgTile1, bgImgTile2) => {
-            return bgImgTile1.distanceToCamera > bgImgTile2.distanceToCamera ? 1 : -1
-        });  // First bgImgTiles in the array will be the nearest to the camera
+        // this.#bgImgTiles.sort((bgImgTile1, bgImgTile2) => {
+        //     return bgImgTile1.distanceToCamera > bgImgTile2.distanceToCamera ? 1 : -1
+        // });  // First bgImgTiles in the array will be the nearest to the camera
 
-        let bgImgTilesToDraw = 4;
-        if (this.#bgImgTiles.length < 4) {
-            bgImgTilesToDraw = this.#bgImgTiles.length;
+        // let bgImgTilesToDraw = 4;
+        // if (this.#bgImgTiles.length < 4) {
+        //     bgImgTilesToDraw = this.#bgImgTiles.length;
+        // }
+        // for (let i = 0; i < bgImgTilesToDraw; ++i) {
+        //     this.#bgImgTiles[i].draw(ctx, cameraPos);
+        // }
+
+        let minVertexX = null;
+        let minVertexY = null;
+        let minDistanceSquared = Number.MAX_VALUE;
+        for (const [vertexX, yMap] of this.#tileVertices) {
+            for (const [vertexY, bgImgTiles] of yMap) {
+                const distanceSquared = 
+                    (vertexX - cameraPos.x) * (vertexX - cameraPos.x) + 
+                    (vertexY - cameraPos.y) * (vertexY - cameraPos.y);
+                if (distanceSquared < minDistanceSquared) {
+                    minVertexX = vertexX;
+                    minVertexY = vertexY;
+                    minDistanceSquared = distanceSquared;
+                }
+            }
         }
-        for (let i = 0; i < bgImgTilesToDraw; ++i) {
-            this.#bgImgTiles[i].draw(ctx, cameraPos);
+        if (minVertexX !== null && minVertexY !== null) {
+            for (const bgImgTile of this.#tileVertices.get(minVertexX).get(minVertexY)) {
+                bgImgTile.draw(ctx, cameraPos);
+            }
         }
     }
 }
