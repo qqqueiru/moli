@@ -112,10 +112,9 @@ class BackgroundImage {
     }
 
     draw(ctx, cameraPos) {
-        // // TODO check if cameraPos needs its coordinates to be rounded
-        // const cameraPosRounded = cameraPos.clone();
-        // cameraPosRounded.x = Math.round(cameraPosRounded.x);
-        // cameraPosRounded.y = Math.round(cameraPosRounded.y);
+        const cameraPosRounded = cameraPos.clone();
+        cameraPosRounded.x = Math.round(cameraPosRounded.x);
+        cameraPosRounded.y = Math.round(cameraPosRounded.y);
         
         // for (const bgImgTile of this.#bgImgTiles) {
         //     bgImgTile.updateDistanceToCamera(cameraPos);
@@ -139,8 +138,8 @@ class BackgroundImage {
         for (const [vertexX, yMap] of this.#tileVertices) {
             for (const [vertexY, bgImgTiles] of yMap) {
                 const distanceSquared = 
-                    (vertexX - cameraPos.x) * (vertexX - cameraPos.x) + 
-                    (vertexY - cameraPos.y) * (vertexY - cameraPos.y);
+                    (vertexX - cameraPosRounded.x) * (vertexX - cameraPosRounded.x) + 
+                    (vertexY - cameraPosRounded.y) * (vertexY - cameraPosRounded.y);
                 if (distanceSquared < minDistanceSquared) {
                     minVertexX = vertexX;
                     minVertexY = vertexY;
@@ -150,7 +149,7 @@ class BackgroundImage {
         }
         if (minVertexX !== null && minVertexY !== null) {
             for (const bgImgTile of this.#tileVertices.get(minVertexX).get(minVertexY)) {
-                bgImgTile.draw(ctx, cameraPos);
+                bgImgTile.draw(ctx, cameraPosRounded);
             }
         }
     }
