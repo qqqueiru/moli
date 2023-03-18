@@ -12,10 +12,11 @@ class SubLevel1_1 extends SubLevel {
         super();
         {
             const bgImg = new BackgroundImage();
+            const T = (imgId, w, h) => { return new BackgroundImageTile(imgId, w, h); }
             // bgImg.addRow(["sublevel1_1"]);
-            bgImg.addRow(["sublevel1_1_x00y00", "sublevel1_1_x01y00", "sublevel1_1_x02y00", "sublevel1_1_x03y00", "sublevel1_1_x04y00", "sublevel1_1_x05y00", "sublevel1_1_x06y00", "sublevel1_1_x07y00", "sublevel1_1_x08y00"]);
-            bgImg.addRow(["sublevel1_1_x00y01", "sublevel1_1_x01y01", "sublevel1_1_x02y01", "sublevel1_1_x03y01", "sublevel1_1_x04y01", "sublevel1_1_x05y01", "sublevel1_1_x06y01", "sublevel1_1_x07y01", "sublevel1_1_x08y01"]);
-            bgImg.addRow(["sublevel1_1_x00y02", "sublevel1_1_x01y02", "sublevel1_1_x02y02", "sublevel1_1_x03y02", "sublevel1_1_x04y02", "sublevel1_1_x05y02", "sublevel1_1_x06y02", "sublevel1_1_x07y02", "sublevel1_1_x08y02"]);
+            bgImg.addRow([T("", 2272, 1278      ), T("", 2272, 1278      ), T("", 2272, 1278      ), T("", 2272, 1278      ), T("", 2272, 1278      ), T("sublevel1_1_x05y00"), T("sublevel1_1_x06y00"), T("sublevel1_1_x07y00"), T("sublevel1_1_x08y00")]);
+            bgImg.addRow([T("sublevel1_1_x00y01"), T("sublevel1_1_x01y01"), T("sublevel1_1_x02y01"), T("sublevel1_1_x03y01"), T("sublevel1_1_x04y01"), T("sublevel1_1_x05y01"), T("sublevel1_1_x06y01"), T("sublevel1_1_x07y01"), T("sublevel1_1_x08y01")]);
+            bgImg.addRow([T("sublevel1_1_x00y02"), T("sublevel1_1_x01y02"), T("sublevel1_1_x02y02"), T("sublevel1_1_x03y02"), T("sublevel1_1_x04y02"), T("sublevel1_1_x05y02"), T("sublevel1_1_x06y02"), T("", 2272, 1334      ), T("", 792, 1334       )]);
             this.setBackgroundImg(bgImg);
         }
         {

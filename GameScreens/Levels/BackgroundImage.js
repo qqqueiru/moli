@@ -2,22 +2,31 @@ class BackgroundImageTile {
     #pos;  // Center Position
     #leftTopCornerPos;  // Just for precision when drawing. Background tiles must be well aligned.
     #img;  // Image class
+    #width;
+    #height;
     distanceToCamera;  // Distance from Image Center to Camera Position
-    constructor(imgId) {
-        this.#img = ImageManager.getImage(imgId);
+    constructor(imgId, w = 0, h = 0) {
+	if (imgId !== "") {
+            this.#img = ImageManager.getImage(imgId);
+            this.#width = this.#img.width;
+            this.#height = this.#img.height;
+        } else {
+            this.#width = w;
+            this.#height = h;
+        }
     }
 
     setPosByLeftTopCornerPos(leftTopCornerPos) {
         this.#leftTopCornerPos = leftTopCornerPos;
-        this.#pos = leftTopCornerPos.addConst(new Point(this.#img.width / 2, this.#img.height / 2));
+        this.#pos = leftTopCornerPos.addConst(new Point(this.#width / 2, this.#height / 2));
     }
 
     getWidth() {
-        return this.#img.width;
+        return this.#width;
     }
 
     getHeight() {
-        return this.#img.height;
+        return this.#height;
     }
 
     updateDistanceToCamera(cameraPos) {
@@ -25,29 +34,15 @@ class BackgroundImageTile {
     }
 
     draw(ctx, cameraPos) {
-        const oldWay = false;
-        if (oldWay) {
+        if (this.#img) {
+            const dx = this.#leftTopCornerPos.x - cameraPos.x + GameScreen.width / 2;
+            const dy = this.#leftTopCornerPos.y - cameraPos.y + GameScreen.height / 2;
             ctx.drawImage(
                 this.#img,
-                -GameScreen.width / 2 + cameraPos.x,
-                -GameScreen.height / 2 + cameraPos.y,
-                GameScreen.width,
-                GameScreen.height,
-                0,
-                0,
-                GameScreen.width,
-                GameScreen.height
+                dx,
+                dy,
             );
-            return;
         }
-
-        const dx = this.#leftTopCornerPos.x - cameraPos.x + GameScreen.width / 2;
-        const dy = this.#leftTopCornerPos.y - cameraPos.y + GameScreen.height / 2;
-        ctx.drawImage(
-            this.#img,
-            dx,
-            dy,
-        );
     }
 }
 
@@ -73,11 +68,10 @@ class BackgroundImage {
         }
     }
 
-    addRow(imgIds) {
+    addRow(bgImgTiles) {
         let rowHeight = -1;
         this.#runningX = 0;
-        for (const imgId of imgIds) {
-            const bgImgTile = new BackgroundImageTile(imgId);
+        for (const bgImgTile of bgImgTiles) {
             const w = bgImgTile.getWidth();
             const h = bgImgTile.getHeight();
             if (rowHeight === -1) {
