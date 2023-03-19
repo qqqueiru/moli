@@ -10,7 +10,7 @@ class StartMenu extends GameScreen {
             currentMenu: "mainMenu",
             mainMenu: {
                 currentOptionIndex: 0,
-                drawHandle: (optIdx)=>{this.#drawMainMenu(optIdx)},
+                drawHandle: (ctx, optIdx)=>{this.#drawMainMenu(ctx, optIdx)},
                 options: [
                     {
                         name: "START",
@@ -28,7 +28,7 @@ class StartMenu extends GameScreen {
             },
             helpMenu: {
                 currentOptionIndex: 0,
-                drawHandle: (optIdx)=>{this.#drawHelpMenu(optIdx)},
+                drawHandle: (ctx, optIdx)=>{this.#drawHelpMenu(ctx, optIdx)},
                 options: [
                     {
                         name: "BACK",
@@ -38,7 +38,7 @@ class StartMenu extends GameScreen {
             },
             aboutMenu: {
                 currentOptionIndex: 0,
-                drawHandle: (optIdx)=>{this.#drawAboutMenu(optIdx)},
+                drawHandle: (ctx, optIdx)=>{this.#drawAboutMenu(ctx, optIdx)},
                 options: [
                     {
                         name: "BACK",
@@ -70,97 +70,98 @@ class StartMenu extends GameScreen {
         this.#menus.currentMenu = "mainMenu";
     }
 
-    #drawMainMenu(currentOptionIndex) {
-        GameScreen.ctx.fillStyle = GameScreen.fontColor;
-        GameScreen.ctx.textAlign = "center";
-        GameScreen.ctx.font = `bold ${Math.floor(0.055 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        GameScreen.ctx.fillText(TR.MOLI[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.4));
-        GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+    #drawMainMenu(ctx, currentOptionIndex) {
+        ctx.fillStyle = GameScreen.fontColor;
+        ctx.textAlign = "center";
+        ctx.font = `bold ${Math.floor(0.055 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        ctx.fillText(TR.MOLI[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.4));
+
+        ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
         const optionsHeight = 0.54;
         const optionsSpacing = 0.04;
-        GameScreen.ctx.fillText(TR.START[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)));
-        GameScreen.ctx.fillText(TR.HELP[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 1)));
-        GameScreen.ctx.fillText(TR.ABOUT[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 2)));
+        ctx.fillText(TR.START[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)));
+        ctx.fillText(TR.HELP[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 1)));
+        ctx.fillText(TR.ABOUT[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 2)));
 
         // Rectangulito para indicar seleccion actual
-        GameScreen.ctx.beginPath();
-        GameScreen.ctx.rect(
+        ctx.beginPath();
+        ctx.rect(
             this.#selectionSquareX, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex - 0.02)),
             Math.floor(GameScreen.width * 0.01), Math.floor(GameScreen.height * 0.02)
         );
-        GameScreen.ctx.fillStyle = GameScreen.fontColor;
-        GameScreen.ctx.fill();
+        ctx.fillStyle = GameScreen.fontColor;
+        ctx.fill();
     }
 
-    #drawHelpMenu(currentOptionIndex) {
-        GameScreen.ctx.fillStyle = GameScreen.fontColor;
-        GameScreen.ctx.textAlign = "center";
+    #drawHelpMenu(ctx, currentOptionIndex) {
+        ctx.fillStyle = GameScreen.fontColor;
+        ctx.textAlign = "center";
 
-        GameScreen.ctx.font = `bold ${Math.floor(0.100 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        GameScreen.ctx.fillText("⬅ 🐴 ➡", Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.4));
-        GameScreen.ctx.font = `bold ${Math.floor(0.025 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        GameScreen.ctx.fillText(
+        ctx.font = `bold ${Math.floor(0.100 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        ctx.fillText("⬅ 🐴 ➡", Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.4));
+        ctx.font = `bold ${Math.floor(0.025 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        ctx.fillText(
             TR.help0[lang],
             Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.5)
         );
-        GameScreen.ctx.fillText(
+        ctx.fillText(
             TR.help1[lang],
             Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.55)
         );
-        GameScreen.ctx.fillText(
+        ctx.fillText(
             TR.help2[lang],
             Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.6)
         );
         const optionsHeight = 0.70;
         const optionsSpacing = 0.04;
-        GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        GameScreen.ctx.fillText(TR.BACK[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)));
+        ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        ctx.fillText(TR.BACK[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)));
 
         // Rectangulito para indicar seleccion actual
-        GameScreen.ctx.beginPath();
-        GameScreen.ctx.rect(
+        ctx.beginPath();
+        ctx.rect(
             this.#selectionSquareX, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex - 0.02)),
             Math.floor(GameScreen.width * 0.01), Math.floor(GameScreen.height * 0.02)
         );
-        GameScreen.ctx.fillStyle = GameScreen.fontColor;
-        GameScreen.ctx.fill();
+        ctx.fillStyle = GameScreen.fontColor;
+        ctx.fill();
     }
 
-    #drawAboutMenu(currentOptionIndex) {
-        GameScreen.ctx.fillStyle = GameScreen.fontColor;
-        GameScreen.ctx.textAlign = "center";
-        GameScreen.ctx.font = `bold ${Math.floor(0.050 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        GameScreen.ctx.fillText(
+    #drawAboutMenu(ctx, currentOptionIndex) {
+        ctx.fillStyle = GameScreen.fontColor;
+        ctx.textAlign = "center";
+        ctx.font = `bold ${Math.floor(0.050 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        ctx.fillText(
             TR.MOLI[lang],
             Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.35)
         );
-        GameScreen.ctx.font = `bold ${Math.floor(0.030 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        GameScreen.ctx.fillText(
+        ctx.font = `bold ${Math.floor(0.030 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        ctx.fillText(
             TR.about0[lang],
             Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.45)
         );
-        GameScreen.ctx.fillText(
+        ctx.fillText(
             TR.about1[lang],
             Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.50)
         );
-        GameScreen.ctx.fillText(
+        ctx.fillText(
             TR.about2[lang],
             Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.55)
         );
 
-        GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
         const optionsHeight = 0.70;
         const optionsSpacing = 0.04;
-        GameScreen.ctx.fillText(TR.BACK[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)));
+        ctx.fillText(TR.BACK[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)));
 
         // Rectangulito para indicar seleccion actual
-        GameScreen.ctx.beginPath();
-        GameScreen.ctx.rect(
+        ctx.beginPath();
+        ctx.rect(
             this.#selectionSquareX, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex - 0.02)),
             Math.floor(GameScreen.width * 0.01), Math.floor(GameScreen.height * 0.02)
         );
-        GameScreen.ctx.fillStyle = GameScreen.fontColor;
-        GameScreen.ctx.fill();
+        ctx.fillStyle = GameScreen.fontColor;
+        ctx.fill();
     }
 
     handleInputs() {
@@ -209,45 +210,45 @@ class StartMenu extends GameScreen {
         }
     }
 
-    #drawFadeIn() {
+    #drawFadeIn(ctx) {
         const maxDim = Math.max(GameScreen.width, GameScreen.height);
         if (this.#fadeInCircleRadius < maxDim) {
-            GameScreen.ctx.beginPath();
-            GameScreen.ctx.rect(0, 0, GameScreen.width, GameScreen.height);
-            GameScreen.ctx.arc(GameScreen.width / 2, GameScreen.height / 2, this.#fadeInCircleRadius, 0, 2 * Math.PI);
-            GameScreen.ctx.fillStyle = "rgb(0, 0, 0)";
-            GameScreen.ctx.fill("evenodd");
+            ctx.beginPath();
+            ctx.rect(0, 0, GameScreen.width, GameScreen.height);
+            ctx.arc(GameScreen.width / 2, GameScreen.height / 2, this.#fadeInCircleRadius, 0, 2 * Math.PI);
+            ctx.fillStyle = "rgb(0, 0, 0)";
+            ctx.fill("evenodd");
             this.#fadeInCircleRadius += 50;
         }
     }
 
     draw() {
+        const ctx = GameScreen.ctx;
         this.#selectionSquareX = Math.floor(GameScreen.width * (0.4 + 0.01 * Math.sin(this.#t)));
 
-        GameScreen.ctx.beginPath();
-        GameScreen.ctx.clearRect(0, 0, GameScreen.width, GameScreen.height);
-        GameScreen.ctx.rect(0, 0, GameScreen.width, GameScreen.height);
-        GameScreen.ctx.fillStyle = GameScreen.fontColor;  // "#775c9f";  // "#fdf5e6";
-        GameScreen.ctx.fill();
+        ctx.beginPath();
+        ctx.clearRect(0, 0, GameScreen.width, GameScreen.height);
+        ctx.rect(0, 0, GameScreen.width, GameScreen.height);
+        ctx.fillStyle = GameScreen.fontColor;  // "#775c9f";  // "#fdf5e6";
+        ctx.fill();
 
-        GameScreen.ctx.beginPath();
-        GameScreen.ctx.rect(
+        ctx.beginPath();
+        ctx.rect(
             Math.floor(GameScreen.width / 4), Math.floor(GameScreen.height / 4),
             Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height / 2)
         );
-        GameScreen.ctx.fillStyle = "#ffdddd";
-        GameScreen.ctx.fill();
+        ctx.fillStyle = "#ffdddd";
+        ctx.fill();
 
-        GameScreen.ctx.strokeStyle = GameScreen.fontColor;
-        GameScreen.ctx.lineWidth = GameScreen.imgScale * 2;
-        GameScreen.ctx.stroke();
+        ctx.strokeStyle = GameScreen.fontColor;
+        ctx.lineWidth = GameScreen.imgScale * 2;
+        ctx.stroke();
 
         const currentMenu = this.#menus.currentMenu;
         const drawHandleFunction = this.#menus[currentMenu].drawHandle;
         const currentOptionIndex = this.#menus[currentMenu].currentOptionIndex;
-        drawHandleFunction(currentOptionIndex);
-
-        this.#drawFadeIn();  // Transición desde la pantalla PressAnyKey
+        drawHandleFunction(ctx, currentOptionIndex);
+        this.#drawFadeIn(ctx);  // Transición desde la pantalla PressAnyKey
 
         this.#t += 0.15;
     }
