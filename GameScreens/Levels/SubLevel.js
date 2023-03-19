@@ -436,8 +436,9 @@ class SubLevel {
             grenade.draw(ctx, this._camera.getPos());
         }
 
+        // Debug triggers
         for (const trigger of this._triggers) {
-            trigger.draw(ctx, this._camera.getPos());
+            // trigger.draw(ctx, this._camera.getPos());  // Big ellipse drawings are slow for some reason in Firefox
         }
 
         for (const collectable of this.#collectables) {
