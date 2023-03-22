@@ -240,9 +240,9 @@ class StartMenu extends GameScreen {
         ctx.fillStyle = "#ffdddd";
         ctx.fill();
 
-        ctx.strokeStyle = GameScreen.fontColor;
-        ctx.lineWidth = GameScreen.imgScale * 2;
-        ctx.stroke();
+        // ctx.strokeStyle = GameScreen.fontColor;
+        // ctx.lineWidth = GameScreen.imgScale * 2;
+        // ctx.stroke();
 
         const currentMenu = this.#menus.currentMenu;
         const drawHandleFunction = this.#menus[currentMenu].drawHandle;
