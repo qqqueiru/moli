@@ -566,13 +566,15 @@ class Character {
             return;
         }
         // Debugging...
-        ctx.beginPath();
-        const vSegmentAbs = this.getVSegmentAbs();
-        ctx.moveTo(vSegmentAbs.p1.x + GameScreen.width / 2 - cameraPos.x, vSegmentAbs.p1.y + GameScreen.height / 2 - cameraPos.y);
-        ctx.lineTo(vSegmentAbs.p2.x + GameScreen.width / 2 - cameraPos.x, vSegmentAbs.p2.y + GameScreen.height / 2 - cameraPos.y);
-        const hSegmentAbs = this.getHSegmentAbs();
-        ctx.moveTo(hSegmentAbs.p1.x + GameScreen.width / 2 - cameraPos.x, hSegmentAbs.p1.y + GameScreen.height / 2 - cameraPos.y);
-        ctx.lineTo(hSegmentAbs.p2.x + GameScreen.width / 2 - cameraPos.x, hSegmentAbs.p2.y + GameScreen.height / 2 - cameraPos.y);
+        // // Cross
+        // ctx.beginPath();
+        // const vSegmentAbs = this.getVSegmentAbs();
+        // ctx.moveTo(vSegmentAbs.p1.x + GameScreen.width / 2 - cameraPos.x, vSegmentAbs.p1.y + GameScreen.height / 2 - cameraPos.y);
+        // ctx.lineTo(vSegmentAbs.p2.x + GameScreen.width / 2 - cameraPos.x, vSegmentAbs.p2.y + GameScreen.height / 2 - cameraPos.y);
+        // const hSegmentAbs = this.getHSegmentAbs();
+        // ctx.moveTo(hSegmentAbs.p1.x + GameScreen.width / 2 - cameraPos.x, hSegmentAbs.p1.y + GameScreen.height / 2 - cameraPos.y);
+        // ctx.lineTo(hSegmentAbs.p2.x + GameScreen.width / 2 - cameraPos.x, hSegmentAbs.p2.y + GameScreen.height / 2 - cameraPos.y);
+        
         // const leftRayCastSegmentAbs = this.getLeftRayCastSegmentAbs();
         // ctx.moveTo(leftRayCastSegmentAbs.p1.x, leftRayCastSegmentAbs.p1.y);
         // ctx.lineTo(leftRayCastSegmentAbs.p2.x, leftRayCastSegmentAbs.p2.y);
@@ -580,9 +582,9 @@ class Character {
         // ctx.moveTo(rightRayCastSegmentAbs.p1.x, rightRayCastSegmentAbs.p1.y);
         // ctx.lineTo(rightRayCastSegmentAbs.p2.x, rightRayCastSegmentAbs.p2.y);
 
-        ctx.strokeStyle = "blue";
-        ctx.lineWidth = 5;
-        ctx.stroke();
+        // ctx.strokeStyle = "blue";
+        // ctx.lineWidth = 5;
+        // ctx.stroke();
 
         // if (this.#tracePoints.length > 0) {
         //     for (let i = 1; i < this.#tracePoints.length; ++i) {
@@ -601,7 +603,8 @@ class Character {
         currentSprite.resume();
         currentSprite.draw(this._pos.x, this._pos.y + (this.#vSegment.p1.y + this.#vSegment.p2.y) / 2, cameraPos);
 
-        const hitEllipse = this.#crouched ? this._hitEllipseCrouched : this._hitEllipseStraight;
-        hitEllipse.draw(ctx, cameraPos);
+        // Hit Ellipse
+        // const hitEllipse = this.#crouched ? this._hitEllipseCrouched : this._hitEllipseStraight;
+        // hitEllipse.draw(ctx, cameraPos);
     }
 }
