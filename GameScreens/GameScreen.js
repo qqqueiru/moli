@@ -25,7 +25,15 @@ class GameScreen {
     }
 
     runIteration() {
+        const start = Date.now();
         this.draw();
+        const drawTime = Date.now() - start;
         this.update();
+        const updateTime = Date.now() - start - drawTime;
+        const totalTime = drawTime + updateTime;
+        // console.log(`draw: ${drawTime} ms, update: ${updateTime} ms, total: ${totalTime} ms.`);
+        if (totalTime > 10) {
+            console.warn(`draw: ${drawTime} ms, update: ${updateTime} ms, total: ${totalTime} ms.`)
+        }
     }
 }
