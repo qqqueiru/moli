@@ -445,6 +445,7 @@ class SubLevel {
             collectable.draw(ctx, this._camera.getPos());
         }
 
-        this._camera.draw(ctx);
+        // Debug camera
+        // this._camera.draw(ctx);
     }
 }
