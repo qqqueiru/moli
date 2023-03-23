@@ -36,6 +36,18 @@ class Platform {
     getSegment() {
         return this.#segment;
     }
+    characterIsFar(pos) {
+        let isFar = false;
+        const margin = 100;
+        if (pos.x < this.#segment.p1.x - margin) {
+            isFar = true;
+        }
+        if (pos.x > this.#segment.p2.x + margin) {
+            isFar = true;
+        }
+        return isFar;
+    }
+
     draw(ctx, cameraPos) {
         // Dibujado del segmento del suelo
         ctx.beginPath();

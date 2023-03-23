@@ -6,6 +6,9 @@ class Segment {
     constructor(p1, p2) {
         this.p1 = p1;
         this.p2 = p2;
+        // y = a * x + b
+        this.a = (this.p2.y - this.p1.y) / (this.p2.x - this.p1.x);
+        this.b = this.p1.y - this.a * this.p1.x;
     }
     /**
      * Checks if point is on the segment
@@ -78,11 +81,14 @@ class Segment {
         return p.y <= yOfSegment;
     }
 
+    /**
+     * Only valid for fixed segments
+     * @param {number} x 
+     * @returns 
+     */
     getY(x) {
         // y = a * x + b
-        const a = (this.p2.y - this.p1.y) / (this.p2.x - this.p1.x);
-        const b = this.p1.y - a * this.p1.x;
-        return a * x + b;
+        return this.a * x + this.b;
     }
 
     getMinX() { return Math.min(this.p1.x, this.p2.x); }

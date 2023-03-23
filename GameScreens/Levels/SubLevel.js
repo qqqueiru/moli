@@ -96,8 +96,12 @@ class SubLevel {
             character.setCanJump(false);  // Si no está tocando el suelo, no puede saltar
         }
         let comingFromTop = false;
+        const previousBotTip = character.getPreviousBotTip();
         for (const availablePlatformId of availablePlatformIds) {
             const platform = this.#platforms.get(availablePlatformId);
+            if (platform.characterIsFar(character.getPos())) {
+                continue;
+            }
             const bottomSegment = platform.getSegment();
             if (!Segment.doIntersect(characterFloorRayCast, bottomSegment)) {
                 continue;
@@ -105,7 +109,6 @@ class SubLevel {
             intersection = Segment.pointIntersection(characterSegment, bottomSegment);
             lastPlatformTouchedId = availablePlatformId;
             if (intersection === null) {continue;}
-            const previousBotTip = character.getPreviousBotTip();
             comingFromTop = platform.isPointAbovePlatform(previousBotTip);
             break;
         }
