@@ -6,7 +6,14 @@ class Platform {
     constructor(id, segment) {
         this.#id = id;
         this.#segment = segment;
-        // Por 
+
+        // Platform segment has to satisfy p1.x <= p2.x
+        if (this.#segment.p1.x > this.#segment.p2.x) {
+            const aux = this.#segment.p2;
+            this.#segment.p2 = this.#segment.p1;
+            this.#segment.p1 = aux;
+        }
+
         this.#vx = 0;
         this.#vy = 0;
     }
@@ -77,12 +84,12 @@ class Platform {
         if (p.x >= this.#segment.p2.x && this.#segment.p1.x <= this.#segment.p2.x) {
             yLimit = this.#segment.p2.y;
         }
-        if (p.x >= this.#segment.p1.x && this.#segment.p1.x >= this.#segment.p2.x) {
-            yLimit = this.#segment.p1.y;
-        }
-        if (p.x <= this.#segment.p2.x && this.#segment.p1.x >= this.#segment.p2.x) {
-            yLimit = this.#segment.p2.y;
-        }
+        // if (p.x >= this.#segment.p1.x && this.#segment.p1.x >= this.#segment.p2.x) {
+        //     yLimit = this.#segment.p1.y;
+        // }
+        // if (p.x <= this.#segment.p2.x && this.#segment.p1.x >= this.#segment.p2.x) {
+        //     yLimit = this.#segment.p2.y;
+        // }
         return yLimit;
     }
 
@@ -94,12 +101,12 @@ class Platform {
         if (x <= this.#segment.p2.x && this.#segment.p1.x <= this.#segment.p2.x) {
             withinBounds = true;
         }
-        if (x <= this.#segment.p1.x && this.#segment.p1.x >= this.#segment.p2.x) {
-            withinBounds = true;
-        }
-        if (x >= this.#segment.p2.x && this.#segment.p1.x >= this.#segment.p2.x) {
-            withinBounds = true;
-        }
+        // if (x <= this.#segment.p1.x && this.#segment.p1.x >= this.#segment.p2.x) {
+        //     withinBounds = true;
+        // }
+        // if (x >= this.#segment.p2.x && this.#segment.p1.x >= this.#segment.p2.x) {
+        //     withinBounds = true;
+        // }
         return withinBounds;
     }
 
