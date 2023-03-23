@@ -7,6 +7,7 @@ class GameOverMenu extends GameScreen {
 
     constructor(score) {
         super();
+        this.name = "GameOverMenu";
         AudioManager.playLoop("menu");
         this.#score = score;
         this.#scoreRomanNumeral = romanize(score);

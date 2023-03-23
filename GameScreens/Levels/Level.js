@@ -1,6 +1,7 @@
 class Level extends GameScreen {
     constructor(levelId) {
         super();
+        this.name = "Level";
         this.id = levelId;
         this.subLevels = new Map();  // sublevel id --> SubLevel
         this.currentSubLevelId = -1;

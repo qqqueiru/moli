@@ -2,6 +2,7 @@ class LoadingScreen extends GameScreen {
     #progress;
     constructor() {
         super();
+        this.name = "LoadingScreen";
         this.#progress = 0;
 
         ImageManager.loadImages();

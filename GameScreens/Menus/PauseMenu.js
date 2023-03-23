@@ -7,6 +7,7 @@ class PauseMenu extends GameScreen {
 
     constructor(score) {
         super();
+        this.name = "PauseMenu";
         AudioManager.playLoop("menu");
         this.#score = score;
         this.#scoreRomanNumeral = romanize(score);

@@ -1,6 +1,7 @@
 class PressAnyKey extends GameScreen {
     constructor() {
         super();
+        this.name = "PressAnyKey";
         AudioManager.startSilenceRoutine();
     }
 

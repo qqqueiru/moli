@@ -33,7 +33,7 @@ class GameScreen {
         const totalTime = drawTime + updateTime;
         // console.log(`draw: ${drawTime} ms, update: ${updateTime} ms, total: ${totalTime} ms.`);
         if (totalTime > 10) {
-            console.warn(`draw: ${drawTime} ms, update: ${updateTime} ms, total: ${totalTime} ms.`)
+            console.warn(`draw: ${drawTime} ms, update: ${updateTime} ms, total: ${totalTime} ms. ${GameScreen.currentScreen.name}`)
         }
     }
 }

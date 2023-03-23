@@ -5,6 +5,7 @@ class StartMenu extends GameScreen {
     #selectionSquareX;
     constructor() {
         super();
+        this.name = "StartMenu";
         AudioManager.playLoop("menu");
         this.#menus = {
             currentMenu: "mainMenu",
