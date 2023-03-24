@@ -1,4 +1,5 @@
 class Segment {
+    #fourDiscretePoints = [new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), ];
     /**
      * @param {Point} p1 
      * @param {Point} p2 
@@ -125,6 +126,27 @@ class Segment {
         discretePoints.push(this.p2);  // Same as end point for numeric stability
 
         return discretePoints;
+    }
+
+    /**
+     * Similar to getDiscretePoints, but with already allocated memory
+     * @returns only 4 discrete points
+     */
+    getFourDiscretePoints() {
+        const n = 3;  // 4 points divide the segment in 3 parts
+        const deltaX = this.p2.x - this.p1.x;
+        const deltaY = this.p2.y - this.p1.y;
+
+        this.#fourDiscretePoints[0] = this.p1;
+        for (let i = 1; i < n; ++i) {
+            const previousX = this.#fourDiscretePoints[i - 1].x;
+            const previousY = this.#fourDiscretePoints[i - 1].y;
+            this.#fourDiscretePoints[i].x = previousX + deltaX / n;
+            this.#fourDiscretePoints[i].y = previousY + deltaY / n;
+        }
+        this.#fourDiscretePoints[n] = this.p2;  // Same as end point for numeric stability
+
+        return this.#fourDiscretePoints;
     }
 
     getCenter() {

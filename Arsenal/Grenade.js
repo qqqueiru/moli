@@ -104,11 +104,12 @@ class Grenade {
      */
     checkHit(characters, hitStates) {
         const segmentToCheck = new Segment(this.#pos, this.#previousPos);
+        const hitPoints = segmentToCheck.getFourDiscretePoints();
         for (const character of characters) {
             if (!hitStates.includes(character.getCurrentState())) {
                 continue;
             }
-            if (character.getsHitBySegment(segmentToCheck)) {
+            if (character.getsHitByPoints(hitPoints)) {
                 return true;
             }
         }
@@ -131,11 +132,12 @@ class Grenade {
     explode(characters, hitStates) {
         const blastRadius = 100;
         const blastCircle = new Circle(this.#pos, blastRadius);
+        const hitPoints = blastCircle.getDiscretePoints();
         for (const character of characters) {
             if (!hitStates.includes(character.getCurrentState())) {
                 continue;
             }
-            if (character.getsHitByCircle(blastCircle)) {
+            if (character.getsHitByPoints(hitPoints)) {
                 character.inflictDamage(this.#damage);
             }
         }

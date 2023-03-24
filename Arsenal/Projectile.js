@@ -104,11 +104,12 @@ class Projectile {
      * @returns 
      */
     checkHit(characters, hitStates) {
+        const hitPoints = this.#lerpSegment.getFourDiscretePoints();
         for (const character of characters) {
             if (!hitStates.includes(character.getCurrentState())) {
                 continue;
             }
-            if (character.getsHitBySegment(this.#lerpSegment)) {
+            if (character.getsHitByPoints(hitPoints)) {
                 character.inflictDamage(this.#damage);
                 return true;  // NOTE: en caso de tener un proyectil que daña a más de un personaje a la vez, habría que plantearlo de otro modo
             }

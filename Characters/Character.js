@@ -558,6 +558,22 @@ class Character {
         return false;
     }
 
+    /**
+     * Returns true if discretized points from geometric entity hit the character.
+     * Recommended over getsHitBySegment or getsHitByCircle as it does not have to
+     * recalculate the hitPoints for each character.
+     * @param {[Point]} hitPoints 
+     */
+    getsHitByPoints(hitPoints) {
+        const hitEllipse = this.#crouched ? this._hitEllipseCrouched : this._hitEllipseStraight;
+        for (const hitPoint of hitPoints) {
+            if (hitEllipse.isPointInside(hitPoint)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     inflictDamage(damage) {
         if (this._states.currentState != "ALIVE") {
             return;
