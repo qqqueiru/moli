@@ -9,15 +9,28 @@ class Projectile {
     #beyondLimits = false;
     #walls = [];
     #hitWallPoint = null;
+    #lerpSegment = new Segment(this.#pos, this.#previousPos);
+    #vx = 0;
+    #vy = 0;
 
     constructor(damage, speed, direction, startingPoint, maxDistance) {
         this.#damage = damage;
         this.#speed = speed;
         this.#direction = direction;  // Projectiles will travel in a straight line
-        this.#previousPos = startingPoint.clone();
-        this.#pos = new Point(startingPoint.x, startingPoint.y);
+        this.#previousPos.x = startingPoint.x;
+        this.#previousPos.y = startingPoint.y;
+        this.#pos.x = startingPoint.x
+        this.#pos.y = startingPoint.y;
         this.#distanceTraveled = 0;
         this.#maxDistance = maxDistance;
+
+        if (this.#direction === "right") { this.#vx = this.#speed; }
+        if (this.#direction === "left") { this.#vx = -this.#speed; }
+        if (this.#direction === "up") { this.#vy = -this.#speed; }
+        if (this.#direction === "down") { this.#vy = this.#speed; }
+        if ((this.#vx * this.#vx + this.#vy * this.#vy) === 0) {
+            alert("projectile with 0 speed");
+        }
     }
 
     setWalls(walls) {
@@ -25,16 +38,10 @@ class Projectile {
     }
 
     update() {
-        let velocityVector = new Point(0, 0);
-        if (this.#direction === "right") { velocityVector = new Point(this.#speed, 0); }
-        if (this.#direction === "left") { velocityVector = new Point(-this.#speed, 0); }
-        if (this.#direction === "up") { velocityVector = new Point(0, -this.#speed); }
-        if (this.#direction === "down") { velocityVector = new Point(0, this.#speed); }
-        if ((velocityVector.x * velocityVector.x + velocityVector.y + velocityVector.y) === 0) {
-            console.error("projectile with 0 speed");
-        }
-        this.#previousPos = this.#pos.clone();
-        this.#pos.add(velocityVector);
+        this.#previousPos.x = this.#pos.x;
+        this.#previousPos.y = this.#pos.y;
+        this.#pos.x += this.#vx;
+        this.#pos.y += this.#vy;
         this.#distanceTraveled += this.#speed;
 
         if (this.#distanceTraveled >= this.#maxDistance) {
@@ -45,14 +52,13 @@ class Projectile {
     }
 
     #updateWallHit() {
-        const lerpSegment = new Segment(this.#pos, this.#previousPos);
         for (const [id, wall] of this.#walls) {
             if (!wall.bouncesGrenades()) {
                 continue;
             }
             const wallSegment = wall.getSegment();
-            if (Segment.doIntersect(wallSegment, lerpSegment)) {
-                this.#hitWallPoint = Segment.pointIntersection(wallSegment, lerpSegment);
+            if (Segment.doIntersect(wallSegment, this.#lerpSegment)) {
+                this.#hitWallPoint = Segment.pointIntersection(wallSegment, this.#lerpSegment);
                 break;
             }
         }
@@ -98,12 +104,11 @@ class Projectile {
      * @returns 
      */
     checkHit(characters, hitStates) {
-        const segmentToCheck = new Segment(this.#pos, this.#previousPos);
         for (const character of characters) {
             if (!hitStates.includes(character.getCurrentState())) {
                 continue;
             }
-            if (character.getsHitBySegment(segmentToCheck)) {
+            if (character.getsHitBySegment(this.#lerpSegment)) {
                 character.inflictDamage(this.#damage);
                 return true;  // NOTE: en caso de tener un proyectil que daña a más de un personaje a la vez, habría que plantearlo de otro modo
             }

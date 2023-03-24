@@ -24,6 +24,7 @@ class Character {
     #rightRayCastSegment = new Segment({x: 40, y: 20}, {x: 40, y: 60});  // Relativo a _pos
 
     #floorRayCast = new Segment({x: 0, y: 0}, {x: 0, y: 0});  // Already allocated here, so it won't have to later.
+    #botTip = new Point(0, 0);
     #previousBotTip = new Point(0, 0);
 
     #previousPos = new Point(0, 0);
@@ -335,12 +336,6 @@ class Character {
         }
         return this.#floorRayCast;
     }
-    getLeftRayCastSegmentAbs() {
-        return new Segment(this._pos.addConst(this.#leftRayCastSegment.p1), this._pos.addConst(this.#leftRayCastSegment.p2));
-    }
-    getRightRayCastSegmentAbs() {
-        return new Segment(this._pos.addConst(this.#rightRayCastSegment.p1), this._pos.addConst(this.#rightRayCastSegment.p2));
-    }
 
     isMovingUp() { return this.#vy < 0; }
     isMovingDown() { return this.#vy > 0; }
@@ -356,34 +351,20 @@ class Character {
         this.#previousBotTip.y = this.#previousPos.y + this.#vSegment.p2.y;
         return this.#previousBotTip;
     }
-    getBotTipLerpSegment() {
-        return new Segment(this._pos.addConst(this.#vSegment.p2), this.#previousPos.addConst(this.#vSegment.p2));
-    }
-    getTopTipLerpSegment() {
-        return new Segment(this._pos.addConst(this.#vSegment.p1), this.#previousPos.addConst(this.#vSegment.p1));
-    }
-    getLeftTipLerpSegment() {
-        return new Segment(this._pos.addConst(this.#hSegment.p1), this.#previousPos.addConst(this.#hSegment.p1));
-    }
-    getRightTipLerpSegment() {
-        return new Segment(this._pos.addConst(this.#hSegment.p2), this.#previousPos.addConst(this.#hSegment.p2));
-    }
-    getLeftTip() {
-        return this._pos.addConst(this.#hSegment.p1);
-    }
-    getRightTip() {
-        return this._pos.addConst(this.#hSegment.p2);
-    }
 
     #revisePosWithWalls() {
         const characterSegment = this.getHSegmentAbs();
         for (const [id, wall] of this.#walls) {
             const wallSegment = wall.getSegment();
-            if (id === -1 && this._pos.x < wallSegment.p1.x) {  // Left camera wall trespass
+            const dx = this._pos.x - wallSegment.p1.x;
+            if (id === -1 && dx < 0) {  // Left camera wall trespass
                 this._pos.x = wallSegment.p1.x + 1;
             }
-            if (id === -2 && this._pos.x > wallSegment.p1.x) {  // Right camera wall trespass
+            if (id === -2 && dx > 0) {  // Right camera wall trespass
                 this._pos.x = wallSegment.p1.x - 1;
+            }
+            if (dx * dx > 90000) {  // Collision ignored if character distance to wall is greater than 300px
+                continue;
             }
             if (!Segment.doIntersect(wallSegment, characterSegment)) {
                 continue;
@@ -392,11 +373,9 @@ class Character {
 
             if (intersection.x > this._pos.x) {
                 // Player must not pass to the right, so it must be moved to the left accordingly
-                const rightTip = this.getRightTip();
-                this.moveRel(intersection.substractConst(rightTip));
+                this._pos.x += intersection.x - this._pos.x - this.#hSegment.p2.x;  // right tip
             } else {
-                const leftTip = this.getLeftTip();
-                this.moveRel(intersection.substractConst(leftTip));
+                this._pos.x += intersection.x - this._pos.x - this.#hSegment.p1.x;  // left tip
             }
             return;
         }
@@ -439,7 +418,8 @@ class Character {
         if (this.#vy > this.#maxVy) { this.#vy = this.#maxVy; }
         if (this.#vy < -this.#maxVy) { this.#vy = -this.#maxVy; }
 
-        this.#previousPos = this._pos.clone();
+        this.#previousPos.x = this._pos.x;
+        this.#previousPos.y = this._pos.y;
         this._pos.x += this.#vx;
         this._pos.y += this.#vy;
 
@@ -450,14 +430,17 @@ class Character {
             this.updateAvailablePlatforms();
         }
 
-        let botTip = this._pos.addConst(this.#vSegment.p2);
-        if (this.#platforms.get(this.#lastPlatformTouchedId)?.mayFallOutside(botTip) && this.#finishedJumping) {
+        this.#botTip.x = this._pos.x + this.#vSegment.p2.x;
+        this.#botTip.y = this._pos.y + this.#vSegment.p2.y;
+        if (this.#platforms.get(this.#lastPlatformTouchedId)?.mayFallOutside(this.#botTip) && this.#finishedJumping) {
             // Falling from platform without jumping (just going beyond its lateral limits)
-            botTip = this.#platforms.get(this.#lastPlatformTouchedId).getNearestPointLimit(botTip);
-            // const yLimit = this.#platforms.get(this.#lastPlatformTouchedId).getYFromLimit(botTip);
+            const nearestPointLimit = this.#platforms.get(this.#lastPlatformTouchedId).getNearestPointLimit(this.#botTip);
+            this.#botTip.x = nearestPointLimit.x;
+            this.#botTip.y = nearestPointLimit.y;
+            // const yLimit = this.#platforms.get(this.#lastPlatformTouchedId).getYFromLimit(this.#botTip);
             const margin = 25;
-            const yLimit = botTip.y - margin;
-            this.updateAvailablePlatforms(yLimit, botTip.x);
+            const yLimit = this.#botTip.y - margin;
+            this.updateAvailablePlatforms(yLimit, this.#botTip.x);
             const platformIdxToIgnore = this.#availablePlatformIds.indexOf(this.#lastPlatformTouchedId);
             // if (platformIdxToIgnore >= 0) {
             //     this.#availablePlatformIds.splice(platformIdxToIgnore, 1);
@@ -490,18 +473,19 @@ class Character {
 
     updateAvailablePlatforms(yLimit = null, xCorrection = null) {
         this.#availablePlatformIds = [];
-        const botTip = this._pos.addConst(this.#vSegment.p2);
+        this.#botTip.x = this._pos.x + this.#vSegment.p2.x;
+        this.#botTip.y = this._pos.y + this.#vSegment.p2.y;
         if (yLimit === null && xCorrection === null) {
-            botTip.y -= 50;
+            this.#botTip.y -= 50;
         }
-        if (yLimit !== null && botTip.y > yLimit) {
-            botTip.y = yLimit;
+        if (yLimit !== null && this.#botTip.y > yLimit) {
+            this.#botTip.y = yLimit;
         }
         if (xCorrection !== null) {
-            botTip.x = xCorrection;
+            this.#botTip.x = xCorrection;
         }
         for (const [id, platform] of this.#platforms) {
-            if (platform.isPointAbovePlatform(botTip)) {
+            if (platform.isPointAbovePlatform(this.#botTip)) {
                 this.#availablePlatformIds.push(id);
             }
         }
@@ -595,13 +579,6 @@ class Character {
         // ctx.moveTo(hSegmentAbs.p1.x + GameScreen.width / 2 - cameraPos.x, hSegmentAbs.p1.y + GameScreen.height / 2 - cameraPos.y);
         // ctx.lineTo(hSegmentAbs.p2.x + GameScreen.width / 2 - cameraPos.x, hSegmentAbs.p2.y + GameScreen.height / 2 - cameraPos.y);
         
-        // const leftRayCastSegmentAbs = this.getLeftRayCastSegmentAbs();
-        // ctx.moveTo(leftRayCastSegmentAbs.p1.x, leftRayCastSegmentAbs.p1.y);
-        // ctx.lineTo(leftRayCastSegmentAbs.p2.x, leftRayCastSegmentAbs.p2.y);
-        // const rightRayCastSegmentAbs = this.getRightRayCastSegmentAbs();
-        // ctx.moveTo(rightRayCastSegmentAbs.p1.x, rightRayCastSegmentAbs.p1.y);
-        // ctx.lineTo(rightRayCastSegmentAbs.p2.x, rightRayCastSegmentAbs.p2.y);
-
         // ctx.strokeStyle = "blue";
         // ctx.lineWidth = 5;
         // ctx.stroke();
