@@ -1,4 +1,10 @@
 class Circle {
+    #fourDiscreteSegments = [
+        new Segment(new Point(0, 0), new Point(0, 0)),
+        new Segment(new Point(0, 0), new Point(0, 0)),
+        new Segment(new Point(0, 0), new Point(0, 0)),
+        new Segment(new Point(0, 0), new Point(0, 0)),
+    ];
     /**
      * 
      * @param {Point} centerPoint
@@ -9,28 +15,31 @@ class Circle {
         this.radius = radius;
     }
     getDiscretePoints() {
-        const segment_0 = new Segment(
-            this.centerPoint.addConst(new Point(this.radius, 0)),
-            this.centerPoint.addConst(new Point(-this.radius, 0)),
-        );
-        const segment_1 = new Segment(
-            this.centerPoint.addConst(new Point(this.radius * 0.7071, this.radius * 0.7071)),
-            this.centerPoint.addConst(new Point(-this.radius * 0.7071, -this.radius * 0.7071)),
-        );
-        const segment_2 = new Segment(
-            this.centerPoint.addConst(new Point(0, this.radius)),
-            this.centerPoint.addConst(new Point(0, -this.radius)),
-        );
-        const segment_3 = new Segment(
-            this.centerPoint.addConst(new Point(-this.radius * 0.7071, this.radius * 0.7071)),
-            this.centerPoint.addConst(new Point(this.radius * 0.7071, -this.radius * 0.7071)),
-        );
+        this.#fourDiscreteSegments[0].p1.x = this.centerPoint.x + this.radius;
+        this.#fourDiscreteSegments[0].p1.y = this.centerPoint.y;
+        this.#fourDiscreteSegments[0].p2.x = this.centerPoint.x - this.radius;
+        this.#fourDiscreteSegments[0].p2.y = this.centerPoint.y;
+
+        this.#fourDiscreteSegments[1].p1.x = this.centerPoint.x + this.radius * 0.7071;
+        this.#fourDiscreteSegments[1].p1.y = this.centerPoint.y + this.radius * 0.7071;
+        this.#fourDiscreteSegments[1].p2.x = this.centerPoint.x - this.radius * 0.7071;
+        this.#fourDiscreteSegments[1].p2.y = this.centerPoint.y - this.radius * 0.7071;
+
+        this.#fourDiscreteSegments[2].p1.x = this.centerPoint.x;
+        this.#fourDiscreteSegments[2].p1.y = this.centerPoint.y + this.radius;
+        this.#fourDiscreteSegments[2].p2.x = this.centerPoint.x;
+        this.#fourDiscreteSegments[2].p2.y = this.centerPoint.y - this.radius;
+
+        this.#fourDiscreteSegments[3].p1.x = this.centerPoint.x - this.radius * 0.7071;
+        this.#fourDiscreteSegments[3].p1.y = this.centerPoint.y + this.radius * 0.7071;
+        this.#fourDiscreteSegments[3].p2.x = this.centerPoint.x + this.radius * 0.7071;
+        this.#fourDiscreteSegments[3].p2.y = this.centerPoint.y - this.radius * 0.7071;
 
         const discretePoints = [];
-        discretePoints.push(...segment_0.getDiscretePoints());
-        discretePoints.push(...segment_1.getDiscretePoints());
-        discretePoints.push(...segment_2.getDiscretePoints());
-        discretePoints.push(...segment_3.getDiscretePoints());
+        discretePoints.push(...this.#fourDiscreteSegments[0].getFourDiscretePoints());
+        discretePoints.push(...this.#fourDiscreteSegments[1].getFourDiscretePoints());
+        discretePoints.push(...this.#fourDiscreteSegments[2].getFourDiscretePoints());
+        discretePoints.push(...this.#fourDiscreteSegments[3].getFourDiscretePoints());
 
         return discretePoints;
     }
