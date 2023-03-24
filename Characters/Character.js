@@ -13,13 +13,18 @@ class Character {
     #hSegmentCrouched = new Segment({x: -65, y: 0}, {x: 65, y: 0});  // Relativo a _pos
     #hSegmentStraight = new Segment({x: -65, y: -50}, {x: 65, y: -50});  // Relativo a _pos
     #hSegment = this.#hSegmentStraight  // Relativo a _pos
+    #hSegmentAbs = new Segment({x: 0, y: 0}, {x: 0, y: 0});  // Already allocated here, so it won't have to later.
 
     #vSegmentStraight = new Segment({x: 0, y: -125}, {x: 0, y: 75});  // Relativo a _pos
     #vSegmentCrouched = new Segment({x: 0, y: -50}, {x: 0, y: 50});  // Relativo a _pos
     #vSegment = this.#vSegmentStraight;  // Relativo a _pos
+    #vSegmentAbs = new Segment({x: 0, y: 0}, {x: 0, y: 0});  // Already allocated here, so it won't have to later.
 
     #leftRayCastSegment = new Segment({x: -40, y: 20}, {x: -40, y: 60});  // Relativo a _pos (Creo que lo más sencillo es hacer la plataforma más grande...)
     #rightRayCastSegment = new Segment({x: 40, y: 20}, {x: 40, y: 60});  // Relativo a _pos
+
+    #floorRayCast = new Segment({x: 0, y: 0}, {x: 0, y: 0});  // Already allocated here, so it won't have to later.
+    #previousBotTip = new Point(0, 0);
 
     #previousPos = new Point(0, 0);
     #previousVy = 0;    
@@ -303,19 +308,32 @@ class Character {
     }
 
     getHSegmentAbs() {
-        return new Segment(this._pos.addConst(this.#hSegment.p1), this._pos.addConst(this.#hSegment.p2));
+        this.#hSegmentAbs.p1.x = this._pos.x + this.#hSegment.p1.x;
+        this.#hSegmentAbs.p1.y = this._pos.y + this.#hSegment.p1.y;
+        this.#hSegmentAbs.p2.x = this._pos.x + this.#hSegment.p2.x;
+        this.#hSegmentAbs.p2.y = this._pos.y + this.#hSegment.p2.y;
+        return this.#hSegmentAbs;
     }
     getVSegmentAbs() {
-        return new Segment(this._pos.addConst(this.#vSegment.p1), this._pos.addConst(this.#vSegment.p2));
+        this.#vSegmentAbs.p1.x = this._pos.x + this.#vSegment.p1.x;
+        this.#vSegmentAbs.p1.y = this._pos.y + this.#vSegment.p1.y;
+        this.#vSegmentAbs.p2.x = this._pos.x + this.#vSegment.p2.x;
+        this.#vSegmentAbs.p2.y = this._pos.y + this.#vSegment.p2.y;
+        return this.#vSegmentAbs;
     }
     getFloorRayCast() {
-        const vSegmentAbs = new Segment(this._pos.addConst(this.#vSegment.p1), this._pos.addConst(this.#vSegment.p2));
-        if (vSegmentAbs.p1.y > vSegmentAbs.p2.y) {
-            vSegmentAbs.p2.y = vSegmentAbs.p1.y - 50;
+        this.#floorRayCast.p1.x = this._pos.x + this.#vSegment.p1.x;
+        this.#floorRayCast.p1.y = this._pos.y + this.#vSegment.p1.y;
+
+        this.#floorRayCast.p2.x = this._pos.x + this.#vSegment.p2.x;
+        this.#floorRayCast.p2.y = this._pos.y + this.#vSegment.p2.y;
+
+        if (this.#floorRayCast.p1.y > this.#floorRayCast.p2.y) {
+            this.#floorRayCast.p2.y = this.#floorRayCast.p1.y - 50;
         } else {
-            vSegmentAbs.p1.y = vSegmentAbs.p2.y - 50;
+            this.#floorRayCast.p1.y = this.#floorRayCast.p2.y - 50;
         }
-        return vSegmentAbs;
+        return this.#floorRayCast;
     }
     getLeftRayCastSegmentAbs() {
         return new Segment(this._pos.addConst(this.#leftRayCastSegment.p1), this._pos.addConst(this.#leftRayCastSegment.p2));
@@ -334,7 +352,9 @@ class Character {
     }
 
     getPreviousBotTip() {
-        return this.#previousPos.addConst(this.#vSegment.p2);
+        this.#previousBotTip.x = this.#previousPos.x + this.#vSegment.p2.x;
+        this.#previousBotTip.y = this.#previousPos.y + this.#vSegment.p2.y;
+        return this.#previousBotTip;
     }
     getBotTipLerpSegment() {
         return new Segment(this._pos.addConst(this.#vSegment.p2), this.#previousPos.addConst(this.#vSegment.p2));
@@ -451,9 +471,9 @@ class Character {
             this._pos.y = segmentY - this.#vSegment.p2.y + 1;  // +1 para que el personaje pueda intersecar con la plataforma
         }
 
-        if (!this._pos.equals(this.#previousPos)) {
-            this.#tracePoints.push(this.getFloorRayCast().p2.clone());
-        }
+        // if (!this._pos.equals(this.#previousPos)) {
+        //     this.#tracePoints.push(this.getFloorRayCast().p2.clone());
+        // }
     }
 
     getTracePoints() {

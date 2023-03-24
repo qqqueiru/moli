@@ -19,6 +19,7 @@ class Segment {
         return (p.x <= Math.max(this.p1.x, this.p2.x) && p.x >= Math.min(this.p1.x, this.p2.x) &&
             p.y <= Math.max(this.p1.y, this.p2.y) && p.y >= Math.min(this.p1.y, this.p2.y));
     }
+    static pointIntersectionTmp = new Point(0, 0);
     /**
      * Returns true if two segments intersect
      * @param {Segment} s1
@@ -70,9 +71,9 @@ class Segment {
             // The lines are parallel, so they don't intersect
             return null;  // There should be no collision in this case
         } else {
-            const x = (b2 * c1 - b1 * c2) / determinant;
-            const y = (a1 * c2 - a2 * c1) / determinant;
-            return new Point(x, y);
+            Segment.pointIntersectionTmp.x = (b2 * c1 - b1 * c2) / determinant;
+            Segment.pointIntersectionTmp.y = (a1 * c2 - a2 * c1) / determinant;
+            return Segment.pointIntersectionTmp;
         }
     }
     isPointAbove(p) {

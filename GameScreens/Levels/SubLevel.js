@@ -116,8 +116,11 @@ class SubLevel {
             // Special case when jumping from below to a superior platform
             if (!comingFromTop && !character.isMovingDown() && lastPlatformTouchedId != character.getLastPlatformTouchedId()) { return; }
 
-            const delta = intersection.substractConst(characterSegment.p2);
-            character.moveRel(delta);
+            const deltaX = intersection.x - characterSegment.p2.x;
+            const deltaY = intersection.y - characterSegment.p2.y;
+            const characterPos = character.getPos();
+            characterPos.x += deltaX;
+            characterPos.y += deltaY;
             character.setLastPlatformTouchedId(lastPlatformTouchedId);
             character.setVy(0);
             character.setCoyoteIterations(15);
@@ -405,16 +408,16 @@ class SubLevel {
         this._player.draw(ctx, this._camera.getPos());
 
         // Debug floor segments
-        for (const [id, platform] of this.#platforms) {
-            // platform.draw(ctx, this._camera.getPos());
-        }
+        // for (const [id, platform] of this.#platforms) {
+        //     platform.draw(ctx, this._camera.getPos());
+        // }
 
         // Debug wall segments
-        for (const [id, wall] of this.#walls) {
-            wall.draw(ctx, this._camera.getPos());
-        }
-        this.#cameraWallLeft.draw(ctx, this._camera.getPos());
-        this.#cameraWallRight.draw(ctx, this._camera.getPos());
+        // for (const [id, wall] of this.#walls) {
+        //     wall.draw(ctx, this._camera.getPos());
+        // }
+        // this.#cameraWallLeft.draw(ctx, this._camera.getPos());
+        // this.#cameraWallRight.draw(ctx, this._camera.getPos());
 
         const fgSpritesLength = this.#fgSprites.length;
         for (let i = fgSpritesLength - 1; i >= 0; --i) {
@@ -440,9 +443,9 @@ class SubLevel {
         }
 
         // Debug triggers
-        for (const trigger of this._triggers) {
-            // trigger.draw(ctx, this._camera.getPos());  // Big ellipse drawings are slow for some reason in Firefox
-        }
+        // for (const trigger of this._triggers) {
+        //     trigger.draw(ctx, this._camera.getPos());  // Big ellipse drawings are slow for some reason in Firefox
+        // }
 
         for (const collectable of this.#collectables) {
             collectable.draw(ctx, this._camera.getPos());
