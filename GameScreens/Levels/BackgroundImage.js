@@ -5,6 +5,8 @@ class BackgroundImageTile {
     #width;
     #height;
     distanceToCamera;  // Distance from Image Center to Camera Position
+    #rect = new Rectangle(new Point(0, 0), new Point(0, 0));
+    #cameraRect = new Rectangle(new Point(0, 0), new Point(0, 0));
     constructor(imgId, w = 0, h = 0) {
 	if (imgId !== "") {
             this.#img = ImageManager.getImage(imgId);
@@ -19,6 +21,10 @@ class BackgroundImageTile {
     setPosByLeftTopCornerPos(leftTopCornerPos) {
         this.#leftTopCornerPos = leftTopCornerPos;
         this.#pos = leftTopCornerPos.addConst(new Point(this.#width / 2, this.#height / 2));
+        this.#rect.topLeft.x = leftTopCornerPos.x;
+        this.#rect.topLeft.y = leftTopCornerPos.y;
+        this.#rect.botRight.x = leftTopCornerPos.x + this.#width;
+        this.#rect.botRight.y = leftTopCornerPos.y + this.#height;
     }
 
     getWidth() {
@@ -35,24 +41,74 @@ class BackgroundImageTile {
 
     draw(ctx, cameraPos) {
         if (this.#img) {
-            const dx = this.#leftTopCornerPos.x - cameraPos.x + GameScreen.width / 2;
-            const dy = this.#leftTopCornerPos.y - cameraPos.y + GameScreen.height / 2;
+            // const dx = this.#leftTopCornerPos.x - cameraPos.x + GameScreen.width / 2;
+            // const dy = this.#leftTopCornerPos.y - cameraPos.y + GameScreen.height / 2;
+            // ctx.drawImage(
+            //     this.#img,
+            //     dx,
+            //     dy,
+            // );
+
+            this.#cameraRect.topLeft.x = -GameScreen.width / 2 + cameraPos.x;
+            this.#cameraRect.topLeft.y = -GameScreen.height / 2 + cameraPos.y;
+            this.#cameraRect.botRight.x = +GameScreen.width / 2 + cameraPos.x;
+            this.#cameraRect.botRight.y = +GameScreen.height / 2 + cameraPos.y;
+
+            const rectIntersection = Rectangle.rectIntersect(this.#rect, this.#cameraRect);
+            const intersectionW = rectIntersection.getWidth();
+            const intersectionH = rectIntersection.getHeight();
+            if (intersectionW < 0) {
+                return;
+            }
+            if (intersectionW * intersectionH <= 0) {
+                return;
+            }
+
+            // const sx = -this.#leftTopCornerPos.x -GameScreen.width / 2 + cameraPos.x;
+            // const sy = -this.#leftTopCornerPos.y -GameScreen.height / 2 + cameraPos.y;
+            // const sw = GameScreen.width;
+            // const sh = GameScreen.height;
+            // const dx = 0;
+            // const dy = 0;
+            // const dw = GameScreen.width;
+            // const dh = GameScreen.height;
+
+            const sx = -this.#leftTopCornerPos.x + rectIntersection.topLeft.x;
+            const sy = -this.#leftTopCornerPos.y + rectIntersection.topLeft.y;
+            const sw = intersectionW;
+            const sh = intersectionH;
+            const dx = rectIntersection.topLeft.x -(-GameScreen.width / 2 + cameraPos.x);
+            const dy = rectIntersection.topLeft.y -(-GameScreen.height / 2 + cameraPos.y);
+            const dw = intersectionW;
+            const dh = intersectionH;
+
             ctx.drawImage(
                 this.#img,
+                sx,
+                sy,
+                sw,
+                sh,
                 dx,
                 dy,
-            );
+                dw,
+                dh,
+            )
         }
     }
 }
 
 class BackgroundImage {
+    #offScreenCanvas;
+    #offScreenCtx;
     #runningX = 0;
     #runningY = 0;
     #bgImgTiles = [];
     #tileVertices = new Map();  // Map( x -> Map(y -> Array[TilesToDraw]) )
     constructor() {
-
+        this.#offScreenCanvas = new OffscreenCanvas(1920, 1080);  // Too slow
+        // this.#offScreenCanvas.width = 1920;
+        // this.#offScreenCanvas.height = 1080;
+        this.#offScreenCtx = this.#offScreenCanvas.getContext("2d");
     }
 
     #addTileVertex(vertex, bgImgTile) {
