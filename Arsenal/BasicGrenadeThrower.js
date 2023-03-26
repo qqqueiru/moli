@@ -14,7 +14,8 @@ class BasicGrenadeThrower {
             10,  // damage
             20,  // speed
             this.#character.getFaceDirection(),  // direction
-            this.#character.getPos().addConst(new Point(0, this.#character.getShootingHeight()))  // startingPosition
+            this.#character.getPos().addConst(new Point(0, this.#character.getShootingHeight())),  // startingPosition
+            new AnimatedSprite("d20", 1, 3, 1, 10, GameScreen.ctx),
         );
     }
 

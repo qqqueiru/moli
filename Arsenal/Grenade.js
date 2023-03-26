@@ -7,13 +7,14 @@ class Grenade {
     #previousPos = new Point(0, 0);
     #pos = new Point(0, 0);
     #startingPoint = new Point(0, 0);  // Punto desde el que el personaje tiró la granada
+    #animatedSprite;
     #maxDistance = GameScreen.drawDistance * 3;  // Depende del startingPoint y de la cámara
     #beyondLimits = false;
     #platforms = [];
     #walls = [];
     #lerpSegment = new Segment(this.#pos, this.#previousPos);
 
-    constructor(damage, speed, direction, startingPoint) {
+    constructor(damage, speed, direction, startingPoint, animatedSprite) {
         this.#damage = damage;
         if (direction === "left") {
             this.#vx = -speed;
@@ -26,6 +27,7 @@ class Grenade {
         this.#pos.y = startingPoint.y;
         this.#startingPoint.x = startingPoint.x;
         this.#startingPoint.y = startingPoint.y;
+        this.#animatedSprite = animatedSprite;
     }
 
     setPlatforms(platforms) {
@@ -165,12 +167,14 @@ class Grenade {
             return;
         }
         // Depuración
-        ctx.beginPath();
-        const grenadeSize = 10;
-        const drawX = this.#pos.x - grenadeSize / 2 + GameScreen.width / 2 - cameraPos.x;
-        const drawY = this.#pos.y - grenadeSize / 2 + GameScreen.height / 2 - cameraPos.y;
-        ctx.rect(drawX, drawY, grenadeSize, grenadeSize);
-        ctx.fillStyle = "black";
-        ctx.fill();
+        // ctx.beginPath();
+        // const grenadeSize = 10;
+        // const drawX = this.#pos.x - grenadeSize / 2 + GameScreen.width / 2 - cameraPos.x;
+        // const drawY = this.#pos.y - grenadeSize / 2 + GameScreen.height / 2 - cameraPos.y;
+        // ctx.rect(drawX, drawY, grenadeSize, grenadeSize);
+        // ctx.fillStyle = "black";
+        // ctx.fill();
+
+        this.#animatedSprite.draw(this.#pos.x, this.#pos.y, cameraPos);
     }
 }

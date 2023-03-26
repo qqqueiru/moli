@@ -60,8 +60,6 @@ class ImageManager {
         ImageManager.loadImage("npc_dying_right", "./img/npcs/test/npc_dying_right.png");
         ImageManager.loadImage("npc_dying_left", "./img/npcs/test/npc_dying_left.png");
 
-        ImageManager.loadImage("grenade_explosion", "./img/grenades/grenade_explosion.png");
-
         // Loop Sprites
         ImageManager.loadImage("energy_drink", "./img/loop_sprites/energy_drink.png");
         ImageManager.loadImage("agua_lavadero", "./img/loop_sprites/agua_lavadero.png");
@@ -75,6 +73,10 @@ class ImageManager {
         ImageManager.loadImage("pistol_projectile_horizontal", "./img/projectiles/pistol_projectile_horizontal.png");
         ImageManager.loadImage("pistol_projectile_vertical", "./img/projectiles/pistol_projectile_vertical.png");
         ImageManager.loadImage("slow_pistol_projectile", "./img/projectiles/slow_pistol_projectile.png");
+
+        // Grenade Sprites
+        ImageManager.loadImage("grenade_explosion", "./img/grenades/grenade_explosion.png");
+        ImageManager.loadImage("d20", "./img/grenades/d20.png");
 
         // Background Image SubLevel1_1
         // ImageManager.loadImage("sublevel1_1", "./img/background/sublevel1_1.png");
