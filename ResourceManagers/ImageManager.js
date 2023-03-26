@@ -71,6 +71,10 @@ class ImageManager {
         ImageManager.loadImage("casa_moli", "./img/static_sprites/casa_moli.png");
         ImageManager.loadImage("terraza_caserio", "./img/static_sprites/terraza_caserio.png");
 
+        // Projectile Sprites
+        ImageManager.loadImage("pistol_projectile_horizontal", "./img/projectiles/pistol_projectile_horizontal.png");
+        ImageManager.loadImage("pistol_projectile_vertical", "./img/projectiles/pistol_projectile_vertical.png");
+        ImageManager.loadImage("slow_pistol_projectile", "./img/projectiles/slow_pistol_projectile.png");
 
         // Background Image SubLevel1_1
         // ImageManager.loadImage("sublevel1_1", "./img/background/sublevel1_1.png");

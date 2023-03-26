@@ -6,6 +6,7 @@ class Projectile {
     #pos = new Point(0, 0);
     #distanceTraveled = 0;
     #maxDistance = GameScreen.drawDistance;  // Puede depender de la dirección de disparo (idealmente no debería sobresalir de la pantalla)
+    #animatedSprite;
     #beyondLimits = false;
     #walls = [];
     #hitWallPoint = null;
@@ -13,7 +14,7 @@ class Projectile {
     #vx = 0;
     #vy = 0;
 
-    constructor(damage, speed, direction, startingPoint, maxDistance) {
+    constructor(damage, speed, direction, startingPoint, maxDistance, animatedSprite) {
         this.#damage = damage;
         this.#speed = speed;
         this.#direction = direction;  // Projectiles will travel in a straight line
@@ -23,6 +24,7 @@ class Projectile {
         this.#pos.y = startingPoint.y;
         this.#distanceTraveled = 0;
         this.#maxDistance = maxDistance;
+        this.#animatedSprite = animatedSprite;
 
         if (this.#direction === "right") { this.#vx = this.#speed; }
         if (this.#direction === "left") { this.#vx = -this.#speed; }
@@ -90,11 +92,13 @@ class Projectile {
         if (this.#pos.distanceFromPoint(cameraPos) > GameScreen.drawDistance) {
             return;
         }
-        // Depuración
-        ctx.beginPath();
-        ctx.rect(this.#pos.x + GameScreen.width / 2 - cameraPos.x, this.#pos.y + GameScreen.height / 2 - cameraPos.y, 40, 40);
-        ctx.fillStyle = "black";
-        ctx.fill();
+        // // Depuración
+        // ctx.beginPath();
+        // ctx.rect(this.#pos.x + GameScreen.width / 2 - cameraPos.x, this.#pos.y + GameScreen.height / 2 - cameraPos.y, 40, 40);
+        // ctx.fillStyle = "black";
+        // ctx.fill();
+
+        this.#animatedSprite.draw(this.#pos.x, this.#pos.y, cameraPos);
     }
 
     /**

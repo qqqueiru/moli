@@ -13,12 +13,16 @@ class Pistol extends Weapon {
         // Pistol ammo is infinite
         // if (this.ammoLeft <= 0) { return null; }
         // this.ammoLeft--;
+        const direction = this.character.getFaceDirection();
+        const imgId = direction === "up" ? "pistol_projectile_vertical" : "pistol_projectile_horizontal";
+        const animatedSprite = new AnimatedSprite(imgId, 1, 1, 1, 1, GameScreen.ctx);
         return new Projectile(
             1,  // damage
             50,  // speed
-            this.character.getFaceDirection(),  // direction
+            direction,  // direction
             this.character.getPos().addConst(new Point(0, this.character.getShootingHeight())),  // startingPosition
-            GameScreen.width  // maxDistance
+            GameScreen.width,  // maxDistance
+            animatedSprite,
         );
     }
 }

@@ -13,12 +13,16 @@ class SlowPistol extends Weapon {
         // Pistol ammo is infinite
         // if (this.ammoLeft <= 0) { return null; }
         // this.ammoLeft--;
+        const direction = this.character.getFaceDirection();
+        const imgId = "slow_pistol_projectile";
+        const animatedSprite = new AnimatedSprite(imgId, 1, 2, 1, 5, GameScreen.ctx);
         return new Projectile(
             1,  // damage
             15,  // speed
-            this.character.getFaceDirection(),  // direction
+            direction,  // direction
             this.character.getPos().addConst(new Point(0, this.character.getShootingHeight())),  // startingPosition
-            19200  // maxDistance
+            19200,  // maxDistance
+            animatedSprite,
         );
     }
 }
