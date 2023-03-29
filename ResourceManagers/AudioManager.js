@@ -35,6 +35,7 @@ class AudioManager {
     }
     static playSoundEffect(soundId) {
         if (!AudioManager.audios.has(soundId)) {
+            alert(`soundId ${soundId} does not exist...`);
             return;
         }
         // Como JavaScript no permite una forma fácil de reproducir el mismo sonido
@@ -98,6 +99,13 @@ class AudioManager {
         AudioManager.loadAudio("silence", "./audio/silence.ogg", 1);
 
         AudioManager.loadAudio("level_1", "./audio/level_1.ogg", 1);
+
+        AudioManager.loadAudio("pistol_shoots", "./audio/pistol_shoots.ogg", 10);
+        AudioManager.loadAudio("slow_pistol_shoots", "./audio/slow_pistol_shoots.ogg", 10);
+        AudioManager.loadAudio("npc_gets_hit", "./audio/npc_gets_hit.ogg", 10);
+        AudioManager.loadAudio("player_gets_hit", "./audio/player_gets_hit.ogg", 10);
+        AudioManager.loadAudio("player_respawn", "./audio/player_respawn.ogg", 10);
+        AudioManager.loadAudio("grenade_explosion", "./audio/grenade_explosion.ogg", 10);
     }
 
 }

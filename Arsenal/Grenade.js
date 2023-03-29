@@ -139,6 +139,7 @@ class Grenade {
      * @param {[string]} hitStates if a character is in one of these states it will be checked for hit
      */
     explode(characters, hitStates) {
+        AudioManager.playSoundEffect("grenade_explosion");
         const blastRadius = 100;
         const blastCircle = new Circle(this.#pos, blastRadius);
         const hitPoints = blastCircle.getDiscretePoints();

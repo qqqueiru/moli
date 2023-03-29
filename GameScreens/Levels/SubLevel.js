@@ -269,6 +269,7 @@ class SubLevel {
             }
             const activatedNpcs = this.#npcs.filter((npc) => npc.isActivated());
             if (projectile.checkHit(activatedNpcs, ["SPAWNING", "ALIVE"])) {  // NOTE: Quizás el proyectil pueda impactar a más de un personaje a la vez. Por el momento si impacta en uno, desaparece.
+                AudioManager.playSoundEffect("npc_gets_hit");
                 this.#playerProjectiles.splice(i, 1);
                 this.#fgSprites.push(projectile.getHitCharacterOnceSprite());
                 continue;
@@ -290,6 +291,9 @@ class SubLevel {
                 continue;
             }
             if (projectile.checkHit([this._player], ["ALIVE"])) {
+                if (!this._player.immuneToDamage) {
+                    AudioManager.playSoundEffect("player_gets_hit");
+                }
                 this.#enemyProjectiles.splice(i, 1);
                 this.#fgSprites.push(projectile.getHitCharacterOnceSprite());
                 continue;

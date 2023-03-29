@@ -13,6 +13,7 @@ class SlowPistol extends Weapon {
         // Pistol ammo is infinite
         // if (this.ammoLeft <= 0) { return null; }
         // this.ammoLeft--;
+        AudioManager.playSoundEffect("slow_pistol_shoots");
         const direction = this.character.getFaceDirection();
         const imgId = "slow_pistol_projectile";
         const animatedSprite = new AnimatedSprite(imgId, 1, 2, 1, 5, GameScreen.ctx);

@@ -20,6 +20,7 @@ class Collectable {
             return;
         }
         if (character.getPos().distanceFromPoint(this.#pos) < 100) {
+            AudioManager.playSoundEffect("reward");
             return true;
         } else {
             return false;

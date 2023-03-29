@@ -13,6 +13,7 @@ class Pistol extends Weapon {
         // Pistol ammo is infinite
         // if (this.ammoLeft <= 0) { return null; }
         // this.ammoLeft--;
+        AudioManager.playSoundEffect("pistol_shoots");
         const direction = this.character.getFaceDirection();
         const imgId = direction === "up" ? "pistol_projectile_vertical" : "pistol_projectile_horizontal";
         const animatedSprite = new AnimatedSprite(imgId, 1, 1, 1, 1, GameScreen.ctx);

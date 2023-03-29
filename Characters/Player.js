@@ -4,6 +4,7 @@
 class Player extends Character {
     constructor(pos) {
         super(pos);
+        this.immuneToDamage = false;
         this._sprites = {
             blank: new AnimatedSprite("player_blank", 1, 1, 1, 1, ctx),
             right: new AnimatedSprite("player_right", 1, 1, 1, 1, ctx),
@@ -22,6 +23,7 @@ class Player extends Character {
     }
 
     respawn() {
+        AudioManager.playSoundEffect("player_respawn");
         this.reset();
         this._pos.y -= 500;
         this.updateAvailablePlatforms(this._pos.y + 50, this._pos.x);
@@ -31,17 +33,23 @@ class Player extends Character {
 
     inflictDamage(damage) {
         const currentState = this._states.currentState;
-        if (currentState === "ALIVE" && this._states[currentState].getCurrentFrame() < 60 * 4) {
+        if (currentState === "ALIVE" && this.immuneToDamage) {
             return;
         }
         super.inflictDamage(damage);
+    }
+
+    update() {
+        super.update();
+        const currentState = this._states.currentState;
+        this.immuneToDamage = currentState === "ALIVE" && this._states[currentState].getCurrentFrame() < 60 * 4;
     }
 
     draw(ctx, cameraPos) {
         super.draw(ctx, cameraPos);
 
         const currentState = this._states.currentState;
-        if (currentState === "ALIVE" && this._states[currentState].getCurrentFrame() < 60 * 4) {
+        if (currentState === "ALIVE" && this.immuneToDamage) {
             // Debug
             ctx.beginPath();
             ctx.rect(this._pos.x + GameScreen.width / 2 - cameraPos.x, this._pos.y + GameScreen.height / 2 - cameraPos.y, 20, 20);
