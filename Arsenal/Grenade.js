@@ -158,7 +158,7 @@ class Grenade {
         const isInScreenY = 2 * Math.abs(cameraPos.y - this.#pos.y) < GameScreen.height;
         const isInScreen = isInScreenX && isInScreenY;
         if (!isInScreen) {
-            return true;
+            // return true;
         }
         return this.#beyondLimits;
     }

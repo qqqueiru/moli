@@ -310,8 +310,9 @@ class SubLevel {
                 this.#playerGrenades.splice(i, 1);
                 continue;
             }
-            if (grenade.checkHit(this.#npcs, ["SPAWNING", "ALIVE"]) || grenade.hasStopped()) {
-                grenade.explode(this.#npcs, ["SPAWNING", "ALIVE"]);
+            const activatedNpcs = this.#npcs.filter((npc) => npc.isActivated());
+            if (grenade.checkHit(activatedNpcs, ["SPAWNING", "ALIVE"]) || grenade.hasStopped()) {
+                grenade.explode(activatedNpcs, ["SPAWNING", "ALIVE"]);
                 this.#playerGrenades.splice(i, 1);
                 this.#fgSprites.push(grenade.getExplosionOnceSprite());
                 continue;
