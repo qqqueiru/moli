@@ -236,10 +236,12 @@ class SubLevel {
 
             if (Date.now() % npc.getShootRate() < 20 && isCloseToPlayer && isInScreen) {
                 const enemyProjectilesDontSaturateScreen = this.#enemyProjectiles.length < 10;
-                const projectile = npc.shoot();
-                if (projectile && enemyProjectilesDontSaturateScreen) {
-                    projectile.setWalls(this.#walls);
-                    this.#enemyProjectiles.push(projectile);
+                if (enemyProjectilesDontSaturateScreen) {
+                    const projectile = npc.shoot();
+                    if (projectile) {
+                        projectile.setWalls(this.#walls);
+                        this.#enemyProjectiles.push(projectile);
+                    }
                 }
                 // const enemyGrenadesDontSaturateScreen = this.#enemyGrenades.length < 10;
                 // const grenade = npc.throwGrenade();

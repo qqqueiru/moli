@@ -22,7 +22,7 @@ class SlowPistol extends Weapon {
             15,  // speed
             direction,  // direction
             this.character.getPos().addConst(new Point(0, this.character.getShootingHeight())),  // startingPosition
-            19200,  // maxDistance
+            1920,  // maxDistance
             animatedSprite,
         );
     }
