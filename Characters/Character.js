@@ -113,12 +113,14 @@ class Character {
                         }
                         if (this.#faceDirection === "up") {
                             this.setLookingUp(false);
+                            this.#faceDirection = this.#previousFaceDirection;
                         }
                         if (this.#faceDirection === "left") {
                             this.#vx = this._maxSpeedX;
                         } else {
                             this.#vx = -this._maxSpeedX;
                         }
+                        this.setCrouched(true);
                     }
                 },
                 () => {
@@ -279,12 +281,11 @@ class Character {
             }
         }
         if (this._states.currentState === "DYING") {
-            return "dying_" + this.#faceDirection;
+            return "dying_" + (this.#crouched ? "crouch_" : "") + this.#faceDirection;
         }
         if (this._states.currentState === "DEAD") {
-            return "dead_" + this.#faceDirection;
+            return "dead_" + (this.#crouched ? "crouch_" : "") + this.#faceDirection;
         }
-
         return defaultSprite;
     }
 

@@ -14,8 +14,12 @@ class Player extends Character {
             up: new AnimatedSprite("player_up", 1, 1, 1, 1, ctx),
             dead_right: new AnimatedSprite("player_dead_right", 1, 1, 1, 1, ctx),
             dead_left: new AnimatedSprite("player_dead_left", 1, 1, 1, 1, ctx),
+            dead_crouch_right: new AnimatedSprite("player_dead_crouch_right", 1, 1, 1, 1, ctx),
+            dead_crouch_left: new AnimatedSprite("player_dead_crouch_left", 1, 1, 1, 1, ctx),
             dying_right: new AnimatedSprite("player_dying_right", 1, 5, 1, 10, ctx),
             dying_left: new AnimatedSprite("player_dying_left", 1, 5, 1, 10, ctx),
+            dying_crouch_right: new AnimatedSprite("player_dying_crouch_right", 1, 5, 1, 10, ctx),
+            dying_crouch_left: new AnimatedSprite("player_dying_crouch_left", 1, 5, 1, 10, ctx),
         };
 
         this._hitEllipseCrouched = new Ellipse(this._pos, 15, 40);
