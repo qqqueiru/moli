@@ -73,9 +73,11 @@ class ImageManager {
         ImageManager.loadImage("atlantus", "./img/loop_sprites/atlantus.png");
         ImageManager.loadImage("agua_lavadero", "./img/loop_sprites/agua_lavadero.png");
         ImageManager.loadImage("moscas", "./img/loop_sprites/moscas.png");
+        ImageManager.loadImage("eolico", "./img/loop_sprites/eolico.png");
 
         // Static Sprites
         ImageManager.loadImage("casa_moli", "./img/static_sprites/casa_moli.png");
+        ImageManager.loadImage("torre", "./img/static_sprites/torre.png");
         ImageManager.loadImage("terraza_caserio", "./img/static_sprites/terraza_caserio.png");
 
         // Projectile Sprites

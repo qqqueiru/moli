@@ -196,6 +196,8 @@ class SubLevel1_1 extends SubLevel {
             const bgSprites = [];
             bgSprites.push(new LoopSprite("agua_lavadero", 1, 2, 1, 5, GameScreen.ctx, new Point(11843, 3378)));
             bgSprites.push(new LoopSprite("moscas", 1, 5, 1, 5, GameScreen.ctx, new Point(7157, 3107)));
+            bgSprites.push(new StaticSprite("torre", 1, GameScreen.ctx, new Point(15600, 1012)));
+            bgSprites.push(new LoopSprite("eolico", 1, 16, 1, 3, GameScreen.ctx, new Point(15600, 952)));
             this.setBgSprites(bgSprites);
 
             const fgSprites = [];
