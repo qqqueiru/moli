@@ -53,20 +53,20 @@ class ImageManager {
         ImageManager.loadImage("player_dying_crouch_left", "./img/player/player_dying_crouch_left.png");
 
         // Test NPC
-        ImageManager.loadImage("npc_blank", "./img/npcs/test/npc_blank.png");
-        ImageManager.loadImage("npc_right", "./img/npcs/test/npc_right.png");
-        ImageManager.loadImage("npc_left", "./img/npcs/test/npc_left.png");
-        ImageManager.loadImage("npc_up", "./img/npcs/test/npc_up.png");
-        ImageManager.loadImage("npc_crouch_right", "./img/npcs/test/npc_crouch_right.png");
-        ImageManager.loadImage("npc_crouch_left", "./img/npcs/test/npc_crouch_left.png");
-        ImageManager.loadImage("npc_dead_right", "./img/npcs/test/npc_dead_right.png");
-        ImageManager.loadImage("npc_dead_left", "./img/npcs/test/npc_dead_left.png");
-        ImageManager.loadImage("npc_dying_right", "./img/npcs/test/npc_dying_right.png");
-        ImageManager.loadImage("npc_dying_left", "./img/npcs/test/npc_dying_left.png");
-        ImageManager.loadImage("npc_dead_crouch_right", "./img/npcs/test/npc_dead_crouch_right.png");
-        ImageManager.loadImage("npc_dead_crouch_left", "./img/npcs/test/npc_dead_crouch_left.png");
-        ImageManager.loadImage("npc_dying_crouch_right", "./img/npcs/test/npc_dying_crouch_right.png");
-        ImageManager.loadImage("npc_dying_crouch_left", "./img/npcs/test/npc_dying_crouch_left.png");
+        ImageManager.loadImage("npc_blank", "./img/npcs/guardiamarina/npc_blank.png");
+        ImageManager.loadImage("npc_right", "./img/npcs/guardiamarina/npc_right.png");
+        ImageManager.loadImage("npc_left", "./img/npcs/guardiamarina/npc_left.png");
+        ImageManager.loadImage("npc_up", "./img/npcs/guardiamarina/npc_up.png");
+        ImageManager.loadImage("npc_crouch_right", "./img/npcs/guardiamarina/npc_crouch_right.png");
+        ImageManager.loadImage("npc_crouch_left", "./img/npcs/guardiamarina/npc_crouch_left.png");
+        ImageManager.loadImage("npc_dead_right", "./img/npcs/guardiamarina/npc_dead_right.png");
+        ImageManager.loadImage("npc_dead_left", "./img/npcs/guardiamarina/npc_dead_left.png");
+        ImageManager.loadImage("npc_dying_right", "./img/npcs/guardiamarina/npc_dying_right.png");
+        ImageManager.loadImage("npc_dying_left", "./img/npcs/guardiamarina/npc_dying_left.png");
+        ImageManager.loadImage("npc_dead_crouch_right", "./img/npcs/guardiamarina/npc_dead_crouch_right.png");
+        ImageManager.loadImage("npc_dead_crouch_left", "./img/npcs/guardiamarina/npc_dead_crouch_left.png");
+        ImageManager.loadImage("npc_dying_crouch_right", "./img/npcs/guardiamarina/npc_dying_crouch_right.png");
+        ImageManager.loadImage("npc_dying_crouch_left", "./img/npcs/guardiamarina/npc_dying_crouch_left.png");
 
 
         // Loop Sprites
