@@ -46,6 +46,8 @@ class Character {
     #maxIterationsJumped = 20;
     #crouched = false;
     #shootingHeight = 0;
+    _shootingHeightUp = -43;
+    _shootingHeightCrouched = 0;
     #lookingUp = false;
     #faceDirection = "right";  // right, left or up
     #previousFaceDirection = "right";
@@ -259,11 +261,11 @@ class Character {
         if (crouched) {
             this.#hSegment = this.#hSegmentCrouched;
             this.#vSegment = this.#vSegmentCrouched;
-            this.#shootingHeight = 0;
+            this.#shootingHeight = this._shootingHeightCrouched;
         } else {
             this.#hSegment = this.#hSegmentStraight;
             this.#vSegment = this.#vSegmentStraight;
-            this.#shootingHeight = -50;
+            this.#shootingHeight = this._shootingHeightUp;
         }
     }
 

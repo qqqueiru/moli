@@ -24,6 +24,8 @@ class Player extends Character {
 
         this._hitEllipseCrouched = new Ellipse(this._pos, 15, 40);
         this._hitEllipseStraight = new Ellipse(this._pos, 15, 80, 0, -20);
+
+        this._shootingHeightUp = -57;
     }
 
     respawn() {
