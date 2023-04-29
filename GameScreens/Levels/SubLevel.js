@@ -160,7 +160,7 @@ class SubLevel {
             this._player.moveRight();
         }
         if (inputs.get("j")?.consumeIfActivated()) {
-            this._camera.shake();
+            // this._camera.shake();
             const projectile = this._player.shoot();
             if (projectile) {
                 projectile.setWalls(this.#walls);
@@ -294,6 +294,7 @@ class SubLevel {
             }
             if (projectile.checkHit([this._player], ["ALIVE"])) {
                 if (!this._player.immuneToDamage) {
+                    this._camera.shake();
                     AudioManager.playSoundEffect("player_gets_hit");
                 }
                 this.#enemyProjectiles.splice(i, 1);
@@ -314,6 +315,7 @@ class SubLevel {
             }
             const activatedNpcs = this.#npcs.filter((npc) => npc.isActivated());
             if (grenade.checkHit(activatedNpcs, ["SPAWNING", "ALIVE"]) || grenade.hasStopped()) {
+                this._camera.shake();
                 grenade.explode(activatedNpcs, ["SPAWNING", "ALIVE"]);
                 this.#playerGrenades.splice(i, 1);
                 this.#fgSprites.push(grenade.getExplosionOnceSprite());
