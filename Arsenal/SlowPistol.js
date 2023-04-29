@@ -17,11 +17,14 @@ class SlowPistol extends Weapon {
         const direction = this.character.getFaceDirection();
         const imgId = "slow_pistol_projectile";
         const animatedSprite = new AnimatedSprite(imgId, 1, 2, 1, 5, GameScreen.ctx);
+
+        Weapon.projectileStartingPoint.x = this.character.getPos().x;
+        Weapon.projectileStartingPoint.y = this.character.getPos().y + this.character.getShootingHeight();
         return new Projectile(
             1,  // damage
             15,  // speed
             direction,  // direction
-            this.character.getPos().addConst(new Point(0, this.character.getShootingHeight())),  // startingPosition
+            Weapon.projectileStartingPoint,  // startingPosition
             1920,  // maxDistance
             animatedSprite,
         );

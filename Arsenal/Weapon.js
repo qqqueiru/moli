@@ -4,6 +4,8 @@ class Weapon {
     ammoWhenFound = 20;
     character;
     rate = 10;  // Tasa máxima de disparo en ms (no se podrá disparar a mayor frecuencia)
+    static projectileStartingPoint = new Point(0, 0);
+
     #lastShootingTime = 0;
     constructor(character) {
         this.character = character;
