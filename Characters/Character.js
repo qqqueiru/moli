@@ -279,6 +279,9 @@ class Character {
             if (this.#crouched) {
                 return "crouch_" + this.#faceDirection;
             } else {
+                if (this.#faceDirection === "up")  {
+                    return "up_" + this.#previousFaceDirection;
+                }
                 return this.#faceDirection;
             }
         }

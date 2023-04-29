@@ -40,7 +40,8 @@ class ImageManager {
         ImageManager.loadImage("player_blank", "./img/player/player_blank.png");
         ImageManager.loadImage("player_right", "./img/player/player_right.png");
         ImageManager.loadImage("player_left", "./img/player/player_left.png");
-        ImageManager.loadImage("player_up", "./img/player/player_up.png");
+        ImageManager.loadImage("player_up_right", "./img/player/player_up_right.png");
+        ImageManager.loadImage("player_up_left", "./img/player/player_up_left.png");
         ImageManager.loadImage("player_crouch_right", "./img/player/player_crouch_right.png");
         ImageManager.loadImage("player_crouch_left", "./img/player/player_crouch_left.png");
         ImageManager.loadImage("player_dead_right", "./img/player/player_dead_right.png");
