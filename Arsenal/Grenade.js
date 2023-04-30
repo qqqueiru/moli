@@ -126,7 +126,7 @@ class Grenade {
     }
 
     getExplosionOnceSprite() {
-        return new OnceSprite("grenade_explosion", 1, 5, 1, 10, GameScreen.ctx, this.#pos);
+        return new OnceSprite("grenade_explosion", 2, 5, 1, 5, GameScreen.ctx, this.#pos);
     }
 
     hasStopped() {
