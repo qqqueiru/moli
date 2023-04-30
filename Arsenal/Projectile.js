@@ -81,11 +81,11 @@ class Projectile {
     }
 
     getHitWallOnceSprite() {
-        return new OnceSprite("grenade_explosion", 1, 5, 1, 10, GameScreen.ctx, this.#hitWallPoint);
+        return new OnceSprite("grenade_explosion", 0.5, 5, 1, 4, GameScreen.ctx, this.#hitWallPoint);
     }
 
     getHitCharacterOnceSprite() {
-        return new OnceSprite("grenade_explosion", 1, 5, 1, 10, GameScreen.ctx, this.#pos);
+        return new OnceSprite("grenade_explosion", 0.5, 5, 1, 4, GameScreen.ctx, this.#pos);
     }
 
     draw(ctx, cameraPos) {
