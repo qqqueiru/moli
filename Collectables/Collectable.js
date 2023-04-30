@@ -19,7 +19,7 @@ class Collectable {
         if (!states.includes(character.getCurrentState())) {
             return;
         }
-        if (character.getPos().distanceFromPoint(this.#pos) < 100) {
+        if (character.getPos().distanceFromPoint(this.#pos) < 150) {
             AudioManager.playSoundEffect("reward");
             return true;
         } else {
