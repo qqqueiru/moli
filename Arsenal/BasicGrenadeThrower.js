@@ -1,26 +1,26 @@
 class BasicGrenadeThrower {
-    #grenadesLeft = 10000;  // TODO dejar en 10
-    #character;
+    _grenadesLeft = 1000000;  // TODO dejar en 10
+    _character;
     #rate = 100;
     #lastThrowingTime = 0;
     constructor(character) {
-        this.#character = character;
+        this._character = character;
     }
     throw() {
         if (!this.checkIfCanThrowSinceLastThrowing()) { return null; }
-        if (this.#grenadesLeft <= 0) { return null; }
-        this.#grenadesLeft--;
+        if (this._grenadesLeft <= 0) { return null; }
+        this._grenadesLeft--;
         return new Grenade(
             3,  // damage
             20,  // speed
-            this.#character.getFaceDirection(),  // direction
-            this.#character.getPos().addConst(new Point(0, this.#character.getShootingHeight())),  // startingPosition
+            this._character.getFaceDirection(),  // direction
+            this._character.getPos().addConst(new Point(0, this._character.getShootingHeight())),  // startingPosition
             new AnimatedSprite("d20", 1, 3, 1, 10, GameScreen.ctx),
         );
     }
 
     addGrenades(amount) {
-        this.#grenadesLeft += amount;
+        this._grenadesLeft += amount;
     }
 
     checkIfCanThrowSinceLastThrowing() {

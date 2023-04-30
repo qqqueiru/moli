@@ -89,6 +89,7 @@ class ImageManager {
         // Grenade Sprites
         ImageManager.loadImage("grenade_explosion", "./img/grenades/grenade_explosion.png");
         ImageManager.loadImage("d20", "./img/grenades/d20.png");
+        ImageManager.loadImage("big_water_bottle", "./img/grenades/big_water_bottle.png");
 
         // Background Image SubLevel1_1
         // ImageManager.loadImage("sublevel1_1", "./img/background/sublevel1_1.png");

@@ -364,7 +364,7 @@ class SubLevel1_1 extends SubLevel {
 
         const finalBoss = new FinalBoss(new Point(18600, -1000));
         finalBoss.setWeapon(new MediumSpeedPistol(finalBoss));
-        finalBoss.setGrenadeThrower(new BasicGrenadeThrower(finalBoss));
+        finalBoss.setGrenadeThrower(new BigWaterBottleGrenader(finalBoss));
         finalBoss.onlyActivateUntilCloseToPlayer();
         this.setNpcs([finalBoss]);
         
