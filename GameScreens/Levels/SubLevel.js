@@ -70,8 +70,8 @@ class SubLevel {
     }
 
     setNpcs(npcs) {
-        this.#npcs = npcs;
-        for (const npc of this.#npcs) {
+        this.#npcs.push(...npcs);
+        for (const npc of npcs) {
             npc.setPlatforms(this.#platforms);
             npc.setWalls(this.#walls);
             npc.updateAvailablePlatforms();

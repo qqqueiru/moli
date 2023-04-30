@@ -156,7 +156,15 @@ class SubLevel1_1 extends SubLevel {
             for (let x = 7300; x < 8360; x += 130) {
                 npcs.push(new NPC(new Point(x, 2960)));
             }
-
+            for (let x = 12900; x < 15000; x += 130) {
+                npcs.push(new NPC(new Point(x, 500)));
+            }
+            for (let x = 15750; x < 17500; x += 130) {
+                npcs.push(new NPC(new Point(x, 1250)));
+            }
+            for (let x = 15750; x < 17500; x += 180) {
+                npcs.push(new NPC(new Point(x, 500)));
+            }
             for (const npc of npcs) {
                 npc.setWeapon(new SlowPistol(npc));
                 npc.setGrenadeThrower(new BasicGrenadeThrower(npc));
@@ -310,6 +318,25 @@ class SubLevel1_1 extends SubLevel {
     pauseAtCaserio() {
         this._inCaserio = true;
         this._camera.setTargetPoint(this._targetPointCaserio);
+
+        const npcs = [];
+        for (let x = 15800; x < 17500; x += 100) {
+            npcs.push(new NPC(new Point(x, -6000)));
+        }
+        for (let x = 15800; x < 17500; x += 100) {
+            npcs.push(new NPC(new Point(x, -1000)));
+        }
+        for (let x = 15800; x < 17500; x += 100) {
+            npcs.push(new NPC(new Point(x, 0)));
+        }
+        for (const npc of npcs) {
+            npc.setWeapon(new SlowPistol(npc));
+            npc.setGrenadeThrower(new BasicGrenadeThrower(npc));
+            npc.onlyActivateUntilCloseToPlayer();  // First npcs won't be activated until player gets near them. Dynamically spawned npcs will automatically search and destroy the player.
+        }
+        this.setNpcs(npcs);
+
+
         // this._triggers.push(
         //     new LocationTrigger(
         //         this._player,
@@ -439,7 +466,7 @@ class SubLevel1_1 extends SubLevel {
         if (this._inCaserio) {
             this._targetPointCaserio.y = this._player.getPos().y;
             this._camera.offset.x = 0;
-            if (this.getDeadNpcCount() >= 100) {
+            if (this.getDeadNpcCount() >= 222) {
                 this.resumeFromCaserio();
             }
         }
