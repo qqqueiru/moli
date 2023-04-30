@@ -362,7 +362,7 @@ class SubLevel1_1 extends SubLevel {
         this._inRoldans = true;
         this._camera.setTargetPoint(this._targetPointRoldans);
 
-        const finalBoss = new FinalBoss(new Point(18600, -1000));
+        const finalBoss = new FinalBoss(new Point(18888, -1000));
         finalBoss.setWeapon(new MediumSpeedPistol(finalBoss));
         finalBoss.setGrenadeThrower(new BigWaterBottleGrenader(finalBoss));
         finalBoss.onlyActivateUntilCloseToPlayer();
