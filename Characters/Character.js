@@ -7,7 +7,7 @@ class Character {
     //      |
     //      |
     //      |2  // vSegment
-    #health = 1;
+    _health = 1;
 
     // Las dimensiones de los sprites deberían coincidir con las de los segmentos
     #hSegmentCrouched = new Segment({x: -65, y: 0}, {x: 65, y: 0});  // Relativo a _pos
@@ -78,7 +78,7 @@ class Character {
         this.#crouched = false;
         this.#lookingUp = false;
         this.#finishedJumping = false;  // Se puede usar para saber si se ha de dibujar el salto
-        this.#health = 1;
+        this._health = 1;
         this._states = {
             currentState: "NONE",
             NONE: new CharacterState(
@@ -107,7 +107,7 @@ class Character {
                 "ALIVE", 
                 -1, 
                 () => {
-                    if (this.#health <= 0) {
+                    if (this._health <= 0) {
                         this._states.currentState = "DYING";
                         if (this.#canJump) {
                             this.startJump();
@@ -234,7 +234,7 @@ class Character {
     }
 
     getHealth() {
-        return this.#health;
+        return this._health;
     }
 
     startJump() {
@@ -584,7 +584,7 @@ class Character {
         if (this._states.currentState != "ALIVE") {
             return;
         }
-        this.#health -= damage;
+        this._health -= damage;
     }
 
     draw(ctx, cameraPos) {

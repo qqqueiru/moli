@@ -11,7 +11,7 @@ class BasicGrenadeThrower {
         if (this.#grenadesLeft <= 0) { return null; }
         this.#grenadesLeft--;
         return new Grenade(
-            10,  // damage
+            3,  // damage
             20,  // speed
             this.#character.getFaceDirection(),  // direction
             this.#character.getPos().addConst(new Point(0, this.#character.getShootingHeight())),  // startingPosition

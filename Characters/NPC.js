@@ -1,8 +1,10 @@
 class NPC extends Character {
     #activated = true;
-    #safetyDistance = 0;
-    #shootRate = 2000;  // ms. When ai is updated, npc will shoot at this rate
-    #jumpRate = 3000;  // ms. When ai is updated, npc will jump at this rate
+    _safetyDistance = 0;
+    _jumpingDiffToPlayer = 200;
+    _shootRate = 2000;  // ms. When ai is updated, npc will shoot at this rate
+    _grenadeRate = -1;  // ms. When ai is updated, npc will throw grenades at this rate
+    _jumpRate = 3000;  // ms. When ai is updated, npc will jump at this rate
     constructor(pos) {
         super(pos);
         this._sprites = {
@@ -26,21 +28,31 @@ class NPC extends Character {
         this._hitEllipseStraight = new Ellipse(this._pos, 40, 110, 0, -20);
 
         this._maxSpeedX = 4 + 2 * Math.random();
-        this.#safetyDistance = 200 + 500 * Math.random();
-        this.#shootRate = 2000 + 2000 * Math.random();
-        this.#jumpRate = 3000 + 3000 * Math.random();
+        this._safetyDistance = 200 + 500 * Math.random();
+        this._jumpingDiffToPlayer = 200;
+        this._shootRate = 2000 + 2000 * Math.random();
+        this._grenadeRate = -1;
+        this._jumpRate = 3000 + 3000 * Math.random();
     }
 
     getShootRate() {
-        return this.#shootRate;
+        return this._shootRate;
+    }
+
+    getGrenadeRate() {
+        return this._grenadeRate;
     }
 
     getJumpRate() {
-        return this.#jumpRate;
+        return this._jumpRate;
+    }
+
+    getJumpingDiffToPlayer() {
+        return this._jumpingDiffToPlayer;
     }
 
     getSafetyDistance() {
-        return this.#safetyDistance;
+        return this._safetyDistance;
     }
 
     checkCloseToPlayer(playerPos) {

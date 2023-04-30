@@ -321,7 +321,7 @@ class SubLevel1_1 extends SubLevel {
 
         const npcs = [];
         for (let x = 15800; x < 17500; x += 100) {
-            npcs.push(new NPC(new Point(x, -6000)));
+            npcs.push(new NPC(new Point(x, -4000)));
         }
         for (let x = 15800; x < 17500; x += 100) {
             npcs.push(new NPC(new Point(x, -1000)));
@@ -361,6 +361,13 @@ class SubLevel1_1 extends SubLevel {
     pauseAtRoldans() {
         this._inRoldans = true;
         this._camera.setTargetPoint(this._targetPointRoldans);
+
+        const finalBoss = new FinalBoss(new Point(18600, -1000));
+        finalBoss.setWeapon(new MediumSpeedPistol(finalBoss));
+        finalBoss.setGrenadeThrower(new BasicGrenadeThrower(finalBoss));
+        finalBoss.onlyActivateUntilCloseToPlayer();
+        this.setNpcs([finalBoss]);
+        
         // this._triggers.push(
         //     new LocationTrigger(
         //         this._player,
@@ -474,7 +481,7 @@ class SubLevel1_1 extends SubLevel {
             // this._targetPointRoldans.y = this._player.getPos().y;
             this._camera.offset.x = 0;
             this._camera.offset.y = 0;
-            if (this.getDeadNpcCount() >= 100) {
+            if (this.getDeadNpcCount() >= 223) {
                 this.resumeFromRoldans();
             }
         }

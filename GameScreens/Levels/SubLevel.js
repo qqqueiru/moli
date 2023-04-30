@@ -230,7 +230,7 @@ class SubLevel {
 
             if (Date.now() % npc.getJumpRate() < 20 && 
                 !this._player.isJumping() && 
-                this._player.getPos().y < npc.getPos().y - 200) {
+                this._player.getPos().y < npc.getPos().y - npc.getJumpingDiffToPlayer()) {
                 npc.startJump();
             }
 
@@ -243,13 +243,17 @@ class SubLevel {
                         this.#enemyProjectiles.push(projectile);
                     }
                 }
-                // const enemyGrenadesDontSaturateScreen = this.#enemyGrenades.length < 10;
-                // const grenade = npc.throwGrenade();
-                // if (grenade && enemyGrenadesDontSaturateScreen) {
-                //     grenade.setPlatforms(this.#platforms);
-                //     grenade.setWalls(this.#walls);
-                //     this.#enemyGrenades.push(grenade);
-                // }
+
+            }
+            const grenadeRate = npc.getGrenadeRate();
+            if (grenadeRate > 0 && Date.now() % grenadeRate < 20 && isCloseToPlayer && isInScreen) {
+                const enemyGrenadesDontSaturateScreen = this.#enemyGrenades.length < 10;
+                const grenade = npc.throwGrenade();
+                if (grenade && enemyGrenadesDontSaturateScreen) {
+                    grenade.setPlatforms(this.#platforms);
+                    grenade.setWalls(this.#walls);
+                    this.#enemyGrenades.push(grenade);
+                }
             }
         }
     }
