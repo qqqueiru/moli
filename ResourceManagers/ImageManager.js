@@ -53,7 +53,6 @@ class ImageManager {
         ImageManager.loadImage("player_dying_crouch_right", "./img/player/player_dying_crouch_right.png");
         ImageManager.loadImage("player_dying_crouch_left", "./img/player/player_dying_crouch_left.png");
 
-        // Test NPC
         ImageManager.loadImage("npc_blank", "./img/npcs/guardiamarina/npc_blank.png");
         ImageManager.loadImage("npc_right", "./img/npcs/guardiamarina/npc_right.png");
         ImageManager.loadImage("npc_left", "./img/npcs/guardiamarina/npc_left.png");
@@ -69,6 +68,20 @@ class ImageManager {
         ImageManager.loadImage("npc_dying_crouch_right", "./img/npcs/guardiamarina/npc_dying_crouch_right.png");
         ImageManager.loadImage("npc_dying_crouch_left", "./img/npcs/guardiamarina/npc_dying_crouch_left.png");
 
+        ImageManager.loadImage("final_boss_blank", "./img/npcs/final_boss/npc_blank.png");
+        ImageManager.loadImage("final_boss_right", "./img/npcs/final_boss/npc_right.png");
+        ImageManager.loadImage("final_boss_left", "./img/npcs/final_boss/npc_left.png");
+        ImageManager.loadImage("final_boss_up", "./img/npcs/final_boss/npc_up.png");
+        ImageManager.loadImage("final_boss_crouch_right", "./img/npcs/final_boss/npc_crouch_right.png");
+        ImageManager.loadImage("final_boss_crouch_left", "./img/npcs/final_boss/npc_crouch_left.png");
+        ImageManager.loadImage("final_boss_dead_right", "./img/npcs/final_boss/npc_dead_right.png");
+        ImageManager.loadImage("final_boss_dead_left", "./img/npcs/final_boss/npc_dead_left.png");
+        ImageManager.loadImage("final_boss_dying_right", "./img/npcs/final_boss/npc_dying_right.png");
+        ImageManager.loadImage("final_boss_dying_left", "./img/npcs/final_boss/npc_dying_left.png");
+        ImageManager.loadImage("final_boss_dead_crouch_right", "./img/npcs/final_boss/npc_dead_crouch_right.png");
+        ImageManager.loadImage("final_boss_dead_crouch_left", "./img/npcs/final_boss/npc_dead_crouch_left.png");
+        ImageManager.loadImage("final_boss_dying_crouch_right", "./img/npcs/final_boss/npc_dying_crouch_right.png");
+        ImageManager.loadImage("final_boss_dying_crouch_left", "./img/npcs/final_boss/npc_dying_crouch_left.png");
 
         // Loop Sprites
         ImageManager.loadImage("atlantus", "./img/loop_sprites/atlantus.png");

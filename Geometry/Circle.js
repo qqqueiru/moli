@@ -36,10 +36,15 @@ class Circle {
         this.#fourDiscreteSegments[3].p2.y = this.centerPoint.y - this.radius * 0.7071;
 
         const discretePoints = [];
-        discretePoints.push(...this.#fourDiscreteSegments[0].getFourDiscretePoints());
-        discretePoints.push(...this.#fourDiscreteSegments[1].getFourDiscretePoints());
-        discretePoints.push(...this.#fourDiscreteSegments[2].getFourDiscretePoints());
-        discretePoints.push(...this.#fourDiscreteSegments[3].getFourDiscretePoints());
+        // discretePoints.push(...this.#fourDiscreteSegments[0].getFourDiscretePoints());
+        // discretePoints.push(...this.#fourDiscreteSegments[1].getFourDiscretePoints());
+        // discretePoints.push(...this.#fourDiscreteSegments[2].getFourDiscretePoints());
+        // discretePoints.push(...this.#fourDiscreteSegments[3].getFourDiscretePoints());
+
+        discretePoints.push(...this.#fourDiscreteSegments[0].getDiscretePoints(64));
+        discretePoints.push(...this.#fourDiscreteSegments[1].getDiscretePoints(64));
+        discretePoints.push(...this.#fourDiscreteSegments[2].getDiscretePoints(64));
+        discretePoints.push(...this.#fourDiscreteSegments[3].getDiscretePoints(64));
 
         return discretePoints;
     }

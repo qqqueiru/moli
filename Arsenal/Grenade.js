@@ -7,6 +7,7 @@ class Grenade {
     #previousPos = new Point(0, 0);
     #pos = new Point(0, 0);
     #startingPoint = new Point(0, 0);  // Punto desde el que el personaje tiró la granada
+    #blastRadius = 100;
     #animatedSprite;
     #maxDistance = GameScreen.drawDistance * 3;  // Depende del startingPoint y de la cámara
     #beyondLimits = false;
@@ -14,7 +15,7 @@ class Grenade {
     #walls = [];
     #lerpSegment = new Segment(this.#pos, this.#previousPos);
 
-    constructor(damage, speed, direction, startingPoint, animatedSprite) {
+    constructor(damage, speed, direction, startingPoint, blastRadius, animatedSprite) {
         this.#damage = damage;
         if (direction === "left") {
             this.#vx = -speed;
@@ -27,6 +28,7 @@ class Grenade {
         this.#pos.y = startingPoint.y;
         this.#startingPoint.x = startingPoint.x;
         this.#startingPoint.y = startingPoint.y;
+        this.#blastRadius = blastRadius;
         this.#animatedSprite = animatedSprite;
     }
 
@@ -140,8 +142,7 @@ class Grenade {
      */
     explode(characters, hitStates) {
         AudioManager.playSoundEffect("grenade_explosion");
-        const blastRadius = 100;
-        const blastCircle = new Circle(this.#pos, blastRadius);
+        const blastCircle = new Circle(this.#pos, this.#blastRadius);
         const hitPoints = blastCircle.getDiscretePoints();
         for (const character of characters) {
             if (!hitStates.includes(character.getCurrentState())) {
@@ -175,6 +176,11 @@ class Grenade {
         // ctx.rect(drawX, drawY, grenadeSize, grenadeSize);
         // ctx.fillStyle = "black";
         // ctx.fill();
+
+        // GameScreen.ctx.beginPath();
+        // GameScreen.ctx.arc(this.#pos.x - cameraPos.x + GameScreen.width / 2, this.#pos.y - cameraPos.y + GameScreen.height / 2, this.#blastRadius, 0, 2 * Math.PI);
+        // GameScreen.ctx.fillStyle = "rgb(0, 255, 0)";
+        // GameScreen.ctx.fill();
 
         this.#animatedSprite.draw(this.#pos.x, this.#pos.y, cameraPos);
     }

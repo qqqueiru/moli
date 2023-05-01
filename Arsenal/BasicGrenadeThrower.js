@@ -15,6 +15,7 @@ class BasicGrenadeThrower {
             20,  // speed
             this._character.getFaceDirection(),  // direction
             this._character.getPos().addConst(new Point(0, this._character.getShootingHeight())),  // startingPosition
+            100,  // blastRadius
             new AnimatedSprite("d20", 1, 3, 1, 10, GameScreen.ctx),
         );
     }
