@@ -63,6 +63,8 @@ class Character {
     _states;
 
     #tracePoints = [];
+
+    _facingDirection = "right";  // Only left or right...
     constructor(pos) {
         if (pos) {
             this._pos = pos.clone();
@@ -115,7 +117,7 @@ class Character {
                         }
                         if (this.#faceDirection === "up") {
                             this.setLookingUp(false);
-                            this.#faceDirection = this.#previousFaceDirection;
+                            this.#faceDirection = this._facingDirection;
                         }
                         if (this.#faceDirection === "left") {
                             this.#vx = this._maxSpeedX;
@@ -201,7 +203,7 @@ class Character {
             this.#faceDirection = "up";
         }
         if (this.#lookingUp && !lookUp) {
-            this.#faceDirection = this.#previousFaceDirection;
+            this.#faceDirection = this._facingDirection;
         }
         this.#lookingUp = lookUp;
     }
@@ -216,6 +218,7 @@ class Character {
         if (this.#finishedJumping && !this.#lookingUp) {
             this.#faceDirection = "right";
         }
+        this._facingDirection = "right";
     }
 
     moveLeft() {
@@ -224,6 +227,7 @@ class Character {
         if (this.#finishedJumping && !this.#lookingUp) {
             this.#faceDirection = "left";
         }
+        this._facingDirection = "left";
     }
 
     jump(vy) {
@@ -280,7 +284,7 @@ class Character {
                 return "crouch_" + this.#faceDirection;
             } else {
                 if (this.#faceDirection === "up")  {
-                    return "up_" + this.#previousFaceDirection;
+                    return "up_" + this._facingDirection;
                 }
                 return this.#faceDirection;
             }
@@ -402,17 +406,17 @@ class Character {
 
         if (this.#crouched && (this.#faceDirection === "up" || this.#lookingUp)) {
             if (this.#vx != 0) {
-                this.#faceDirection = this.#vx > 0 ? "right" : "left";
+                this.#faceDirection = this._facingDirection;  // this.#vx > 0 ? "right" : "left";
                 this.#previousFaceDirection = this.#faceDirection;
             } else {
-                this.#faceDirection = this.#previousFaceDirection;
+                this.#faceDirection = this._facingDirection;  // this.#previousFaceDirection;
             }
         }
         if (this.#lookingUp && !this.#crouched && this.#faceDirection !== "up") {
             if (this.#vx != 0) {
-                this.#previousFaceDirection = this.#vx > 0 ? "right" : "left";
+                this.#previousFaceDirection = this._facingDirection;  // this.#vx > 0 ? "right" : "left";
             } else {
-                this.#previousFaceDirection = this.#faceDirection;
+                this.#previousFaceDirection = this._facingDirection;  // this.#faceDirection;
             }
             this.#faceDirection = "up";
         }
