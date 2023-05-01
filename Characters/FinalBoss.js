@@ -1,6 +1,8 @@
 class FinalBoss extends NPC {
-    constructor(pos) {
+    constructor(pos, characterToKill) {
         super(pos);
+        this._characterToKill = characterToKill;
+
         this._health = 100;
 
         this._sprites = {
@@ -26,5 +28,10 @@ class FinalBoss extends NPC {
         this._shootRate = 750;
         this._grenadeRate = 3000;
         this._jumpRate = 2000;
+        this._shootingHeightUp = -60;
+    }
+
+    getDistanceToTarget() {
+        return Math.abs(this._characterToKill.getPos().x - this.getPos().x);
     }
 }

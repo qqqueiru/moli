@@ -159,6 +159,17 @@ class Character {
                     // NOP
                 },
             ),
+            SALUTING: new CharacterState(
+                "SALUTING",
+                -1,
+                () => {
+                    this.dontMove();
+                    this.setCrouched(false);
+                },
+                () => {
+                    // NOP
+                },
+            )
         };
     }
 
@@ -279,6 +290,9 @@ class Character {
 
     #getCurrentSprite() {
         const defaultSprite = "blank";
+        if (this._states.currentState === "SALUTING") {
+            return "saluting_" + this._facingDirection;
+        }
         if (this._states.currentState === "ALIVE" || this._states.currentState === "SPAWNING") {
             if (this.#crouched) {
                 return "crouch_" + this.#faceDirection;

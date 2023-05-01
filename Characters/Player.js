@@ -21,6 +21,8 @@ class Player extends Character {
             dying_left: new AnimatedSprite("player_dying_left", 1, 5, 1, 10, ctx),
             dying_crouch_right: new AnimatedSprite("player_dying_crouch_right", 1, 5, 1, 10, ctx),
             dying_crouch_left: new AnimatedSprite("player_dying_crouch_left", 1, 5, 1, 10, ctx),
+            saluting_right: new AnimatedSprite("player_saluting_right", 1, 1, 1, 1, ctx),
+            saluting_left: new AnimatedSprite("player_saluting_left", 1, 1, 1, 1, ctx),
         };
 
         this._hitEllipseCrouched = new Ellipse(this._pos, 15, 40);
@@ -50,6 +52,11 @@ class Player extends Character {
         super.update();
         const currentState = this._states.currentState;
         this.immuneToDamage = currentState === "ALIVE" && this._states[currentState].getCurrentFrame() < 60 * 2;  // 2 seconds of inmunity when spawning
+    }
+
+    salute(facingDirection) {
+        this._states.currentState = "SALUTING";
+        this._facingDirection = facingDirection;
     }
 
     draw(ctx, cameraPos) {

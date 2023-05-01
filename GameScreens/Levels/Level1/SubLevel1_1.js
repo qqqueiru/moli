@@ -8,6 +8,13 @@ class SubLevel1_1 extends SubLevel {
     _targetPointCaserio = new Point(16885, 1258);
     _inRoldans = false;
     _targetPointRoldans = new Point(18370, 1258);
+
+    _frameCount = 0;
+    _deathCount = 0;
+    _playable = true;
+
+    _finalBoss;
+
     constructor() {
         super();
         {
@@ -362,11 +369,11 @@ class SubLevel1_1 extends SubLevel {
         this._inRoldans = true;
         this._camera.setTargetPoint(this._targetPointRoldans);
 
-        const finalBoss = new FinalBoss(new Point(18888, -1000));
-        finalBoss.setWeapon(new MediumSpeedPistol(finalBoss));
-        finalBoss.setGrenadeThrower(new BigWaterBottleGrenader(finalBoss));
-        finalBoss.onlyActivateUntilCloseToPlayer();
-        this.setNpcs([finalBoss]);
+        this._finalBoss = new FinalBoss(new Point(18888, -1000), this._player);
+        this._finalBoss.setWeapon(new MediumSpeedPistol(this._finalBoss));
+        this._finalBoss.setGrenadeThrower(new BigWaterBottleGrenader(this._finalBoss));
+        this._finalBoss.onlyActivateUntilCloseToPlayer();
+        this.setNpcs([this._finalBoss]);
         
         // this._triggers.push(
         //     new LocationTrigger(
@@ -378,13 +385,30 @@ class SubLevel1_1 extends SubLevel {
     }
 
     resumeFromRoldans() {
-        alert("GAME OVER...");
         this._inRoldans = false;
         this._camera.setTargetPoint(this._player.getPos());
+        this._playable = false;
+
+        if (this._player.getPos().x < this._finalBoss.getPos().x) {
+            this._player.salute("right");
+        } else {
+            this._player.salute("left");
+        }
+        
+        setTimeout(() => {
+            alert("QUIETO PARADO");
+            GameScreen.currentScreen = new FinishedMenu(this._frameCount, this._deathCount);
+        }, 5000);
     }
 
     update() {
         super.update();
+
+        if (!this._playable) {
+            return;
+        }
+
+        this._frameCount++;
 
         // Update camera offset
         // X Offset
@@ -488,6 +512,7 @@ class SubLevel1_1 extends SubLevel {
     }
 
     onPlayerDeath() {
+        this._deathCount++;
         this._player.respawn();
         // const respawnPos = this._player.getPos().addConst(new Point(0, -500));
         // const player = new Player(respawnPos);  // Just create a new player and garbage out the dead player
