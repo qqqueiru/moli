@@ -394,9 +394,11 @@ class SubLevel1_1 extends SubLevel {
         } else {
             this._player.salute("left");
         }
-        
+
+        AudioManager.stopLoop(this._levelMusicId);
+        this._muteBgMusic = true;
+
         setTimeout(() => {
-            alert("QUIETO PARADO");
             GameScreen.currentScreen = new FinishedMenu(this._frameCount, this._deathCount);
         }, 5000);
     }

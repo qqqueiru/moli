@@ -23,6 +23,7 @@ class SubLevel {
     _camera = new Camera();
 
     _levelMusicId = "silence";
+    _muteBgMusic = false;
 
     constructor() {
     }
@@ -362,7 +363,8 @@ class SubLevel {
     }
 
     update() {
-        if (!AudioManager.isPlaying(this._levelMusicId)) {
+        const t0 = Date.now();
+        if (!AudioManager.isPlaying(this._levelMusicId) && !this._muteBgMusic) {
             AudioManager.playLoop(this._levelMusicId);
         }
 
