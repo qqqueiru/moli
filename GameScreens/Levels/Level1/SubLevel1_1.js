@@ -103,21 +103,21 @@ class SubLevel1_1 extends SubLevel {
             platforms.set(i, new Platform(i, new Segment({x: 16694, y: 805}, {x: 17517, y: 1011})));
             ++i;
             // Casa Daspi
-            platforms.set(i, new Platform(i, new Segment({x: 17655, y: 1061}, {x: 18013, y: 955})));
+            platforms.set(i, new Platform(i, new Segment({x: 17655, y: 1056}, {x: 18013, y: 950})));
             ++i;
-            platforms.set(i, new Platform(i, new Segment({x: 18013, y: 955}, {x: 18371, y: 1059})));
+            platforms.set(i, new Platform(i, new Segment({x: 18013, y: 950}, {x: 18371, y: 1054})));
             ++i;
-            platforms.set(i, new Platform(i, new Segment({x: 17638, y: 1342}, {x: 17676, y: 1342})));
+            platforms.set(i, new Platform(i, new Segment({x: 17638, y: 1337}, {x: 17676, y: 1337})));
             ++i;
-            platforms.set(i, new Platform(i, new Segment({x: 17676, y: 1405}, {x: 17915, y: 1405})));
+            platforms.set(i, new Platform(i, new Segment({x: 17676, y: 1400}, {x: 17915, y: 1400})));
             ++i;
-            platforms.set(i, new Platform(i, new Segment({x: 17915, y: 1304}, {x: 17953, y: 1304})));
+            platforms.set(i, new Platform(i, new Segment({x: 17915, y: 1299}, {x: 17953, y: 1299})));
             ++i;
-            platforms.set(i, new Platform(i, new Segment({x: 18079, y: 1304}, {x: 18116, y: 1304})));
+            platforms.set(i, new Platform(i, new Segment({x: 18079, y: 1299}, {x: 18116, y: 1299})));
             ++i;
-            platforms.set(i, new Platform(i, new Segment({x: 18079, y: 1405}, {x: 18343, y: 1405})));
+            platforms.set(i, new Platform(i, new Segment({x: 18079, y: 1400}, {x: 18343, y: 1400})));
             ++i;
-            platforms.set(i, new Platform(i, new Segment({x: 18343, y: 1342}, {x: 18380, y: 1342})));
+            platforms.set(i, new Platform(i, new Segment({x: 18343, y: 1337}, {x: 18380, y: 1337})));
             ++i;
             this.setPlatforms(platforms);
         }
