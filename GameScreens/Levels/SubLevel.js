@@ -220,7 +220,8 @@ class SubLevel {
             npc.setLookingUp(false);
             npc.dontMove();
             npc.setCrouched(false);
-            npc.setFaceDirection(this._player.getPos().x > npc.getPos().x ? "right" : "left");
+            const faceDirection = this._player.getPos().x > npc.getPos().x ? "right" : "left"; 
+            npc.setFaceDirection(faceDirection);
             if (this._player.getPos().x - npc.getPos().x > npc.getSafetyDistance() + 1) {
                 npc.moveRight();
             }
@@ -255,6 +256,21 @@ class SubLevel {
                     grenade.setWalls(this.#walls);
                     this.#enemyGrenades.push(grenade);
                 }
+                // Npc will move towards the player on grenade throw, so that the final boss doesn't get stuck
+                if (faceDirection === "right") {
+                    npc.overrideWalkRightFrames = 30 + 30 * Math.random();
+                } else {
+                    npc.overrideWalkLeftFrames = 30 + 30 * Math.random();
+                }
+            }
+
+            if (npc.overrideWalkLeftFrames > 0) {
+                npc.overrideWalkLeftFrames--;
+                npc.moveLeft();
+            }
+            if (npc.overrideWalkRightFrames > 0) {
+                npc.overrideWalkRightFrames--;
+                npc.moveRight();
             }
         }
     }
