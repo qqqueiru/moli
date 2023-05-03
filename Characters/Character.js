@@ -288,7 +288,7 @@ class Character {
         this.#coyoteIterations = coyoteIterations;
     }
 
-    #getCurrentSprite() {
+    getCurrentSprite() {
         const defaultSprite = "blank";
         if (this._states.currentState === "SALUTING") {
             return "saluting_" + this._facingDirection;
@@ -635,7 +635,7 @@ class Character {
         // }
 
 
-        const currentSprite = this._sprites[this.#getCurrentSprite()];
+        const currentSprite = this._sprites[this.getCurrentSprite()];
         // currentSprite.setStepsPerFrame(1);  // No creo que las animaciones se vayan a acelerar
         currentSprite.resume();
         currentSprite.draw(this._pos.x, this._pos.y + (this.#vSegment.p1.y + this.#vSegment.p2.y) / 2, cameraPos);
