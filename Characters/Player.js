@@ -25,8 +25,8 @@ class Player extends Character {
             saluting_left: new AnimatedSprite("player_saluting_left", 1, 1, 1, 1, ctx),
         };
 
-        this._hitEllipseCrouched = new Ellipse(this._pos, 15, 40);
-        this._hitEllipseStraight = new Ellipse(this._pos, 15, 80, 0, -20);
+        this._hitEllipseCrouched = new Ellipse(this._pos, 60, 40);
+        this._hitEllipseStraight = new Ellipse(this._pos, 20, 80, 0, -20);
 
         this._shootingHeightUp = -57;
     }
