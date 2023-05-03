@@ -233,42 +233,43 @@ class SubLevel1_1 extends SubLevel {
             collectables.push(new Can(new Point(1901, 3576)));
             collectables.push(new Can(new Point(2081, 3649)));
 
-            collectables.push(new Can(new Point(4800, 2870)));
+            // collectables.push(new Can(new Point(4800, 2870)));
             collectables.push(new Can(new Point(5100, 2870)));
-            collectables.push(new Can(new Point(5400, 2870)));
+            // collectables.push(new Can(new Point(5400, 2870)));
             collectables.push(new Can(new Point(5770, 2960)));
-            collectables.push(new Can(new Point(5960, 3030)));
+            // collectables.push(new Can(new Point(5960, 3030)));
             collectables.push(new Can(new Point(6690, 3100)));
-            collectables.push(new Can(new Point(7130, 3070)));
+            // collectables.push(new Can(new Point(7130, 3070)));
             collectables.push(new Can(new Point(7470, 2800)));
-            collectables.push(new Can(new Point(7790, 3110)));
-            collectables.push(new Can(new Point(8030, 3110)));
+            // collectables.push(new Can(new Point(7790, 3110)));
+            // collectables.push(new Can(new Point(8030, 3110)));
             collectables.push(new Can(new Point(7910, 2900)));
             collectables.push(new Can(new Point(8010, 2630)));
             collectables.push(new Can(new Point(8240, 2540)));
-            collectables.push(new Can(new Point(8545, 2310)));
+            // collectables.push(new Can(new Point(8545, 2310)));
             collectables.push(new Can(new Point(8915, 2620)));
 
             collectables.push(new Can(new Point(8695, 2830)));
-            collectables.push(new Can(new Point(8920, 2830)));
+            // collectables.push(new Can(new Point(8920, 2830)));
             collectables.push(new Can(new Point(9145, 2830)));
             collectables.push(new Can(new Point(10730, 2840)));
-            collectables.push(new Can(new Point(10940, 2840)));
+            // collectables.push(new Can(new Point(10940, 2840)));
             collectables.push(new Can(new Point(11160, 2840)));
-            collectables.push(new Can(new Point(11840, 3240)));
+            // collectables.push(new Can(new Point(11840, 3240)));
             collectables.push(new Can(new Point(11960, 2960)));
-            collectables.push(new Can(new Point(11960, 2830)));
+            // collectables.push(new Can(new Point(11960, 2830)));
             collectables.push(new Can(new Point(11960, 2700)));
 
             collectables.push(new Can(new Point(16140, 1240)));
             collectables.push(new Can(new Point(17260, 1240)));
             collectables.push(new Can(new Point(16540, 1100)));
-            collectables.push(new Can(new Point(16700, 1100)));
+            // collectables.push(new Can(new Point(16700, 1100)));
             collectables.push(new Can(new Point(16860, 1100)));
             collectables.push(new Can(new Point(16280, 820)));
-            collectables.push(new Can(new Point(16700, 720)));
+            // collectables.push(new Can(new Point(16700, 720)));
             collectables.push(new Can(new Point(17120, 820)));
             collectables.push(new Can(new Point(18020, 660)));
+            this._totalCollectablesCount = collectables.length;
             this.setCollectables(collectables);
         }
 
@@ -399,7 +400,8 @@ class SubLevel1_1 extends SubLevel {
         this._muteBgMusic = true;
 
         setTimeout(() => {
-            GameScreen.currentScreen = new FinishedMenu(this._frameCount, this._deathCount);
+            const collectedCollectablesCount = this._totalCollectablesCount - this._collectables.length;
+            GameScreen.currentScreen = new FinishedMenu(this._frameCount, this._deathCount, collectedCollectablesCount, this._totalCollectablesCount);
         }, 5000);
     }
 

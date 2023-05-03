@@ -56,7 +56,7 @@ class SubLevel {
     }
 
     setCollectables(collectables) {
-        this.#collectables = collectables;
+        this._collectables = collectables;
     }
 
     setPlayer(player) {
@@ -362,12 +362,12 @@ class SubLevel {
     }
 
     updateCollectables() {
-        const nCollectables = this.#collectables.length;
+        const nCollectables = this._collectables.length;
         for (let i = nCollectables - 1; i >= 0; --i) {
-            const collectable = this.#collectables[i];
+            const collectable = this._collectables[i];
             collectable.update();
             if (collectable.checkHit(this._player, ["ALIVE"])) {
-                this.#collectables.splice(i, 1);
+                this._collectables.splice(i, 1);
                 continue;
             }
         }
@@ -477,8 +477,8 @@ class SubLevel {
         // for (const trigger of this._triggers) {
         //     trigger.draw(ctx, this._camera.getPos());  // Big ellipse drawings are slow for some reason in Firefox
         // }
-
-        for (const collectable of this.#collectables) {
+        const t10 = Date.now() - t0;
+        for (const collectable of this._collectables) {
             collectable.draw(ctx, this._camera.getPos());
         }
 
