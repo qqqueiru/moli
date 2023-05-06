@@ -47,5 +47,7 @@ class GameScreen {
         if (totalTime > 10) {
             console.warn(`draw: ${drawTime} ms, update: ${updateTime} ms, total: ${totalTime} ms. ${GameScreen.currentScreen.name}`)
         }
+
+        PseudoDate.currentIteration++;
     }
 }

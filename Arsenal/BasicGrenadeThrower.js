@@ -27,9 +27,9 @@ class BasicGrenadeThrower {
 
     checkIfCanThrowSinceLastThrowing() {
         let canThrow = false;
-        if (Date.now() - this.#lastThrowingTime > this.#rate) {
+        if (PseudoDate.now() - this.#lastThrowingTime > this.#rate) {
             canThrow = true;
-            this.#lastThrowingTime = Date.now();
+            this.#lastThrowingTime = PseudoDate.now();
         }
         return canThrow;
     }

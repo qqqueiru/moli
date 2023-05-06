@@ -136,7 +136,7 @@ class SubLevel {
     }
 
     updatePlayerControl() {
-        if (this.#upBuffer.length > 0 && Date.now() - this.#upBuffer[0] > 250) {
+        if (this.#upBuffer.length > 0 && PseudoDate.now() - this.#upBuffer[0] > 250) {
             this.#upBuffer.shift();
         }
         if (inputs.get("escape")?.consumeIfActivated()) {
@@ -177,7 +177,7 @@ class SubLevel {
             }
         }
         if (inputs.get("k")?.consumeIfActivated()) {
-            this.#upBuffer.push(Date.now());
+            this.#upBuffer.push(PseudoDate.now());
         }
         if (this.#upBuffer.length > 0) {
             const startedJump = this._player.startJump();
@@ -230,13 +230,13 @@ class SubLevel {
                 npc.moveLeft();
             }
 
-            if (Date.now() % npc.getJumpRate() < 20 && 
+            if (PseudoDate.now() % npc.getJumpRate() < 20 && 
                 !this._player.isJumping() && 
                 this._player.getPos().y < npc.getPos().y - npc.getJumpingDiffToPlayer()) {
                 npc.startJump();
             }
 
-            if (Date.now() % npc.getShootRate() < 20 && isCloseToPlayer && isInScreen) {
+            if (PseudoDate.now() % npc.getShootRate() < 20 && isCloseToPlayer && isInScreen) {
                 const enemyProjectilesDontSaturateScreen = this.#enemyProjectiles.length < 10;
                 if (enemyProjectilesDontSaturateScreen) {
                     const projectile = npc.shoot();
@@ -248,7 +248,7 @@ class SubLevel {
 
             }
             const grenadeRate = npc.getGrenadeRate();
-            if (grenadeRate > 0 && Date.now() % grenadeRate < 20 && isCloseToPlayer && isInScreen) {
+            if (grenadeRate > 0 && PseudoDate.now() % grenadeRate < 20 && isCloseToPlayer && isInScreen) {
                 const enemyGrenadesDontSaturateScreen = this.#enemyGrenades.length < 10;
                 const grenade = npc.throwGrenade();
                 if (grenade && enemyGrenadesDontSaturateScreen) {

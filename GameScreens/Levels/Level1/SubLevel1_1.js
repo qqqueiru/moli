@@ -400,10 +400,10 @@ class SubLevel1_1 extends SubLevel {
         this._muteBgMusic = true;
         this._whiteToRed = true;
 
-        setTimeout(() => {
+        this._triggers.push(new TimeTrigger(5 * 60, () => {
             const collectedCollectablesCount = this._totalCollectablesCount - this._collectables.length;
             GameScreen.currentScreen = new FinishedMenu(this._frameCount, this._deathCount, collectedCollectablesCount, this._totalCollectablesCount);
-        }, 5000);
+        }));
     }
 
     update() {

@@ -17,9 +17,9 @@ class Weapon {
 
     checkIfCanShootSinceLastShooting() {
         let canShoot = false;
-        if (Date.now() - this.#lastShootingTime > this.rate) {
+        if (PseudoDate.now() - this.#lastShootingTime > this.rate) {
             canShoot = true;
-            this.#lastShootingTime = Date.now();
+            this.#lastShootingTime = PseudoDate.now();
         }
         return canShoot;
     }

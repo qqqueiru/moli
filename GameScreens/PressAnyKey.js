@@ -39,7 +39,7 @@ class PressAnyKey extends GameScreen {
             Math.floor(GameScreen.height * 0.45)
         );
 
-        if (Date.now() % 1500 < 750) {
+        if (PseudoDate.now() % 1500 < 750) {
             GameScreen.ctx.font = `bold ${fontSize}px ${GameScreen.fontFamily}`;
             GameScreen.ctx.fillText(
                 TR.PressAnyKey[lang], 
