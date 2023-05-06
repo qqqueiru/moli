@@ -54,6 +54,7 @@ class ImageManager {
         ImageManager.loadImage("player_dying_crouch_left", "./img/player/player_dying_crouch_left.png");
         ImageManager.loadImage("player_saluting_left", "./img/player/player_saluting_left.png");
         ImageManager.loadImage("player_saluting_right", "./img/player/player_saluting_right.png");
+        ImageManager.loadImage("player_resurrects", "./img/player/player_resurrects.png");
 
         ImageManager.loadImage("npc_blank", "./img/npcs/guardiamarina/npc_blank.png");
         ImageManager.loadImage("npc_right", "./img/npcs/guardiamarina/npc_right.png");
@@ -84,6 +85,8 @@ class ImageManager {
         ImageManager.loadImage("final_boss_dead_crouch_left", "./img/npcs/final_boss/npc_dead_crouch_left.png");
         ImageManager.loadImage("final_boss_dying_crouch_right", "./img/npcs/final_boss/npc_dying_crouch_right.png");
         ImageManager.loadImage("final_boss_dying_crouch_left", "./img/npcs/final_boss/npc_dying_crouch_left.png");
+
+        ImageManager.loadImage("still_atlantus", "./img/miscellaneous/still_atlantus.png");
 
         // Loop Sprites
         ImageManager.loadImage("atlantus", "./img/loop_sprites/atlantus.png");

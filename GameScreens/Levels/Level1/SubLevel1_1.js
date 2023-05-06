@@ -398,6 +398,7 @@ class SubLevel1_1 extends SubLevel {
 
         AudioManager.stopLoop(this._levelMusicId);
         this._muteBgMusic = true;
+        this._whiteToRed = true;
 
         setTimeout(() => {
             const collectedCollectablesCount = this._totalCollectablesCount - this._collectables.length;
@@ -513,6 +514,89 @@ class SubLevel1_1 extends SubLevel {
                 this.resumeFromRoldans();
             }
         }
+    }
+
+    getDeathCountStr() {
+        if (this._deathCount < 10) {
+            return "0" + this._deathCount;
+        }
+        return this._deathCount;
+    }
+
+    getCollectedCollectablesStr() {
+        const collectedCollectables = this._totalCollectablesCount - this._collectables.length;
+        if (collectedCollectables < 10) {
+            return "0" + collectedCollectables;
+        }
+        return collectedCollectables;
+    }
+
+    getTimePassedStr() {
+        const totalMs = this._frameCount * 1000 / 60;  // Assuming game runs at 60 fps
+        let cs = Math.floor(totalMs / 10) % 100;
+        let s = Math.floor(totalMs / 1000) % 60;
+        let min = Math.floor(totalMs / 60000);
+        cs = cs >= 10 ? cs : "0" + cs;
+        s = s >= 10 ? s : "0" + s;
+        min = min >= 10 ? min : "0" + min;
+        return `${min}:${s}.${cs}`;
+    }
+
+    draw(ctx) {
+        super.draw(ctx);
+        // HUD
+        GameScreen.ctx.textAlign = "left";
+        GameScreen.ctx.font = `${40}px ${GameScreen.fontFamily}`;
+        const offset = 4;
+        const mainColor = this._whiteToRed ? GameScreen.fontColorRed : GameScreen.fontColor;
+
+        const textY = 85;
+        ctx.drawImage(
+            ImageManager.getImage("player_resurrects"),
+            50,
+            25,
+        );
+        GameScreen.ctx.fillStyle = GameScreen.fontColorContrast;
+        GameScreen.ctx.fillText(
+            this.getDeathCountStr(),
+            125 + offset,
+            textY + offset
+        );
+        GameScreen.ctx.fillStyle = mainColor;
+        GameScreen.ctx.fillText(
+            this.getDeathCountStr(),
+            125,
+            textY
+        );
+        ctx.drawImage(
+            ImageManager.getImage("still_atlantus"),
+            315,
+            20,
+        );
+        GameScreen.ctx.fillStyle = GameScreen.fontColorContrast;
+        GameScreen.ctx.fillText(
+            this.getCollectedCollectablesStr(),
+            385 + offset,
+            textY + offset
+        );
+        GameScreen.ctx.fillStyle = mainColor;
+        GameScreen.ctx.fillText(
+            this.getCollectedCollectablesStr(),
+            385,
+            textY
+        );
+        GameScreen.ctx.fillStyle = GameScreen.fontColorContrast;
+        GameScreen.ctx.fillText(
+            this.getTimePassedStr(),
+            1550 + offset,
+            textY + offset
+        );
+        GameScreen.ctx.fillStyle = mainColor;
+        GameScreen.ctx.fillText(
+            this.getTimePassedStr(),
+            1550,
+            textY
+        );
     }
 
     onPlayerDeath() {
