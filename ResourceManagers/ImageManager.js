@@ -86,7 +86,10 @@ class ImageManager {
         ImageManager.loadImage("final_boss_dying_crouch_right", "./img/npcs/final_boss/npc_dying_crouch_right.png");
         ImageManager.loadImage("final_boss_dying_crouch_left", "./img/npcs/final_boss/npc_dying_crouch_left.png");
 
+        // Miscellaneous
         ImageManager.loadImage("still_atlantus", "./img/miscellaneous/still_atlantus.png");
+        ImageManager.loadImage("white_silhouette_moli", "./img/miscellaneous/white_silhouette_moli.png");
+        ImageManager.loadImage("controls", "./img/miscellaneous/controls.png");
 
         // Loop Sprites
         ImageManager.loadImage("atlantus", "./img/loop_sprites/atlantus.png");

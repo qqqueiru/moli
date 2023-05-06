@@ -22,7 +22,7 @@ class PressAnyKey extends GameScreen {
 
         GameScreen.ctx.clearRect(0, 0, GameScreen.width, GameScreen.height);
         GameScreen.ctx.rect(0, 0, GameScreen.width, GameScreen.height);
-        GameScreen.ctx.fillStyle = "rgb(0, 0, 0)";
+        GameScreen.ctx.fillStyle = GameScreen.color.red;
         GameScreen.ctx.fill();
     
         const fontSize = Math.floor(0.0463 * GameScreen.height);

@@ -5,6 +5,15 @@ class GameScreen {
     static width;
     static height;
 
+    static color = {
+        white: "#fff",
+        black: "#000",
+        red: "#f44336",
+        blue: "#2196f3",
+        green: "#4caf50",
+        pink: "#e91e63",
+    }
+
     // static fontColor = "#856345";
     // static fontColorLighter = "#ffdddd";
     static fontColor = "#fff";

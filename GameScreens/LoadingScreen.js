@@ -30,14 +30,14 @@ class LoadingScreen extends GameScreen {
 
         GameScreen.ctx.clearRect(0, 0, GameScreen.width, GameScreen.height);
         GameScreen.ctx.rect(0, 0, GameScreen.width, GameScreen.height);
-        GameScreen.ctx.fillStyle = "rgb(0, 0, 0)";
+        GameScreen.ctx.fillStyle = GameScreen.color.white;
         GameScreen.ctx.fill();
     
         const fontSize = 100;
         GameScreen.ctx.font = `bold ${fontSize}px Arial`;
         GameScreen.ctx.textAlign = "right";
 
-        GameScreen.ctx.fillStyle = GameScreen.fontColor;
+        GameScreen.ctx.fillStyle = GameScreen.color.black;
         const percentage = Math.floor(this.#progress * 100);
         GameScreen.ctx.fillText(`${percentage} %`, GameScreen.width / 2 + 75, GameScreen.height * 0.5);
 
