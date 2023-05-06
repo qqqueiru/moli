@@ -27,12 +27,12 @@ class NPC extends Character {
         this._hitEllipseCrouched = new Ellipse(this._pos, 40, 55);
         this._hitEllipseStraight = new Ellipse(this._pos, 40, 110, 0, -20);
 
-        this._maxSpeedX = 4 + 2 * Math.random();
-        this._safetyDistance = 200 + 500 * Math.random();
+        this._maxSpeedX = 4 + 2 * PseudoRandom.get();
+        this._safetyDistance = 200 + 500 * PseudoRandom.get();
         this._jumpingDiffToPlayer = 200;
-        this._shootRate = 2000 + 2000 * Math.random();
+        this._shootRate = 2000 + 2000 * PseudoRandom.get();
         this._grenadeRate = -1;
-        this._jumpRate = 3000 + 3000 * Math.random();
+        this._jumpRate = 3000 + 3000 * PseudoRandom.get();
     }
 
     getShootRate() {

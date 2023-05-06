@@ -258,9 +258,9 @@ class SubLevel {
                 }
                 // Npc will move towards the player on grenade throw, so that the final boss doesn't get stuck
                 if (faceDirection === "right") {
-                    npc.overrideWalkRightFrames = 30 + 30 * Math.random();
+                    npc.overrideWalkRightFrames = 30 + 30 * PseudoRandom.get();
                 } else {
-                    npc.overrideWalkLeftFrames = 30 + 30 * Math.random();
+                    npc.overrideWalkLeftFrames = 30 + 30 * PseudoRandom.get();
                 }
             }
 

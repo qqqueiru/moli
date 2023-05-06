@@ -101,8 +101,8 @@ class Camera {
         this.#pos = this.#pos_0.clone();
         if (this.#iterationsShaking > 0) {
             const decayFactor = this.#iterationsShaking / this.#iterationsToShake * this.#iterationsShaking / this.#iterationsToShake;
-            this.#pos.x += this.#shakeAmplitude * (0.5 - Math.random()) * decayFactor;
-            this.#pos.y += this.#shakeAmplitude * (0.5 - Math.random()) * decayFactor;
+            this.#pos.x += this.#shakeAmplitude * (0.5 - PseudoRandom.get()) * decayFactor;
+            this.#pos.y += this.#shakeAmplitude * (0.5 - PseudoRandom.get()) * decayFactor;
             --this.#iterationsShaking;
             this.#limitCameraPosToBounds(this.#pos);
         }
