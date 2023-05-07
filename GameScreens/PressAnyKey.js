@@ -49,11 +49,11 @@ class PressAnyKey extends GameScreen {
         }
 
         GameScreen.ctx.font = `bold ${fontSize * 0.5}px ${GameScreen.fontFamily}`;
-        GameScreen.ctx.fillText(
-            TR.WorkInProgress[lang],
-            Math.floor(GameScreen.width * 0.5),
-            Math.floor(GameScreen.height * 0.8)
-        );
+        // GameScreen.ctx.fillText(
+        //     TR.WorkInProgress[lang],
+        //     Math.floor(GameScreen.width * 0.5),
+        //     Math.floor(GameScreen.height * 0.8)
+        // );
         GameScreen.ctx.font = `bold ${fontSize * 0.5}px ${GameScreen.fontFamily}`;
         GameScreen.ctx.fillText(
             "© Miguel Queiruga Portela 2023",
