@@ -532,6 +532,9 @@ class SubLevel1_1 extends SubLevel {
     }
 
     draw(ctx) {
+        if (this._camera.getPos().x - GameScreen.width / 2 < 0) {
+            return;  // Botch first frame draw bug
+        }
         super.draw(ctx);
         // HUD
         GameScreen.ctx.textAlign = "left";
