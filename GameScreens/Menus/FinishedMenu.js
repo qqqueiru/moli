@@ -334,6 +334,8 @@ class FinishedMenu extends GameScreen {
         this.#selectionSquareX = Math.floor(GameScreen.width * (0.4 + 0.01 * Math.sin(this.#t)));
 
         if (
+            GameScreen.inputs.get("w")?.consumeIfActivated() ||
+            GameScreen.inputs.get("a")?.consumeIfActivated() ||
             GameScreen.inputs.get("arrowup")?.consumeIfActivated() ||
             GameScreen.inputs.get("arrowleft")?.consumeIfActivated()
         ) {
@@ -345,6 +347,8 @@ class FinishedMenu extends GameScreen {
             AudioManager.playSoundEffect("selection_up");
         }
         if (
+            GameScreen.inputs.get("s")?.consumeIfActivated() ||
+            GameScreen.inputs.get("d")?.consumeIfActivated() ||
             GameScreen.inputs.get("arrowdown")?.consumeIfActivated() ||
             GameScreen.inputs.get("arrowright")?.consumeIfActivated()
         ) {
@@ -357,6 +361,7 @@ class FinishedMenu extends GameScreen {
         }
 
         if (
+            GameScreen.inputs.get("j")?.consumeIfActivated() ||
             GameScreen.inputs.get("enter")?.consumeIfActivated() ||
             GameScreen.inputs.get(" ")?.consumeIfActivated()
         ) {
@@ -367,6 +372,7 @@ class FinishedMenu extends GameScreen {
         }
 
         if (
+            GameScreen.inputs.get("k")?.consumeIfActivated() ||
             GameScreen.inputs.get("backspace")?.consumeIfActivated() ||
             GameScreen.inputs.get("escape")?.consumeIfActivated()
         ) {

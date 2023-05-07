@@ -139,7 +139,10 @@ class SubLevel {
         if (this.#upBuffer.length > 0 && PseudoDate.now() - this.#upBuffer[0] > 250) {
             this.#upBuffer.shift();
         }
-        if (inputs.get("escape")?.consumeIfActivated()) {
+        if (
+            inputs.get("p")?.consumeIfActivated() ||
+            inputs.get("escape")?.consumeIfActivated()
+        ) {
             // Sorry no pause buffering
             GameScreen.previousScreen = GameScreen.currentScreen;
             AudioManager.stopLoop(this._levelMusicId);
