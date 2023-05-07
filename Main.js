@@ -21,11 +21,9 @@ GameScreen.width = canvas.width;
 GameScreen.height = canvas.height;
 GameScreen.drawDistance = Math.sqrt(GameScreen.width * GameScreen.width + GameScreen.height * GameScreen.height);
 
-
-// TODO Rehabilitar en producción
-// window.onbeforeunload = function() {
-//     return "MOLI";
-// };
+window.onbeforeunload = function() {
+    return "MOLI";
+};
 
 // Desaparición del cursor cuando está inactivo sobre el canvas
 {
