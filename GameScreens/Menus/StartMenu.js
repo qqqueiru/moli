@@ -112,9 +112,14 @@ class StartMenu extends GameScreen {
         }
 
         // Text Highlighting
-        let { width } = ctx.measureText(options[currentOptionIndex]);
-        ctx.fillRect(Math.floor(0.3 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) + 20, width, 20);
-
+        // if (PseudoDate.now() % 1500 < 1000) {
+            let { width } = ctx.measureText(options[currentOptionIndex]);
+            width += 50;
+            ctx.fillRect(Math.floor(0.3 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) + 20, width, 20);
+            ctx.fillRect(Math.floor(0.3 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 160, width, 20);
+            ctx.fillRect(Math.floor(0.3 * GameScreen.width) - width / 2 - 15, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 160, 20, 200);
+            ctx.fillRect(Math.floor(0.3 * GameScreen.width) + width / 2 - 15, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 160, 20, 200);
+        // }
         ctx.drawImage(
             ImageManager.getImage("white_silhouette_moli"),
             1116,
@@ -145,14 +150,22 @@ class StartMenu extends GameScreen {
         ctx.fillText(TR.START[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.7));
         if (currentOptionIndex === 0) {
             let { width } = ctx.measureText(TR.START[lang]);
+            width += 50;
             ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * 0.7) + 20, width, 20);
+            ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * 0.7) - 160, width, 20);
+            ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2 - 15, Math.floor(GameScreen.height * 0.7) - 160, 20, 200);
+            ctx.fillRect(Math.floor(0.5 * GameScreen.width) + width / 2 - 15, Math.floor(GameScreen.height * 0.7) - 160, 20, 200);
         }
 
         ctx.font = `${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
         ctx.fillText(TR.BACK[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.9));
         if (currentOptionIndex === 1) {
             let { width } = ctx.measureText(TR.BACK[lang]);
+            width += 40;
             ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * 0.9) + 20, width, 10);
+            ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * 0.9) - 60, width, 10);
+            ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2 - 5, Math.floor(GameScreen.height * 0.9) - 60, 10, 90);
+            ctx.fillRect(Math.floor(0.5 * GameScreen.width) + width / 2 - 5, Math.floor(GameScreen.height * 0.9) - 60, 10, 90);
         }
     }
 
@@ -187,7 +200,11 @@ class StartMenu extends GameScreen {
 
         // Text Highlighting
         let { width } = ctx.measureText(TR.BACK[lang]);
-        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)) + 20, width, 10);
+        width += 40;
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) + 20, width, 10);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 60, width, 10);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2 - 5, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 60, 10, 90);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) + width / 2 - 5, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 60, 10, 90);
     }
 
     #drawAboutMenu(ctx, currentOptionIndex) {
@@ -223,7 +240,11 @@ class StartMenu extends GameScreen {
 
         // Text Highlighting
         let { width } = ctx.measureText(TR.BACK[lang]);
-        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)) + 20, width, 10);
+        width += 40;
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) + 20, width, 10);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 60, width, 10);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2 - 5, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 60, 10, 90);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) + width / 2 - 5, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 60, 10, 90);
     }
 
     handleInputs() {
