@@ -32,6 +32,12 @@ const TR = {
         gl: "INICIAR",
         la: "INITIARE",
     },
+    START_MENU: {
+        en: "START MENU",
+        es: "MENÚ INICIAL",
+        gl: "TODO",
+        la: "TODO",
+    },
     HELP: {
         en: "HELP",
         es: "AYUDA",
@@ -137,6 +143,12 @@ const TR = {
     RESTART_CONFIRMATION: {
         en: "Are you sure?",
         es: "¿Estás seguro?",
+        gl: "TODO",
+        la: "TODO",
+    },
+    START_MENU_CONFIRMATION: {
+        en: "BACK TO START MENU?",
+        es: "¿VOLVER AL MENÚ INICIAL?",
         gl: "TODO",
         la: "TODO",
     },

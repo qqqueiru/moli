@@ -26,6 +26,10 @@ class PauseMenu extends GameScreen {
                         updateHandle: ()=>{this.#openRestartMenu()},
                     },
                     {
+                        name: "START MENU",
+                        updateHandle: ()=>{this.#openStartMenuConfirmation()},
+                    },
+                    {
                         name: "HELP",
                         updateHandle: ()=>{this.#openHelpMenu()},
                     },
@@ -42,6 +46,20 @@ class PauseMenu extends GameScreen {
                     {
                         name: "YES",
                         updateHandle: ()=>{this.#restartGame()},
+                    },
+                    {
+                        name: "NO",
+                        updateHandle: ()=>{this.#backToMainMenu()},
+                    },
+                ],
+            },
+            startMenuConfirmation: {
+                currentOptionIndex: 0,
+                drawHandle: (optIdx)=>{this.#drawStartMenuConfirmation(optIdx)},
+                options: [
+                    {
+                        name: "YES",
+                        updateHandle: ()=>{this.#openStartMenu()},
                     },
                     {
                         name: "NO",
@@ -84,6 +102,12 @@ class PauseMenu extends GameScreen {
         this.#menus[this.#menus.currentMenu].currentOptionIndex = 0;
     }
 
+    #openStartMenuConfirmation() {
+        AudioManager.playSoundEffect("enter");
+        this.#menus.currentMenu = "startMenuConfirmation";
+        this.#menus[this.#menus.currentMenu].currentOptionIndex = 0;
+    }
+
     #openHelpMenu() {
         AudioManager.playSoundEffect("enter");
         this.#menus.currentMenu = "helpMenu";
@@ -100,6 +124,12 @@ class PauseMenu extends GameScreen {
         AudioManager.stopLoop("menu");
     }
 
+    #openStartMenu() {
+        AudioManager.playSoundEffect("enter");
+        GameScreen.currentScreen = new StartMenu();
+        // AudioManager.stopLoop("menu");
+    }
+
     #backToMainMenu() {
         AudioManager.playSoundEffect("back");
         this.#menus.currentMenu = "mainMenu";
@@ -113,7 +143,7 @@ class PauseMenu extends GameScreen {
         GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
         const optionsHeight = 0.45;
         const optionsSpacing = 0.07;
-        const options = [TR.RESUME[lang], TR.RESTART[lang], TR.HELP[lang], TR.ABOUT[lang]];
+        const options = [TR.RESUME[lang], TR.RESTART[lang], TR.START_MENU[lang], TR.HELP[lang], TR.ABOUT[lang]];
         for (let i = 0; i < options.length; ++i) {
             GameScreen.ctx.fillText(options[i], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * i)));    
         }
@@ -130,6 +160,25 @@ class PauseMenu extends GameScreen {
         GameScreen.ctx.fillText(TR.RESTART[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.35));
         GameScreen.ctx.font = `bold ${Math.floor(0.04 * GameScreen.height)}px ${GameScreen.fontFamily}`;
         GameScreen.ctx.fillText(TR.RESTART_CONFIRMATION[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.5));
+
+        GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        const optionsHeight = 0.6;
+        const optionsSpacing = 0.07;
+        const options = [TR.YES[lang], TR.NO[lang]];
+        for (let i = 0; i < options.length; ++i) {
+            GameScreen.ctx.fillText(options[i], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * i)));
+        }
+
+        // Text Highlighting
+        let { width } = ctx.measureText(options[currentOptionIndex]);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) + 10, width, 10);
+    }
+
+    #drawStartMenuConfirmation(currentOptionIndex) {
+        GameScreen.ctx.fillStyle = GameScreen.fontColor;
+        GameScreen.ctx.textAlign = "center";
+        GameScreen.ctx.font = `bold ${Math.floor(0.04 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        GameScreen.ctx.fillText(TR.START_MENU_CONFIRMATION[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.5));
 
         GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
         const optionsHeight = 0.6;
