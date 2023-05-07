@@ -134,10 +134,28 @@ const TR = {
         gl: "REINICIAR",
         la: "LUDERE",
     },
+    RESTART_CONFIRMATION: {
+        en: "Are you sure?",
+        es: "¿Estás seguro?",
+        gl: "TODO",
+        la: "TODO",
+    },
     SHARE: {
         en: "SHARE",
         es: "COMPARTIR",
         gl: "COMPARTIR",
         la: "AD PARTICIPES",
+    },
+    YES: {
+        en: "YES",
+        es: "SÍ",
+        gl: "SÍ",
+        la: "TODO",
+    },
+    NO: {
+        en: "NO",
+        es: "NO",
+        gl: "NON",
+        la: "TODO",
     },
 };

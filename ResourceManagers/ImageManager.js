@@ -90,6 +90,7 @@ class ImageManager {
         ImageManager.loadImage("still_atlantus", "./img/miscellaneous/still_atlantus.png");
         ImageManager.loadImage("white_silhouette_moli", "./img/miscellaneous/white_silhouette_moli.png");
         ImageManager.loadImage("controls", "./img/miscellaneous/controls.png");
+        ImageManager.loadImage("controls_compacted", "./img/miscellaneous/controls_compacted.png");
 
         // Loop Sprites
         ImageManager.loadImage("atlantus", "./img/loop_sprites/atlantus.png");
