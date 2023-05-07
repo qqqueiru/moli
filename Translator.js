@@ -122,6 +122,19 @@ const TR = {
         gl: "XOGO REMATADO",
         la: "FINIS LUDUM",
     },
+    OVERTIME: {
+        en: "You exceeded 1 hour of gameplay",
+        es: "Has excedido 1 hora de juego",
+        gl: "Pasaches máis dunha hora xogando",
+        la: "TODO",
+    },
+    OVERDEATH: {
+        en: "You died 100 times",
+        es: "Has muerto 100 veces",
+        // TODO check gl
+        gl: "Morreches 100 veces",
+        la: "TODO",
+    },
     gameOver0: {
         en: (score) => {return `You scored ${score} point${score === "I" ? "" : "s"}`},
         es: (score) => {return `Has conseguido ${score} punto${score === "I" ? "" : "s"}`},

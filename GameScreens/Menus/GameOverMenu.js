@@ -1,16 +1,13 @@
 class GameOverMenu extends GameScreen {
-    #score;
-    #scoreRomanNumeral;
     #menus;
     #t = 0;
     #selectionSquareX;
 
-    constructor(score) {
+    constructor(reason) {
         super();
         this.name = "GameOverMenu";
+        this.reason = reason;
         AudioManager.playLoop("menu");
-        this.#score = score;
-        this.#scoreRomanNumeral = romanize(score);
         this.#menus = {
             currentMenu: "mainMenu",
             mainMenu: {
@@ -19,11 +16,11 @@ class GameOverMenu extends GameScreen {
                 options: [
                     {
                         name: "RESTART",
-                        updateHandle: ()=>{this.#restartGame()},
+                        updateHandle: ()=>{this.#openRestartMenu()},
                     },
                     {
-                        name: "SHARE",
-                        updateHandle: ()=>{this.#openShareMenu()},
+                        name: "START MENU",
+                        updateHandle: ()=>{this.#openStartMenuConfirmation()},
                     },
                     {
                         name: "HELP",
@@ -35,28 +32,30 @@ class GameOverMenu extends GameScreen {
                     },
                 ],
             },
-            shareMenu: {
+            restartMenu: {
                 currentOptionIndex: 0,
-                drawHandle: (optIdx)=>{this.#drawShareMenu(optIdx)},
+                drawHandle: (optIdx)=>{this.#drawRestartMenu(optIdx)},
                 options: [
                     {
-                        name: "TWITTER",
-                        updateHandle: ()=>{this.#shareTwitter()},
+                        name: "YES",
+                        updateHandle: ()=>{this.#restartGame()},
                     },
                     {
-                        name: "FACEBOOK",
-                        updateHandle: ()=>{this.#shareFacebook()},
+                        name: "NO",
+                        updateHandle: ()=>{this.#backToMainMenu()},
+                    },
+                ],
+            },
+            startMenuConfirmation: {
+                currentOptionIndex: 0,
+                drawHandle: (optIdx)=>{this.#drawStartMenuConfirmation(optIdx)},
+                options: [
+                    {
+                        name: "YES",
+                        updateHandle: ()=>{this.#openStartMenu()},
                     },
                     {
-                        name: "LINKEDIN",
-                        updateHandle: ()=>{this.#shareLinkedin()},
-                    },
-                    // {
-                    //     name: "PINTEREST",
-                    //     updateHandle: ()=>{this.#sharePinterest()},
-                    // },
-                    {
-                        name: "BACK",
+                        name: "NO",
                         updateHandle: ()=>{this.#backToMainMenu()},
                     },
                 ],
@@ -84,14 +83,16 @@ class GameOverMenu extends GameScreen {
         };
     }
 
-    #restartGame() {
+    #openRestartMenu() {
         AudioManager.playSoundEffect("enter");
-        GameScreen.currentScreen = new StartMenu();
+        this.#menus.currentMenu = "restartMenu";
+        this.#menus[this.#menus.currentMenu].currentOptionIndex = 0;
     }
 
-    #openShareMenu() {
+    #openStartMenuConfirmation() {
         AudioManager.playSoundEffect("enter");
-        this.#menus.currentMenu = "shareMenu";
+        this.#menus.currentMenu = "startMenuConfirmation";
+        this.#menus[this.#menus.currentMenu].currentOptionIndex = 0;
     }
 
     #openHelpMenu() {
@@ -104,42 +105,16 @@ class GameOverMenu extends GameScreen {
         this.#menus.currentMenu = "aboutMenu";
     }
 
-    #shareTwitter() {
+    #restartGame() {
         AudioManager.playSoundEffect("enter");
-        // https://www.sharelinkgenerator.com/
-        setTimeout(()=>{
-            const scoreToShow = this.#score > 0 ? this.#scoreRomanNumeral : 0;
-            const url = `https://twitter.com/intent/tweet?text=I%20scored%20${scoreToShow}%20point${this.#score === 1 ? "" : "s"}%20on%20Moli.%0Aqqqueiru.github.io/moli/`;
-            window.open(url, '_blank').focus();
-        }, 100);
-        inputs.clear();
+        GameScreen.currentScreen = new Level1();
+        AudioManager.stopLoop("menu");
     }
 
-    #shareFacebook() {
+    #openStartMenu() {
         AudioManager.playSoundEffect("enter");
-        setTimeout(()=>{
-            const url = `https://www.facebook.com/sharer/sharer.php?u=https%3A//qqqueiru.github.io/moli/`;
-            window.open(url, '_blank').focus();
-        }, 100);
-        inputs.clear();
-    }
-
-    #shareLinkedin() {
-        AudioManager.playSoundEffect("enter");
-        setTimeout(()=>{
-            const url = `https://www.linkedin.com/shareArticle?mini=true&url=https%3A//qqqueiru.github.io/moli/`;
-            window.open(url, '_blank').focus();
-        }, 100);
-        inputs.clear();
-    }
-
-    #sharePinterest() {
-        AudioManager.playSoundEffect("enter");
-        setTimeout(()=>{
-            const url = `https://pinterest.com`;
-            window.open(url, '_blank').focus();
-        }, 100);
-        inputs.clear();
+        GameScreen.currentScreen = new StartMenu();
+        // AudioManager.stopLoop("menu");
     }
 
     #backToMainMenu() {
@@ -151,88 +126,126 @@ class GameOverMenu extends GameScreen {
         GameScreen.ctx.fillStyle = GameScreen.fontColor;
         GameScreen.ctx.textAlign = "center";
         GameScreen.ctx.font = `bold ${Math.floor(0.055 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        GameScreen.ctx.fillText(TR.GAMEOVER[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.4));
-        GameScreen.ctx.font = `bold ${Math.floor(0.037 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        GameScreen.ctx.fillText(
-            TR.gameOver0[lang](this.#score > 0 ? this.#scoreRomanNumeral : 0),
-            Math.floor(GameScreen.width / 2),
-            Math.floor(GameScreen.height * 0.45)
-        );
+        GameScreen.ctx.fillText(TR.GAMEOVER[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.35));
         GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        const optionsHeight = 0.54;
-        const optionsSpacing = 0.04;
-        GameScreen.ctx.fillText(TR.RESTART[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)));
-        GameScreen.ctx.fillText(TR.SHARE[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 1)));
-        GameScreen.ctx.fillText(TR.HELP[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 2)));
-        GameScreen.ctx.fillText(TR.ABOUT[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 3)));
+        
+        const explanationMsg = this.reason === "overtime" ? TR.OVERTIME[lang] : TR.OVERDEATH[lang];
+        GameScreen.ctx.fillText(explanationMsg, Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (0.42)));
+        
+        const optionsHeight = 0.52;
+        const optionsSpacing = 0.07;
+        const options = [TR.RESTART[lang], TR.START_MENU[lang], TR.HELP[lang], TR.ABOUT[lang]];
+        for (let i = 0; i < options.length; ++i) {
+            GameScreen.ctx.fillText(options[i], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * i)));
+        }
 
-        // Rectangulito para indicar seleccion actual
-        GameScreen.ctx.beginPath();
-        GameScreen.ctx.rect(
-            this.#selectionSquareX, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex - 0.02)),
-            Math.floor(GameScreen.width * 0.01), Math.floor(GameScreen.height * 0.02)
-        );
-        GameScreen.ctx.fillStyle = GameScreen.fontColor;
-        GameScreen.ctx.fill();
+        // Text Highlighting
+        let { width } = ctx.measureText(options[currentOptionIndex]);
+        width += 40;
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) + 10, width, 10);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 55, width, 10);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2 - 5, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 55, 10, 75);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) + width / 2 - 5, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 55, 10, 75);
     }
 
-    #drawShareMenu(currentOptionIndex) {
+    #drawRestartMenu(currentOptionIndex) {
         GameScreen.ctx.fillStyle = GameScreen.fontColor;
         GameScreen.ctx.textAlign = "center";
-        GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        const optionsHeight = 0.44;
-        const optionsSpacing = 0.04;
-        GameScreen.ctx.fillText("TWITTER", Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)));
-        GameScreen.ctx.fillText("FACEBOOK", Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 1)));
-        GameScreen.ctx.fillText("LINKEDIN", Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 2)));
-        // GameScreen.ctx.fillText("PINTEREST", Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 3)));
-        GameScreen.ctx.fillText(TR.BACK[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 6)));
+        GameScreen.ctx.font = `bold ${Math.floor(0.055 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        GameScreen.ctx.fillText(TR.RESTART[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.35));
+        GameScreen.ctx.font = `bold ${Math.floor(0.04 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        GameScreen.ctx.fillText(TR.RESTART_CONFIRMATION[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.5));
 
-        // Rectangulito para indicar seleccion actual
-        if (currentOptionIndex > 2) {
-            currentOptionIndex = 6;
+        GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        const optionsHeight = 0.6;
+        const optionsSpacing = 0.07;
+        const options = [TR.YES[lang], TR.NO[lang]];
+        for (let i = 0; i < options.length; ++i) {
+            GameScreen.ctx.fillText(options[i], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * i)));
         }
-        GameScreen.ctx.beginPath();
-        GameScreen.ctx.rect(
-            this.#selectionSquareX, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex - 0.02)),
-            Math.floor(GameScreen.width * 0.01), Math.floor(GameScreen.height * 0.02)
-        );
+
+        // Text Highlighting
+        let { width } = ctx.measureText(options[currentOptionIndex]);
+        width += 40;
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) + 10, width, 10);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 55, width, 10);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2 - 5, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 55, 10, 75);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) + width / 2 - 5, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 55, 10, 75);
+
+    }
+
+    #drawStartMenuConfirmation(currentOptionIndex) {
         GameScreen.ctx.fillStyle = GameScreen.fontColor;
-        GameScreen.ctx.fill();
+        GameScreen.ctx.textAlign = "center";
+        GameScreen.ctx.font = `bold ${Math.floor(0.04 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        GameScreen.ctx.fillText(TR.START_MENU_CONFIRMATION[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.5));
+
+        GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        const optionsHeight = 0.6;
+        const optionsSpacing = 0.07;
+        const options = [TR.YES[lang], TR.NO[lang]];
+        for (let i = 0; i < options.length; ++i) {
+            GameScreen.ctx.fillText(options[i], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * i)));
+        }
+
+        // Text Highlighting
+        let { width } = ctx.measureText(options[currentOptionIndex]);
+        width += 40;
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) + 10, width, 10);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 55, width, 10);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2 - 5, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 55, 10, 75);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) + width / 2 - 5, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 55, 10, 75);
     }
 
     #drawHelpMenu(currentOptionIndex) {
         GameScreen.ctx.fillStyle = GameScreen.fontColor;
         GameScreen.ctx.textAlign = "center";
 
-        GameScreen.ctx.font = `bold ${Math.floor(0.100 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        GameScreen.ctx.fillText("⬅ 🐴 ➡", Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.4));
         GameScreen.ctx.font = `bold ${Math.floor(0.025 * GameScreen.height)}px ${GameScreen.fontFamily}`;
         GameScreen.ctx.fillText(
             TR.help0[lang],
-            Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.5)
-        );
-        GameScreen.ctx.fillText(
-            TR.help1[lang],
             Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.55)
         );
         GameScreen.ctx.fillText(
-            TR.help2[lang],
+            TR.help1[lang],
             Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.6)
         );
-        const optionsHeight = 0.70;
+        GameScreen.ctx.fillText(
+            TR.help2[lang],
+            Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.65)
+        );
+        const optionsHeight = 0.73;
         const optionsSpacing = 0.04;
         GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
         GameScreen.ctx.fillText(TR.BACK[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)));
 
-        // Rectangulito para indicar seleccion actual
-        GameScreen.ctx.beginPath();
-        GameScreen.ctx.rect(
-            this.#selectionSquareX, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex - 0.02)),
-            Math.floor(GameScreen.width * 0.01), Math.floor(GameScreen.height * 0.02)
+        // Text Highlighting
+        let { width } = ctx.measureText(TR.BACK[lang]);
+        // ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)) + 20, width, 10);
+        width += 40;
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) + 10, width, 10);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 55, width, 10);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2 - 5, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 55, 10, 75);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) + width / 2 - 5, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 55, 10, 75);
+
+
+        ctx.drawImage(
+            ImageManager.getImage("controls_compacted"),
+            500,
+            270
+        )
+        GameScreen.ctx.fillText(
+            TR.shoot[lang],
+            955, 420
         );
-        GameScreen.ctx.fillStyle = GameScreen.fontColor;
-        GameScreen.ctx.fill();
+        GameScreen.ctx.fillText(
+            TR.jump[lang],
+            1175, 475
+        );
+        GameScreen.ctx.fillText(
+            TR.luck[lang],
+            1400, 525
+        );
     }
 
     #drawAboutMenu(currentOptionIndex) {
@@ -250,11 +263,11 @@ class GameOverMenu extends GameScreen {
         );
         GameScreen.ctx.fillText(
             TR.about1[lang],
-            Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.50)
+            Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.51)
         );
         GameScreen.ctx.fillText(
             TR.about2[lang],
-            Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.55)
+            Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.57)
         );
 
         GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
@@ -262,14 +275,15 @@ class GameOverMenu extends GameScreen {
         const optionsSpacing = 0.04;
         GameScreen.ctx.fillText(TR.BACK[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)));
 
-        // Rectangulito para indicar seleccion actual
-        GameScreen.ctx.beginPath();
-        GameScreen.ctx.rect(
-            this.#selectionSquareX, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex - 0.02)),
-            Math.floor(GameScreen.width * 0.01), Math.floor(GameScreen.height * 0.02)
-        );
-        GameScreen.ctx.fillStyle = GameScreen.fontColor;
-        GameScreen.ctx.fill();
+        // Text Highlighting
+        let { width } = ctx.measureText(TR.BACK[lang]);
+        // ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)) + 20, width, 10);
+        width += 40;
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) + 10, width, 10);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 55, width, 10);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2 - 5, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 55, 10, 75);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) + width / 2 - 5, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) - 55, 10, 75);
+
     }
 
     handleInputs() {
@@ -280,6 +294,8 @@ class GameOverMenu extends GameScreen {
         this.#selectionSquareX = Math.floor(GameScreen.width * (0.4 + 0.01 * Math.sin(this.#t)));
 
         if (
+            GameScreen.inputs.get("w")?.consumeIfActivated() ||
+            GameScreen.inputs.get("a")?.consumeIfActivated() ||
             GameScreen.inputs.get("arrowup")?.consumeIfActivated() ||
             GameScreen.inputs.get("arrowleft")?.consumeIfActivated()
         ) {
@@ -288,9 +304,11 @@ class GameOverMenu extends GameScreen {
             if (currentOptionIndex < 0) {
                 this.#menus[this.#menus.currentMenu].currentOptionIndex = optionsLength - 1;
             }
-            AudioManager.playSoundEffect("left");
+            AudioManager.playSoundEffect("selection_up");
         }
         if (
+            GameScreen.inputs.get("s")?.consumeIfActivated() ||
+            GameScreen.inputs.get("d")?.consumeIfActivated() ||
             GameScreen.inputs.get("arrowdown")?.consumeIfActivated() ||
             GameScreen.inputs.get("arrowright")?.consumeIfActivated()
         ) {
@@ -299,10 +317,11 @@ class GameOverMenu extends GameScreen {
             if (currentOptionIndex >= optionsLength) {
                 this.#menus[this.#menus.currentMenu].currentOptionIndex = 0;
             }
-            AudioManager.playSoundEffect("right");
+            AudioManager.playSoundEffect("selection_down");
         }
 
         if (
+            GameScreen.inputs.get("j")?.consumeIfActivated() ||
             GameScreen.inputs.get("enter")?.consumeIfActivated() ||
             GameScreen.inputs.get(" ")?.consumeIfActivated()
         ) {
@@ -313,6 +332,7 @@ class GameOverMenu extends GameScreen {
         }
 
         if (
+            GameScreen.inputs.get("k")?.consumeIfActivated() ||
             GameScreen.inputs.get("backspace")?.consumeIfActivated() ||
             GameScreen.inputs.get("escape")?.consumeIfActivated()
         ) {
@@ -325,15 +345,15 @@ class GameOverMenu extends GameScreen {
     draw() {
         GameScreen.ctx.beginPath();
         GameScreen.ctx.rect(
-            Math.floor(GameScreen.width / 4), Math.floor(GameScreen.height / 4),
-            Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height / 2)
+            Math.floor(0.2 * GameScreen.width), Math.floor(0.2 * GameScreen.height),
+            Math.floor(0.6 * GameScreen.width), Math.floor(0.6 * GameScreen.height)
         );
-        GameScreen.ctx.fillStyle = "#ffdddd";
+        GameScreen.ctx.fillStyle = GameScreen.color.red;
         GameScreen.ctx.fill();
 
-        GameScreen.ctx.strokeStyle = GameScreen.fontColor;
-        GameScreen.ctx.lineWidth = GameScreen.imgScale * 2;
-        GameScreen.ctx.stroke();
+        // GameScreen.ctx.strokeStyle = GameScreen.fontColor;
+        // GameScreen.ctx.lineWidth = GameScreen.imgScale * 2;
+        // GameScreen.ctx.stroke();
 
         const currentMenu = this.#menus.currentMenu;
         const drawHandleFunction = this.#menus[currentMenu].drawHandle;

@@ -514,6 +514,18 @@ class SubLevel1_1 extends SubLevel {
                 this.resumeFromRoldans();
             }
         }
+
+        // Game Over Limits
+        // Player must not die 100 times
+        if (this._deathCount >= 100) {
+            AudioManager.stopLoop(this._levelMusicId);
+            GameScreen.currentScreen = new GameOverMenu("overdeath");
+        }
+        // Player must complete the level within 1 hour
+        if (this._frameCount >= 3600 * 60) {
+            AudioManager.stopLoop(this._levelMusicId);
+            GameScreen.currentScreen = new GameOverMenu("overtime");
+        }
     }
 
     getDeathCountStr() {
