@@ -186,8 +186,8 @@ class PauseMenu extends GameScreen {
     #drawStartMenuConfirmation(currentOptionIndex) {
         GameScreen.ctx.fillStyle = GameScreen.fontColor;
         GameScreen.ctx.textAlign = "center";
-        GameScreen.ctx.font = `bold ${Math.floor(0.04 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        GameScreen.ctx.fillText(TR.START_MENU_CONFIRMATION[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.5));
+        GameScreen.ctx.font = `bold ${Math.floor(0.035 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        GameScreen.ctx.fillText(TR.START_MENU_CONFIRMATION[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.45));
 
         GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
         const optionsHeight = 0.6;

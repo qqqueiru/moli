@@ -142,9 +142,9 @@ class StartMenu extends GameScreen {
         )        
 
         ctx.font = `${Math.floor(0.04 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        ctx.fillText(TR.shoot[lang], 1033, 421);
-        ctx.fillText(TR.jump[lang], 1275, 480);
-        ctx.fillText(TR.luck[lang], 1538, 535);
+        ctx.fillText(TR.shoot[lang], 1033, 430);
+        ctx.fillText(TR.jump[lang], 1275, 490);
+        ctx.fillText(TR.luck[lang], 1538, 545);
 
         ctx.font = `${Math.floor(0.1 * GameScreen.height)}px ${GameScreen.fontFamily}`;
         ctx.fillText(TR.START[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.7));
@@ -178,7 +178,7 @@ class StartMenu extends GameScreen {
         ctx.textAlign = "center";
 
         ctx.font = `${Math.floor(0.100 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        ctx.fillText("HELP", Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.2));
+        ctx.fillText(TR.HELP[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.2));
         ctx.font = `${Math.floor(0.05 * GameScreen.height)}px ${GameScreen.fontFamily}`;
         ctx.fillText(
             TR.help0[lang],
