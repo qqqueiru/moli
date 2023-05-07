@@ -531,17 +531,6 @@ class SubLevel1_1 extends SubLevel {
         return collectedCollectables;
     }
 
-    getTimePassedStr() {
-        const totalMs = this._frameCount * 1000 / 60;  // Assuming game runs at 60 fps
-        let cs = Math.floor(totalMs / 10) % 100;
-        let s = Math.floor(totalMs / 1000) % 60;
-        let min = Math.floor(totalMs / 60000);
-        cs = cs >= 10 ? cs : "0" + cs;
-        s = s >= 10 ? s : "0" + s;
-        min = min >= 10 ? min : "0" + min;
-        return `${min}:${s}.${cs}`;
-    }
-
     draw(ctx) {
         super.draw(ctx);
         // HUD
@@ -587,13 +576,13 @@ class SubLevel1_1 extends SubLevel {
         );
         GameScreen.ctx.fillStyle = GameScreen.fontColorContrast;
         GameScreen.ctx.fillText(
-            this.getTimePassedStr(),
+            getTimePassedStr(this._frameCount),
             1550 + offset,
             textY + offset
         );
         GameScreen.ctx.fillStyle = mainColor;
         GameScreen.ctx.fillText(
-            this.getTimePassedStr(),
+            getTimePassedStr(this._frameCount),
             1550,
             textY
         );

@@ -18,16 +18,20 @@ class FinishedMenu extends GameScreen {
                 drawHandle: (optIdx)=>{this.#drawMainMenu(optIdx)},
                 options: [
                     {
-                        name: "RESUME",
-                        updateHandle: ()=>{this.#resumeGame()},
-                    },
-                    {
                         name: "SHARE",
                         updateHandle: ()=>{this.#openShareMenu()},
                     },
                     {
-                        name: "HELP",
-                        updateHandle: ()=>{this.#openHelpMenu()},
+                        name: "RESTART",
+                        updateHandle: ()=>{this.#openRestartMenu()},
+                    },
+                    {
+                        name: "START MENU",
+                        updateHandle: ()=>{this.#openStartMenuConfirmation()},
+                    },
+                    {
+                        name: "SAVE REPLAY",
+                        updateHandle: ()=>{this.#saveReplay()},
                     },
                     {
                         name: "ABOUT",
@@ -61,12 +65,30 @@ class FinishedMenu extends GameScreen {
                     },
                 ],
             },
-            helpMenu: {
+            restartMenu: {
                 currentOptionIndex: 0,
-                drawHandle: (optIdx)=>{this.#drawHelpMenu(optIdx)},
+                drawHandle: (optIdx)=>{this.#drawRestartMenu(optIdx)},
                 options: [
                     {
-                        name: "BACK",
+                        name: "YES",
+                        updateHandle: ()=>{this.#restartGame()},
+                    },
+                    {
+                        name: "NO",
+                        updateHandle: ()=>{this.#backToMainMenu()},
+                    },
+                ],
+            },
+            startMenuConfirmation: {
+                currentOptionIndex: 0,
+                drawHandle: (optIdx)=>{this.#drawStartMenuConfirmation(optIdx)},
+                options: [
+                    {
+                        name: "YES",
+                        updateHandle: ()=>{this.#openStartMenu()},
+                    },
+                    {
+                        name: "NO",
                         updateHandle: ()=>{this.#backToMainMenu()},
                     },
                 ],
@@ -84,10 +106,16 @@ class FinishedMenu extends GameScreen {
         };
     }
 
-    #resumeGame() {
+    #openRestartMenu() {
         AudioManager.playSoundEffect("enter");
-        GameScreen.currentScreen = GameScreen.previousScreen;
-        AudioManager.stopLoop("menu");
+        this.#menus.currentMenu = "restartMenu";
+        this.#menus[this.#menus.currentMenu].currentOptionIndex = 0;
+    }
+
+    #openStartMenuConfirmation() {
+        AudioManager.playSoundEffect("enter");
+        this.#menus.currentMenu = "startMenuConfirmation";
+        this.#menus[this.#menus.currentMenu].currentOptionIndex = 0;
     }
 
     #openShareMenu() {
@@ -95,9 +123,20 @@ class FinishedMenu extends GameScreen {
         this.#menus.currentMenu = "shareMenu";
     }
 
-    #openHelpMenu() {
+    #restartGame() {
         AudioManager.playSoundEffect("enter");
-        this.#menus.currentMenu = "helpMenu";
+        GameScreen.currentScreen = new Level1();
+        AudioManager.stopLoop("menu");
+    }
+
+    #openStartMenu() {
+        AudioManager.playSoundEffect("enter");
+        GameScreen.currentScreen = new StartMenu();
+        // AudioManager.stopLoop("menu");
+    }
+
+    #saveReplay() {
+        alert("TODO");
     }
 
     #openAboutMenu() {
@@ -109,9 +148,10 @@ class FinishedMenu extends GameScreen {
         AudioManager.playSoundEffect("enter");
         // https://www.sharelinkgenerator.com/
         setTimeout(()=>{
-            // const scoreToShow = this.#score > 0 ? this.#scoreRomanNumeral : 0;
-            // const url = `https://twitter.com/intent/tweet?text=I%20scored%20${scoreToShow}%20point${this.#score === 1 ? "" : "s"}%20on%20Moli.%0Aqqqueiru.github.io/moli/`;
-            // window.open(url, '_blank').focus();
+            const timeStr = getTimePassedStr(this.frameCount);
+            const tweetMsg = TR.TWEET_MSG[lang](this.deathCount, this.collectedCollectablesCount, timeStr).replaceAll(" ", "%20");
+            const url = `https://twitter.com/intent/tweet?text=${tweetMsg}.%0Aqqqueiru.github.io/moli/`;
+            window.open(url, '_blank').focus();
         }, 100);
         inputs.clear();
     }
@@ -152,90 +192,80 @@ class FinishedMenu extends GameScreen {
         GameScreen.ctx.fillStyle = GameScreen.fontColor;
         GameScreen.ctx.textAlign = "center";
         GameScreen.ctx.font = `bold ${Math.floor(0.055 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        GameScreen.ctx.fillText("TODO FINISHED MENU", Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.3));
-        GameScreen.ctx.fillText(`${this.deathCount} DEATHS, ${this.frameCount} FRAMES, ${this.collectedCollectablesCount}/${this.totalCollectablesCount} Collectables collected`, Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.35));
-        GameScreen.ctx.fillText(TR.PAUSE[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.4));
-        GameScreen.ctx.font = `bold ${Math.floor(0.037 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        // GameScreen.ctx.fillText(
-        //     TR.gameOver0[lang](this.#score > 0 ? this.#scoreRomanNumeral : 0),
-        //     Math.floor(GameScreen.width / 2),
-        //     Math.floor(GameScreen.height * 0.45)
-        // );
-        GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        const optionsHeight = 0.54;
-        const optionsSpacing = 0.04;
-        GameScreen.ctx.fillText(TR.RESUME[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)));
-        GameScreen.ctx.fillText(TR.SHARE[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 1)));
-        GameScreen.ctx.fillText(TR.HELP[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 2)));
-        GameScreen.ctx.fillText(TR.ABOUT[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 3)));
+        GameScreen.ctx.fillText(TR.THE_END[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.35));
 
-        // Rectangulito para indicar seleccion actual
-        GameScreen.ctx.beginPath();
-        GameScreen.ctx.rect(
-            this.#selectionSquareX, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex - 0.02)),
-            Math.floor(GameScreen.width * 0.01), Math.floor(GameScreen.height * 0.02)
-        );
-        GameScreen.ctx.fillStyle = GameScreen.fontColor;
-        GameScreen.ctx.fill();
+        GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        const optionsHeight = 0.45;
+        const optionsSpacing = 0.07;
+        const options = [TR.SHARE[lang], TR.RESTART[lang], TR.START_MENU[lang], TR.SAVE_REPLAY[lang], TR.ABOUT[lang]];
+        for (let i = 0; i < options.length; ++i) {
+            GameScreen.ctx.fillText(options[i], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * i)));
+        }
+
+        // Text Highlighting
+        let { width } = ctx.measureText(options[currentOptionIndex]);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) + 10, width, 10);
     }
 
     #drawShareMenu(currentOptionIndex) {
         GameScreen.ctx.fillStyle = GameScreen.fontColor;
         GameScreen.ctx.textAlign = "center";
+        GameScreen.ctx.font = `bold ${Math.floor(0.055 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        GameScreen.ctx.fillText(TR.SHARE[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.35));
         GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        const optionsHeight = 0.44;
-        const optionsSpacing = 0.04;
-        GameScreen.ctx.fillText("TWITTER", Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)));
-        GameScreen.ctx.fillText("FACEBOOK", Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 1)));
-        GameScreen.ctx.fillText("LINKEDIN", Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 2)));
-        // GameScreen.ctx.fillText("PINTEREST", Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 3)));
-        GameScreen.ctx.fillText(TR.BACK[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 6)));
-
-        // Rectangulito para indicar seleccion actual
-        if (currentOptionIndex > 2) {
-            currentOptionIndex = 6;
+        const optionsHeight = 0.45;
+        const optionsSpacing = 0.07;
+        const options = ["TWITTER", "FACEBOOK", "LINKEDIN", "", TR.BACK[lang]];
+        for (let i = 0; i < options.length; ++i) {
+            GameScreen.ctx.fillText(options[i], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * i)));
         }
-        GameScreen.ctx.beginPath();
-        GameScreen.ctx.rect(
-            this.#selectionSquareX, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex - 0.02)),
-            Math.floor(GameScreen.width * 0.01), Math.floor(GameScreen.height * 0.02)
-        );
-        GameScreen.ctx.fillStyle = GameScreen.fontColor;
-        GameScreen.ctx.fill();
+
+        if (currentOptionIndex > 2) {
+            currentOptionIndex = 4;
+        }
+        // Text Highlighting
+        let { width } = ctx.measureText(options[currentOptionIndex]);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) + 10, width, 10);
     }
 
-    #drawHelpMenu(currentOptionIndex) {
+    #drawRestartMenu(currentOptionIndex) {
         GameScreen.ctx.fillStyle = GameScreen.fontColor;
         GameScreen.ctx.textAlign = "center";
+        GameScreen.ctx.font = `bold ${Math.floor(0.055 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        GameScreen.ctx.fillText(TR.RESTART[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.35));
+        GameScreen.ctx.font = `bold ${Math.floor(0.04 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        GameScreen.ctx.fillText(TR.RESTART_CONFIRMATION[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.5));
 
-        GameScreen.ctx.font = `bold ${Math.floor(0.100 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        GameScreen.ctx.fillText("⬅ 🐴 ➡", Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.4));
-        GameScreen.ctx.font = `bold ${Math.floor(0.025 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        GameScreen.ctx.fillText(
-            TR.help0[lang],
-            Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.5)
-        );
-        GameScreen.ctx.fillText(
-            TR.help1[lang],
-            Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.55)
-        );
-        GameScreen.ctx.fillText(
-            TR.help2[lang],
-            Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.6)
-        );
-        const optionsHeight = 0.70;
-        const optionsSpacing = 0.04;
         GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        GameScreen.ctx.fillText(TR.BACK[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)));
+        const optionsHeight = 0.6;
+        const optionsSpacing = 0.07;
+        const options = [TR.YES[lang], TR.NO[lang]];
+        for (let i = 0; i < options.length; ++i) {
+            GameScreen.ctx.fillText(options[i], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * i)));
+        }
 
-        // Rectangulito para indicar seleccion actual
-        GameScreen.ctx.beginPath();
-        GameScreen.ctx.rect(
-            this.#selectionSquareX, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex - 0.02)),
-            Math.floor(GameScreen.width * 0.01), Math.floor(GameScreen.height * 0.02)
-        );
+        // Text Highlighting
+        let { width } = ctx.measureText(options[currentOptionIndex]);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) + 10, width, 10);
+    }
+
+    #drawStartMenuConfirmation(currentOptionIndex) {
         GameScreen.ctx.fillStyle = GameScreen.fontColor;
-        GameScreen.ctx.fill();
+        GameScreen.ctx.textAlign = "center";
+        GameScreen.ctx.font = `bold ${Math.floor(0.04 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        GameScreen.ctx.fillText(TR.START_MENU_CONFIRMATION[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.5));
+
+        GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        const optionsHeight = 0.6;
+        const optionsSpacing = 0.07;
+        const options = [TR.YES[lang], TR.NO[lang]];
+        for (let i = 0; i < options.length; ++i) {
+            GameScreen.ctx.fillText(options[i], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * i)));
+        }
+
+        // Text Highlighting
+        let { width } = ctx.measureText(options[currentOptionIndex]);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex)) + 10, width, 10);
     }
 
     #drawAboutMenu(currentOptionIndex) {
@@ -253,11 +283,11 @@ class FinishedMenu extends GameScreen {
         );
         GameScreen.ctx.fillText(
             TR.about1[lang],
-            Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.50)
+            Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.51)
         );
         GameScreen.ctx.fillText(
             TR.about2[lang],
-            Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.55)
+            Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.57)
         );
 
         GameScreen.ctx.font = `bold ${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
@@ -265,14 +295,9 @@ class FinishedMenu extends GameScreen {
         const optionsSpacing = 0.04;
         GameScreen.ctx.fillText(TR.BACK[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)));
 
-        // Rectangulito para indicar seleccion actual
-        GameScreen.ctx.beginPath();
-        GameScreen.ctx.rect(
-            this.#selectionSquareX, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * currentOptionIndex - 0.02)),
-            Math.floor(GameScreen.width * 0.01), Math.floor(GameScreen.height * 0.02)
-        );
-        GameScreen.ctx.fillStyle = GameScreen.fontColor;
-        GameScreen.ctx.fill();
+        // Text Highlighting
+        let { width } = ctx.measureText(TR.BACK[lang]);
+        ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * (optionsHeight + optionsSpacing * 0)) + 20, width, 10);
     }
 
     handleInputs() {
@@ -291,7 +316,7 @@ class FinishedMenu extends GameScreen {
             if (currentOptionIndex < 0) {
                 this.#menus[this.#menus.currentMenu].currentOptionIndex = optionsLength - 1;
             }
-            AudioManager.playSoundEffect("left");
+            AudioManager.playSoundEffect("selection_up");
         }
         if (
             GameScreen.inputs.get("arrowdown")?.consumeIfActivated() ||
@@ -302,7 +327,7 @@ class FinishedMenu extends GameScreen {
             if (currentOptionIndex >= optionsLength) {
                 this.#menus[this.#menus.currentMenu].currentOptionIndex = 0;
             }
-            AudioManager.playSoundEffect("right");
+            AudioManager.playSoundEffect("selection_down");
         }
 
         if (
@@ -328,10 +353,10 @@ class FinishedMenu extends GameScreen {
     draw() {
         GameScreen.ctx.beginPath();
         GameScreen.ctx.rect(
-            Math.floor(GameScreen.width / 4), Math.floor(GameScreen.height / 4),
-            Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height / 2)
+            Math.floor(0.2 * GameScreen.width), Math.floor(0.2 * GameScreen.height),
+            Math.floor(0.6 * GameScreen.width), Math.floor(0.6 * GameScreen.height)
         );
-        GameScreen.ctx.fillStyle = "#ffdddd";
+        GameScreen.ctx.fillStyle = GameScreen.color.red;
         GameScreen.ctx.fill();
 
         // GameScreen.ctx.strokeStyle = GameScreen.fontColor;

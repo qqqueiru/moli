@@ -152,6 +152,25 @@ const TR = {
         gl: "TODO",
         la: "TODO",
     },
+    THE_END: {
+        en: "THE END",
+        es: "FIN",
+        gl: "FIN",
+        la: "TODO",
+    },
+    SAVE_REPLAY: {
+        en: "SAVE REPLAY",
+        es: "TODO",
+        gl: "TODO",
+        la: "TODO",
+    },
+    TWEET_MSG: {
+        en: (deaths, atlantus, timeStr) => { return `I finished Moli with ${deaths} death${deaths === 1 ? "" : "s"} and ${atlantus} Atlantus in ${timeStr}` },
+        es: (deaths, atlantus, timeStr) => { return `Acabé Moli con ${deaths} muerte${deaths === 1 ? "" : "s"} y ${atlantus} Atlantus en ${timeStr}` },
+        gl: (deaths, atlantus, timeStr) => { return `Rematei Moli con ${deaths} morte${deaths === 1 ? "" : "s"} e ${atlantus} Atlantus en ${timeStr}` },
+        // TODO la
+        la: (deaths, atlantus, timeStr) => { return `I finished Moli with ${deaths} death${deaths === 1 ? "" : "s"} and ${atlantus} Atlantus in ${timeStr}` },
+    },
     SHARE: {
         en: "SHARE",
         es: "COMPARTIR",
