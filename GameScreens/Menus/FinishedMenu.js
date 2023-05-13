@@ -352,6 +352,15 @@ class FinishedMenu extends GameScreen {
     }
 
     update() {
+        if (
+            GameScreen.inputs.get("k")?.consumeIfActivated() ||
+            GameScreen.inputs.get("backspace")?.consumeIfActivated() ||
+            GameScreen.inputs.get("escape")?.consumeIfActivated()
+        ) {
+            this.#backToMainMenu();
+            return;
+        }
+
         this.#selectionSquareX = Math.floor(GameScreen.width * (0.4 + 0.01 * Math.sin(this.#t)));
 
         if (
@@ -390,14 +399,6 @@ class FinishedMenu extends GameScreen {
             const currentOptionIndex = this.#menus[currentMenu].currentOptionIndex;
             const updateHandleFunction = this.#menus[currentMenu].options[currentOptionIndex].updateHandle;
             updateHandleFunction();
-        }
-
-        if (
-            GameScreen.inputs.get("k")?.consumeIfActivated() ||
-            GameScreen.inputs.get("backspace")?.consumeIfActivated() ||
-            GameScreen.inputs.get("escape")?.consumeIfActivated()
-        ) {
-            this.#backToMainMenu();
         }
 
         this.#t += 0.15;
