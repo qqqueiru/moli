@@ -36,6 +36,10 @@ class StartMenu extends GameScreen {
                         updateHandle: ()=>{this.#startGame()},
                     },
                     {
+                        name: "PLAY_REPETITION",
+                        updateHandle: ()=>{this.#loadRepetition()},
+                    },
+                    {
                         name: "BACK",
                         updateHandle: ()=>{this.#backToMainMenu()},
                     }
@@ -66,7 +70,37 @@ class StartMenu extends GameScreen {
 
     #startGame() {
         AudioManager.playSoundEffect("enter");
-        GameScreen.currentScreen = new Level1();
+        GameScreen.currentScreen = new Level1(this.hackeo);
+        AudioManager.stopLoop("menu");
+    }
+
+    #loadRepetition() {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = ".moli";
+        input.onchange = event => {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.readAsText(file, "UTF-8");
+            reader.onload = readerEvent => {
+                const content = readerEvent.target.result;
+                try {
+                    this.recordedInputs = JSON.parse(content);
+                } catch (error) {
+                    alert(`Could not load .moli file. ${error}`);
+                }
+            }
+            
+        }
+        setTimeout(() => {
+            input.click();
+            GameScreen.inputs.clear();
+        }, 100)
+    }
+
+    #playRepetition() {
+        AudioManager.playSoundEffect("enter");
+        GameScreen.currentScreen = new Level1(this.recordedInputs);
         AudioManager.stopLoop("menu");
     }
 
@@ -157,15 +191,26 @@ class StartMenu extends GameScreen {
             ctx.fillRect(Math.floor(0.5 * GameScreen.width) + width / 2 - 15, Math.floor(GameScreen.height * 0.7) - 160, 20, 200);
         }
 
-        ctx.font = `${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
-        ctx.fillText(TR.BACK[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.9));
+        ctx.font = `${Math.floor(0.05 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        ctx.fillText(TR.WATCH_REPETITION[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.83));
         if (currentOptionIndex === 1) {
+            let { width } = ctx.measureText(TR.WATCH_REPETITION[lang]);
+            width += 45;
+            ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * 0.82) + 30, width, 15);
+            ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * 0.82) - 95, width, 15);
+            ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2 - 10, Math.floor(GameScreen.height * 0.82) - 95, 15, 140);
+            ctx.fillRect(Math.floor(0.5 * GameScreen.width) + width / 2 - 10, Math.floor(GameScreen.height * 0.82) - 95, 15, 140);
+        }
+
+        ctx.font = `${Math.floor(0.028 * GameScreen.height)}px ${GameScreen.fontFamily}`;
+        ctx.fillText(TR.BACK[lang], Math.floor(GameScreen.width / 2), Math.floor(GameScreen.height * 0.935));
+        if (currentOptionIndex === 2) {
             let { width } = ctx.measureText(TR.BACK[lang]);
             width += 40;
-            ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * 0.9) + 20, width, 10);
-            ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * 0.9) - 60, width, 10);
-            ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2 - 5, Math.floor(GameScreen.height * 0.9) - 60, 10, 90);
-            ctx.fillRect(Math.floor(0.5 * GameScreen.width) + width / 2 - 5, Math.floor(GameScreen.height * 0.9) - 60, 10, 90);
+            ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * 0.93) + 20, width, 10);
+            ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2, Math.floor(GameScreen.height * 0.93) - 60, width, 10);
+            ctx.fillRect(Math.floor(0.5 * GameScreen.width) - width / 2 - 5, Math.floor(GameScreen.height * 0.93) - 60, 10, 90);
+            ctx.fillRect(Math.floor(0.5 * GameScreen.width) + width / 2 - 5, Math.floor(GameScreen.height * 0.93) - 60, 10, 90);
         }
     }
 
@@ -253,6 +298,15 @@ class StartMenu extends GameScreen {
 
     update() {
         if (
+            GameScreen.inputs.get("k")?.consumeIfActivated() ||
+            GameScreen.inputs.get("backspace")?.consumeIfActivated() ||
+            GameScreen.inputs.get("escape")?.consumeIfActivated()
+        ) {
+            this.#backToMainMenu();
+            return;
+        }
+
+        if (
             GameScreen.inputs.get("w")?.consumeIfActivated() ||
             // GameScreen.inputs.get("a")?.consumeIfActivated() ||
             GameScreen.inputs.get("arrowup")?.consumeIfActivated() || 0
@@ -290,12 +344,8 @@ class StartMenu extends GameScreen {
             updateHandleFunction();
         }
 
-        if (
-            GameScreen.inputs.get("k")?.consumeIfActivated() ||
-            GameScreen.inputs.get("backspace")?.consumeIfActivated() ||
-            GameScreen.inputs.get("escape")?.consumeIfActivated()
-        ) {
-            this.#backToMainMenu();
+        if (this.recordedInputs) {
+            this.#playRepetition();  // This must happen inside the update control loop, not on some change event handler
         }
     }
 

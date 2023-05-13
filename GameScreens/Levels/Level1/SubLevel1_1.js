@@ -15,8 +15,8 @@ class SubLevel1_1 extends SubLevel {
 
     _finalBoss;
 
-    constructor() {
-        super();
+    constructor(recordedInputs) {
+        super(recordedInputs);
         {
             const bgImg = new BackgroundImage();
             const T = (imgId, w, h) => { return new BackgroundImageTile(imgId, w, h); }
@@ -402,7 +402,7 @@ class SubLevel1_1 extends SubLevel {
 
         this._triggers.push(new TimeTrigger(5 * 60, () => {
             const collectedCollectablesCount = this._totalCollectablesCount - this._collectables.length;
-            GameScreen.currentScreen = new FinishedMenu(this._frameCount, this._deathCount, collectedCollectablesCount, this._totalCollectablesCount);
+            GameScreen.currentScreen = new FinishedMenu(this._frameCount, this._deathCount, collectedCollectablesCount, this._totalCollectablesCount, this._recordingInputs);
         }));
     }
 
@@ -552,7 +552,7 @@ class SubLevel1_1 extends SubLevel {
         GameScreen.ctx.textAlign = "left";
         GameScreen.ctx.font = `${40}px ${GameScreen.fontFamily}`;
         const offset = 4;
-        const mainColor = this._whiteToRed ? GameScreen.fontColorRed : GameScreen.fontColor;
+        let mainColor = this._whiteToRed ? GameScreen.fontColorRed : GameScreen.fontColor;
 
         const textY = 85;
         ctx.drawImage(
@@ -601,6 +601,28 @@ class SubLevel1_1 extends SubLevel {
             1550,
             textY
         );
+
+        const noRecordedInputs = Object.keys(this._recordedInputs).length === 0;
+        if (noRecordedInputs) {
+
+        } else {
+            GameScreen.ctx.textAlign = "center";
+            GameScreen.ctx.fillStyle = GameScreen.fontColorContrast;
+            GameScreen.ctx.fillText(
+                TR.REPETITION[lang],
+                960 + offset,
+                textY + offset
+            );
+            if (PseudoDate.now() % 1500 < 750) {
+                mainColor = GameScreen.fontColorRed;
+            }
+            GameScreen.ctx.fillStyle = mainColor;
+            GameScreen.ctx.fillText(
+                TR.REPETITION[lang],
+                960,
+                textY
+            );
+        }
     }
 
     onPlayerDeath() {

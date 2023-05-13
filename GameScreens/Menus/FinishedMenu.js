@@ -3,12 +3,13 @@ class FinishedMenu extends GameScreen {
     #t = 0;
     #selectionSquareX;
 
-    constructor(frameCount, deathCount, collectedCollectablesCount, totalCollectablesCount) {
+    constructor(frameCount, deathCount, collectedCollectablesCount, totalCollectablesCount, recordingInputs) {
         super();
         this.frameCount = frameCount;
         this.deathCount = deathCount;
         this.collectedCollectablesCount = collectedCollectablesCount;
         this.totalCollectablesCount = totalCollectablesCount;
+        this.recordingInputs = recordingInputs;
         this.name = "FinishedMenu";
         AudioManager.playLoop("menu");
         this.#menus = {
@@ -136,7 +137,27 @@ class FinishedMenu extends GameScreen {
     }
 
     #saveReplay() {
-        alert("TODO");
+        const stringToSave = JSON.stringify(this.recordingInputs);
+        const link = document.createElement("a");
+        const file = new Blob([stringToSave], { type: 'text/plain' });
+        link.href = URL.createObjectURL(file);
+        let datetimeStr = "run";
+        {
+            const datetime = new Date();
+            const year = datetime.getFullYear();
+            const month = datetime.getMonth() + 1;
+            const day = datetime.getDate();
+            const hour = datetime.getHours();
+            const minute = datetime.getMinutes();
+            const second = datetime.getSeconds();
+            datetimeStr = `${year}_${month < 10 ? "0" + month : month}_${day < 10 ? "0" + day : day}_${hour < 10 ? "0" + hour : hour}_${minute < 10 ? "0" + minute : minute}_${second < 10 ? "0" + second : second}`;
+        }
+        link.download = `${datetimeStr}.moli`;
+        setTimeout(() => {
+            link.click();
+            GameScreen.inputs.clear();
+            URL.revokeObjectURL(link.href);
+        }, 100)
     }
 
     #openAboutMenu() {

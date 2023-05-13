@@ -25,7 +25,16 @@ class SubLevel {
     _levelMusicId = "silence";
     _muteBgMusic = false;
 
-    constructor() {
+    // Save/Load Replay
+    _currentFrame = 0;
+    _recordedInputs = {};  // frame -> inputs to be consumed
+    _recordingInputs = {};
+
+
+    constructor(recordedInputs = {}) {
+        PseudoRandom.reset();
+        PseudoDate.reset();
+        this._recordedInputs = recordedInputs;
     }
 
     setLevelMusicId(levelMusicId) {
@@ -136,6 +145,10 @@ class SubLevel {
     }
 
     updatePlayerControl() {
+        const consumedInputs = [];
+        const recordedInputs = this._recordedInputs.hasOwnProperty(this._currentFrame) ?
+            this._recordedInputs[this._currentFrame] : [];
+        const noRecordedInputs = Object.keys(this._recordedInputs).length === 0;
         if (this.#upBuffer.length > 0 && PseudoDate.now() - this.#upBuffer[0] > 250) {
             this.#upBuffer.shift();
         }
@@ -146,24 +159,29 @@ class SubLevel {
             // Sorry no pause buffering
             GameScreen.previousScreen = GameScreen.currentScreen;
             AudioManager.stopLoop(this._levelMusicId);
+            PseudoDate.push();
             GameScreen.currentScreen = new PauseMenu();
         }
         if (this._player.getCurrentState() != "ALIVE") {
             return;
         }
-        if (inputs.get("w")?.isPressed()) {
+        if ((noRecordedInputs && inputs.get("w")?.isPressed()) || recordedInputs.includes("w_")) {
             this._player.setLookingUp(true);
+            consumedInputs.push("w_");
         } else {
             this._player.setLookingUp(false);
         }
         this._player.dontMove();
-        if (inputs.get("a")?.isPressed()) {
+        if ((noRecordedInputs && inputs.get("a")?.isPressed()) || recordedInputs.includes("a_")) {
+            consumedInputs.push("a_");
             this._player.moveLeft();
         }
-        if (inputs.get("d")?.isPressed()) {
+        if ((noRecordedInputs && inputs.get("d")?.isPressed()) || recordedInputs.includes("d_")) {
+            consumedInputs.push("d_");
             this._player.moveRight();
         }
-        if (inputs.get("j")?.consumeIfActivated()) {
+        if ((noRecordedInputs && inputs.get("j")?.consumeIfActivated()) || recordedInputs.includes("j")) {
+            consumedInputs.push("j");
             // this._camera.shake();
             const projectile = this._player.shoot();
             if (projectile) {
@@ -171,7 +189,8 @@ class SubLevel {
                 this.#playerProjectiles.push(projectile);
             }
         }
-        if (inputs.get("l")?.consumeIfActivated()) {
+        if ((noRecordedInputs && inputs.get("l")?.consumeIfActivated()) || recordedInputs.includes("l")) {
+            consumedInputs.push("l");
             const grenade = this._player.throwGrenade();
             if (grenade) {
                 grenade.setPlatforms(this.#platforms);
@@ -179,7 +198,8 @@ class SubLevel {
                 this.#playerGrenades.push(grenade);
             }
         }
-        if (inputs.get("k")?.consumeIfActivated()) {
+        if ((noRecordedInputs && inputs.get("k")?.consumeIfActivated()) || recordedInputs.includes("k")) {
+            consumedInputs.push("k");
             this.#upBuffer.push(PseudoDate.now());
         }
         if (this.#upBuffer.length > 0) {
@@ -188,17 +208,24 @@ class SubLevel {
                 this.#upBuffer.shift();
             }
         }
-        if (inputs.get("k")?.isPressed()) {
+        if ((noRecordedInputs && inputs.get("k")?.isPressed()) || recordedInputs.includes("k_")) {
+            consumedInputs.push("k_");
             // this._player.jump();
             this._player.setCrouched(false);
         } else {
             // this._player.stopJumping();
-            if (inputs.get("s")?.isPressed()) {
+            if ((noRecordedInputs && inputs.get("s")?.isPressed()) || recordedInputs.includes("s_")) {
+                consumedInputs.push("s_");
                 this._player.setCrouched(true);
             } else {
                 this._player.setCrouched(false);
             }
         }
+
+        if (consumedInputs.length > 0) {
+            this._recordingInputs[this._currentFrame] = consumedInputs;
+        }
+        this._currentFrame++;
     }
 
     updateNpcAi() {

@@ -93,6 +93,8 @@ class PauseMenu extends GameScreen {
     #resumeGame() {
         AudioManager.playSoundEffect("enter");
         GameScreen.currentScreen = GameScreen.previousScreen;
+        PseudoDate.pop();
+        // PseudoDate.currentIteration++;
         AudioManager.stopLoop("menu");
     }
 

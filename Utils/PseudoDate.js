@@ -5,7 +5,17 @@
  */
 class PseudoDate {
     static currentIteration = 0;
+    static lastPushIteration = 0;
+    static push() {
+        PseudoDate.lastPushIteration = PseudoDate.currentIteration;
+    }
+    static pop() {
+        PseudoDate.currentIteration = PseudoDate.lastPushIteration;
+    }
     static now() {
         return PseudoDate.currentIteration * 1000 / 60;
+    }
+    static reset() {
+        PseudoDate.currentIteration = 0;
     }
 }

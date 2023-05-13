@@ -56,6 +56,18 @@ const TR = {
         gl: "ATRÁS",
         la: "RETRO",
     },
+    WATCH_REPETITION: {
+        en: "WATCH REPETITION",
+        es: "VER REPETICIÓN",
+        gl: "VER REPETICIÓN",
+        la: "REPETITIONEM VIDERE",
+    },
+    REPETITION: {
+        en: "REPETITION",
+        es: "REPETICIÓN",
+        gl: "REPETICIÓN",
+        la: "REPETITIONEM",
+    },
     help0: {
         en: "Be quick",
         es: "Sé rápido",

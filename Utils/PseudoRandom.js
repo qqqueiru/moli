@@ -114,6 +114,9 @@ class PseudoRandom {
         }
         return random;
     }
+    static reset() {
+        PseudoRandom.currentRandom = 0;
+    }
     constructor() {
         
     }
