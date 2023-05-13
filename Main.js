@@ -1,3 +1,5 @@
+let debug = false;
+
 // Selección automática de idioma
 const navLang = navigator.language.split("-")[0];  // Queremos "en", no "en-US"
 if (availableLangs.includes(navLang))

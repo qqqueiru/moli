@@ -413,28 +413,38 @@ class SubLevel {
         if (!AudioManager.isPlaying(this._levelMusicId) && !this._muteBgMusic) {
             AudioManager.playLoop(this._levelMusicId);
         }
-
+        const t1 = Date.now() - t0;
         this.#moveCameraWalls();
-
+        const t2 = Date.now() - t0;
         this.#reviseCharacterPosWithPlatforms(this._player);
         for (const npc of this.#npcs) {
             this.#reviseCharacterPosWithPlatforms(npc);
         }
+        const t3 = Date.now() - t0;
 
         this.updatePlayerControl();
+        const t31 = Date.now() - t0;
         this.updateNpcAi();
+        const t32 = Date.now() - t0;
         this.updateProjectiles();
+        const t33 = Date.now() - t0;
         this.updateGrenades();
+        const t34 = Date.now() - t0;
         this.updateCollectables();
+
+        const t4 = Date.now() - t0;
 
         this._player.update();
         for (const npc of this.#npcs) {
             npc.update();
         }
+        const t5 = Date.now() - t0;
 
         if (this._player.isDead()) {
             this.onPlayerDeath();
         }
+
+        const t6 = Date.now() - t0;
 
         const nTriggers = this._triggers.length;
         for (let i = nTriggers - 1; i >= 0; --i) {
@@ -444,15 +454,25 @@ class SubLevel {
             }
         }
 
+        const t7 = Date.now() - t0;
+
         this._camera.update();
+
+        const t8 = Date.now() - t0;
+
+        if (t8 >= 10 && debug) {
+            console.warn(`UPDATE SLOWS DOWN t1: ${t1}, t2: ${t2}, t3: ${t3}, t31: ${t31}, t32: ${t32}, t33: ${t33}, t34: ${t34}, t4: ${t4}, t5: ${t5}, t6: ${t6}, t7: ${t7}, t8: ${t8}`);
+        }
     }
 
     draw(ctx) {
+        const t0 = Date.now();
         ctx.beginPath();
+        const t1 = Date.now() - t0;
         ctx.clearRect(0, 0, GameScreen.width, GameScreen.height);
-
+        const t2 = Date.now() - t0;
         this.#backgroundImg.draw(ctx, this._camera.getPos());
-
+        const t3 = Date.now() - t0;
         const bgSpritesLength = this.#bgSprites.length;
         for (let i = bgSpritesLength - 1; i >= 0; --i) {
             this.#bgSprites[i].draw(this._camera.getPos());
@@ -461,13 +481,14 @@ class SubLevel {
                 continue;
             }
         }
+        const t4 = Date.now() - t0;
 
         for (const npc of this.#npcs) {
             npc.draw(ctx, this._camera.getPos());
         }
-
+        const t5 = Date.now() - t0;
         this._player.draw(ctx, this._camera.getPos());
-
+        const t6 = Date.now() - t0;
         // Debug floor segments
         // for (const [id, platform] of this.#platforms) {
         //     platform.draw(ctx, this._camera.getPos());
@@ -488,6 +509,7 @@ class SubLevel {
                 continue;
             }
         }
+        const t7 = Date.now() - t0;
 
         // Los proyectiles y granadas se dibujan por encima de todo
         for (const projectile of this.#enemyProjectiles) {
@@ -496,12 +518,14 @@ class SubLevel {
         for (const grenade of this.#enemyGrenades) {
             grenade.draw(ctx, this._camera.getPos());
         }
+        const t8 = Date.now() - t0;
         for (const projectile of this.#playerProjectiles) {
             projectile.draw(ctx, this._camera.getPos());
         }
         for (const grenade of this.#playerGrenades) {
             grenade.draw(ctx, this._camera.getPos());
         }
+        const t9 = Date.now() - t0;
 
         // Debug triggers
         // for (const trigger of this._triggers) {
@@ -511,8 +535,12 @@ class SubLevel {
         for (const collectable of this._collectables) {
             collectable.draw(ctx, this._camera.getPos());
         }
-
+        const t11 = Date.now() - t0;
         // Debug camera
         // this._camera.draw(ctx);
+
+        if (t11 >= 10 && debug) {
+            console.warn(`DRAW SLOWS DOWN t1: ${t1}, t2: ${t2}, t3: ${t3}, t4: ${t4}, t5: ${t5}, t6: ${t6}, t7: ${t7}, t8: ${t8}, t9: ${t9}, t10: ${t10}, t11: ${t11}`);
+        }
     }
 }

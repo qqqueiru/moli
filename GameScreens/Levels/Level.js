@@ -14,7 +14,6 @@ class Level extends GameScreen {
         } else {
             console.error(`Update error. Level with id ${this.id}: currentSubLevel ${currentSubLevel} does not exist.`);
         }
-        
     }
 
     draw() {

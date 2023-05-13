@@ -162,10 +162,14 @@ class BackgroundImage {
     }
 
     draw(ctx, cameraPos) {
+        const t0 = Date.now();
+
         const cameraPosRounded = cameraPos.clone();
         cameraPosRounded.x = Math.round(cameraPosRounded.x);
         cameraPosRounded.y = Math.round(cameraPosRounded.y);
-        
+
+        const t1 = Date.now() - t0;
+
         // for (const bgImgTile of this.#bgImgTiles) {
         //     bgImgTile.updateDistanceToCamera(cameraPos);
         // }
@@ -197,10 +201,21 @@ class BackgroundImage {
                 }
             }
         }
+        const t2 = Date.now() - t0;
+        let onlyOnce = true;
         if (minVertexX !== null && minVertexY !== null) {
             for (const bgImgTile of this.#tileVertices.get(minVertexX).get(minVertexY)) {
-                bgImgTile.draw(ctx, cameraPosRounded);
+                if (true) {
+                    bgImgTile.draw(ctx, cameraPosRounded);
+                    onlyOnce = false;
+                }
             }
+        }
+        const t3 = Date.now() - t0;
+        // ctx.drawImage(this.#offScreenCanvas, 0, 0);
+        const t4 = Date.now() - t0;
+        if (t4 >= 10 && debug) {
+            console.warn(`BACKGROUND_IMG SLOWS DOWN t1: ${t1}, t2: ${t2}, t3: ${t3}, t4: ${t4}`);
         }
     }
 }

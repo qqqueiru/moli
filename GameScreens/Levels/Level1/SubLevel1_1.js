@@ -144,7 +144,7 @@ class SubLevel1_1 extends SubLevel {
             this.setPlayer(player);
             this._camera.setFirstPoint(player.getPos());
         }
-        {
+        {    
             const npcs = [];
             // npcs.push(new NPC(new Point(2500, 3500)));
             // npcs.push(new NPC(new Point(2770, 3500)));
