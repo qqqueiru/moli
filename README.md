@@ -1,8 +1,8 @@
 # Moli
-
-Version: 0.0.1<br/>
+![Moli Gameplay Screenshot](https://github.com/qqqueiru/moli/blob/main/img/moli_gameplay.png?raw=true)<br/>
+Version: 1.0.0<br/>
 Release date: 2023-06-02<br/>
-Current state: under development<br/>
+Current state: developed<br/>
 [qqqueiru.github.io/moli](https://qqqueiru.github.io/moli/)
 
 ## Summary
@@ -19,7 +19,8 @@ Just open **index.html** in a web browser.
 You may also launch a web server that serves this folder.
 
 ## Gameplay
-TODO
-
-
+Be quick.
+Avoid any harm.
+Get what you want.
+Please save your run so your performance can be reviewed.
 
