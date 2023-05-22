@@ -138,13 +138,11 @@ window.addEventListener("keyup", (event) => {
 
 function loop() {
     GameScreen.currentScreen.runIteration();
-    window.requestAnimationFrame(loop);
     for (const input of GameScreen.inputs.values()) {
         input.consumeIfActivated();  // Si la iteración actual no consumió el input, hay que consumirlo para que no se malinterprete en la próxima iteración
     }
 }
 function init() {
-    window.requestAnimationFrame(loop);  // El juego se ha diseñado para que se juegue a 60 FPS. Se espera que esta función cumpla este requisito
-    // setInterval(loop, 1000 / 60);
+    setInterval(() => requestAnimationFrame(loop), 1000 / 60);
 }
 init();
