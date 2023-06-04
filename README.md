@@ -2,7 +2,7 @@
 ![Moli Gameplay Screenshot](https://github.com/qqqueiru/moli/blob/main/img/moli_gameplay.png?raw=true)<br/>
 Version: 1.0.0<br/>
 Release date: 2023-06-02<br/>
-Current state: developed<br/>
+Current state: released<br/>
 [qqqueiru.github.io/moli](https://qqqueiru.github.io/moli/)
 
 ## Summary
